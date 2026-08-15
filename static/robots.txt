@@ -1,0 +1,4 @@
+# Disallow:      allow crawling everything by default
+# Disallow: / Disable scanning of everything by default
+User-agent: *
+Disallow:
