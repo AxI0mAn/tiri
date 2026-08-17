@@ -29,7 +29,7 @@
 		align-items: center;
 		padding: 4px 8px;
 		font-size: calc(1vh + 1rem); //2rem;
-		color: $clr-mint;
+		color: $clr-teal;
 		cursor: pointer;
 		transition: 0.25s ease;
 
@@ -43,8 +43,8 @@
 
 		// Свечение (Внутреннее и внешнее)
 		box-shadow:
-			1px 1px 4px 0px rgba($clr-bg-darker-rgb, 0.5),
-			inset 0px 0px 2px $clr-mint-soft;
+			1px 1px 4px 0px rgba($clr-bg-rgb, 0.5),
+			inset 0px 0px 2px $clr-teal-soft;
 
 		@media (orientation: portrait) and (max-width: 432px) {
 			padding: 8px;
@@ -58,10 +58,10 @@
 		@media (hover: hover) and (pointer: fine) {
 			&:hover {
 				// Рамка (Берем синий из палитры)
-				outline: 2px solid $clr-blue-light;
+				outline: 2px solid $clr-bg-dark;
 				background-color: #344e66; // Темно-синий акцент при наведении
 				box-shadow:
-					0 0 4px $clr-mint-soft,
+					0 0 4px $clr-teal-soft,
 					0 0 8px $clr-bg-card;
 				transform: translateY(-0.5px);
 			}
@@ -72,18 +72,18 @@
 			-webkit-tap-highlight-color: transparent;
 			outline: none;
 			opacity: 0.8;
-			background-color: $clr-slate; // #b6d9ff;
+			background-color: $clr-white; // #b6d9ff;
 			transform: scale(0.96) translateY(0.5px);
 			box-shadow:
 				0 0 2px $shd-blue-glow,
-				0 0 8px $clr-mint;
+				0 0 8px $clr-teal;
 		}
 	}
 
 	// Модификаторы кнопок
 	.btn.btn__op {
 		background: $grad-op;
-		color: $clr-sky; //$clr-text-main;
+		color: $clr-teal; //$clr-text-main;
 	}
 
 	.btn.btn__func {
@@ -104,7 +104,7 @@
 	}
 
 	.btn.constanta {
-		color: $clr-mint;
+		color: $clr-teal;
 	}
 
 	.btn.btn__memo.btn__memo--full {
@@ -115,17 +115,17 @@
 	.btn.btn__install {
 		margin: 1rem auto;
 		padding: 1rem 2rem;
-		color: $clr-coral;
+		color: $clr-pink;
 		font-size: 2rem;
 		text-align: center;
 		&:hover {
-			color: $clr-mint-soft;
+			color: $clr-teal-soft;
 		}
 	}
 
 	.btn.btn__install--mini {
 		padding: 0.25rem;
-		color: $clr-coral;
+		color: $clr-pink;
 	}
 
 	.btn.op.btn__func.trigonom {
@@ -149,10 +149,10 @@
 		@media (hover: hover) and (pointer: fine) {
 			&:hover {
 				// Рамка (Берем синий из палитры)
-				outline: 2px solid $clr-blue-light;
+				outline: 2px solid $clr-bg-dark;
 				background-color: #344e66; // Темно-синий акцент при наведении
 				box-shadow:
-					0 0 4px $clr-mint-soft,
+					0 0 4px $clr-teal-soft,
 					0 0 8px $clr-bg-card;
 				transform: translateY(-0.5px);
 			}
@@ -164,9 +164,9 @@
 	}
 	.btn.trigMode.action,
 	.btn.fractionSwitch.action {
-		color: $clr-coral;
+		color: $clr-pink;
 		box-shadow:
-			0 0 4px $clr-mint-soft,
-			0 0 8px $clr-coral;
+			0 0 4px $clr-teal-soft,
+			0 0 8px $clr-pink;
 	}
 </style>

@@ -59,7 +59,7 @@
 			list-style: none;
 			cursor: pointer;
 			background: transparent;
-			border: 1px solid $clr-mint-soft;
+			border: 1px solid $clr-teal-soft;
 			border-radius: 0.5rem;
 			padding: 0.125rem;
 
@@ -72,7 +72,7 @@
 				&:hover {
 					outline: none;
 					border: none;
-					box-shadow: 0 0 8px 2px $clr-coral;
+					box-shadow: 0 0 8px 2px $clr-pink;
 				}
 			}
 		}
@@ -91,7 +91,7 @@
 		top: 100%;
 		right: 0;
 
-		background: rgba($clr-bg-darker-rgb, 0.2);
+		background: rgba($clr-bg-rgb, 0.2);
 		padding: 2px;
 
 		display: flex;
@@ -113,10 +113,10 @@
 		text-decoration: none;
 		gap: 0.25rem;
 
-		border: 1px solid $clr-mint;
+		border: 1px solid $clr-teal;
 		border-radius: 0.5rem;
 
-		background-color: rgba($clr-bg-darker-rgb, 0.3);
+		background-color: rgba($clr-bg-rgb, 0.3);
 		img {
 			width: 40px;
 			height: 40px;
@@ -127,10 +127,10 @@
 			&:hover {
 				outline: none;
 				border: none;
-				box-shadow: 0 0 8px 2px $clr-coral;
+				box-shadow: 0 0 8px 2px $clr-pink;
 
 				.name-tag {
-					color: $clr-coral;
+					color: $clr-pink;
 				}
 			}
 		}
@@ -138,7 +138,7 @@
 
 	.name-tag {
 		font-size: 0.6rem;
-		color: $clr-mint;
+		color: $clr-teal;
 		margin-top: 4px;
 	}
 

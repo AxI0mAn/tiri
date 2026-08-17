@@ -70,21 +70,35 @@
 
 <div class="app-wrapper">
 	<aside class="field_left">
-		<AdvertisementVert setBanners="1" />
+		<!-- <AdvertisementVert setBanners="1" /> -->
 	</aside>
-	<main class="field_main catalog" id="catalogAllFeatures">
+	<main class="field_main" id="catalogAllFeatures">
 		<div class="headerWrapper" id="top-anchor"><HomeHeader /></div>
 		<h1 class="slogan font-digits">
-			<span class="allFunc font-digits">One workspace.</span>
-			<span class="allCalc font-digits">Many possibilities.</span>
+			<span class="allFunc font-digits"
+				>An app for managing client appointments, tracking dates and times, and recording payments,
+				income, and commissions..</span
+			>
+			<span class="allCalc font-digits">managing commissions and tracking dates and times.</span>
 		</h1>
+
+		<p style="color:#562b0c">
+			Твой выбор #562b0c уже прошел все тесты. Можешь смело использовать его как основной цвет
+			текста. Lorem ipsum dolor sit amet consectetur adipisicing elit. Error id tempore possimus,
+			quidem magnam, accusamus expedita labore sapiente quisquam ut ipsam est minima non incidunt
+			minus.
+		</p>
+		<p style="color:#3D1E08">
+			#3D1E08 (Горький шоколад): Чуть темнее и насыщеннее. Поднимает контраст на самом сложном
+			розовом фоне #FF8FB3 до 6.8:1. Minus iste et perspiciatis neque. Nihil, consequatur debitis
+			iusto amet ea dicta ad quos ullam aliquam dignissimos delectus sapiente ipsam id voluptatibus
+			nam ipsa beatae adipisci?
+		</p>
 
 		<h2 class="inset">Learn more</h2>
 	</main>
-
-	<section class="reviews__old"></section>
 	<aside class="field_right">
-		<AdvertisementVert setBanners="2" />
+		<!-- <AdvertisementVert setBanners="2" /> -->
 		<!-- advertisement картинки и банеры ?? -->
 		<!-- <div class="realExamples">
 			<h2>Real-World Examples</h2>
@@ -92,7 +106,6 @@
 		</div> -->
 	</aside>
 </div>
-
 <footer>
 	<ul>
 		<!-- <li><a href="{base}/install"><span>How install App.</span></a></li>
@@ -118,10 +131,8 @@
 
 <style lang="scss">
 	.field_left,
-	.instruction,
-	.reviews__old,
 	.field_right {
-		color: $clr-mint-soft;
+		color: $clr-text-main;
 	}
 
 	.advertisementGor {
@@ -137,31 +148,9 @@
 			display: block;
 		}
 	}
-	.instruction {
-		display: flex;
-		flex-flow: column;
-		gap: 0.8rem;
-		.card h2 {
-			text-align: center;
-		}
-		.card p {
-			text-align: left;
-			line-height: 1.4rem;
-		}
-		.card ul li {
-			line-height: 1.2rem;
-			a span {
-				font-size: 1.2rem;
-				&:hover {
-					color: $clr-coral;
-					transition: all 1s;
-				}
-			}
-		}
-	}
-	.field_main.catalog {
+
+	.field_main {
 		width: 100%;
-		background: $clr-bg-card;
 		padding: 0.4rem;
 		box-shadow: $shadow-deep;
 
@@ -188,9 +177,9 @@
 		line-height: calc(1.8vh + 1rem);
 		font-size: calc(1.2vh + 1rem); // 2.4rem;
 		text-align: center;
-		color: $clr-coral;
+		color: $clr-text-accent;
 		.allCalc {
-			color: $clr-mint-soft;
+			color: $clr-text-main;
 			font-weight: 100;
 		}
 	}
@@ -201,12 +190,12 @@
 		letter-spacing: 0.25rem;
 		line-height: 1.4rem;
 		font-size: 1.2rem;
-		color: $clr-mint;
 		font-weight: 400;
 		margin-bottom: 1.4rem;
 	}
+
 	.inset {
-		color: $clr-bg;
+		color: $clr-text-main;
 		text-shadow: 1px 1px 1px rgba($clr-text-main-rgb, 0.9);
 	}
 	// =============================================================
@@ -255,9 +244,9 @@
 
 		padding: 1rem;
 
-		background: rgba($clr-bg-darker-rgb, 0.1);
+		background: rgba($clr-bg-rgb, 0.1);
 		box-shadow:
-			0px 0px 30px rgba($clr-coral-rgb, 0.4),
+			0px 0px 30px rgba($clr-bg-rgb, 0.4),
 			$shadow-inset;
 	}
 
@@ -277,7 +266,7 @@
 
 		border-radius: 12px;
 
-		box-shadow: $shadow-card;
+		box-shadow: $shadow-neon-mint;
 
 		display: grid;
 		grid-template-columns: 1fr;
@@ -331,18 +320,18 @@
 		align-items: center;
 
 		font-weight: 800;
-		color: $clr-mint-soft;
+		color: $clr-text-main;
 		text-align: center;
 		// font-size: 1.2rem;
 
 		backdrop-filter: blur(10px);
-		background: rgba($clr-bg-darker-rgb, 0.3);
+		background: rgba($clr-bg-rgb, 0.3);
 		box-shadow:
-			0px 0px 16px rgba($clr-mint-soft-rgb, 0.4),
+			0px 0px 16px rgba($clr-pink, 0.4),
 			$shadow-inset;
 
-		border-top: 1px solid rgba($clr-coral-rgb, 0.2);
-		border-bottom: 1px solid rgba($clr-coral-rgb, 0.2);
+		border-top: 1px solid rgba($clr-pink, 0.2);
+		border-bottom: 1px solid rgba($clr-pink, 0.2);
 		transition: all 0.35s;
 	}
 
@@ -352,22 +341,22 @@
 		font-size: calc(1vh + 1rem);
 		cursor: pointer;
 
-		border: 1px solid $clr-mint-soft;
-		box-shadow: inset 0px 0px 12px $clr-mint-soft;
+		border: 1px solid $clr-teal-soft;
+		box-shadow: inset 0px 0px 12px $clr-teal-soft;
 
 		&:hover {
 			box-shadow:
-				0px 0px 12px rgba($clr-coral-rgb, 0.4),
+				0px 0px 12px rgba($clr-pink, 0.4),
 				$shadow-inset;
 			border-top: none;
-			border-right: 8px groove $clr-coral;
+			border-right: 8px groove $clr-pink;
 			border-bottom: none;
-			border-left: 8px groove $clr-coral;
+			border-left: 8px groove $clr-pink;
 			transition: all 0.35s;
 
-			outline: 2px solid $clr-blue-light;
+			outline: 2px solid $clr-bg;
 			box-shadow:
-				0 0 4px $clr-mint-soft,
+				0 0 4px $clr-teal-soft,
 				0 0 8px $clr-bg-card;
 		}
 	}
@@ -379,8 +368,8 @@
 	/* Состояние Hover для устройств с мышью */
 	@media (hover: hover) {
 		.catalog__card:hover {
-			box-shadow: -4px 4px 2px 2px rgba($clr-coral-rgb, 0.5);
-			outline: 4px solid $clr-coral;
+			box-shadow: -4px 4px 2px 2px rgba($clr-pink, 0.5);
+			outline: 4px solid $clr-pink;
 
 			transition: box-shadow 0.05s;
 			transition: all 0.5s;
@@ -390,10 +379,10 @@
 		}
 
 		.catalog__card:hover .catalog__card--title {
-			box-shadow: 0px 0px 30px rgba($clr-mint-rgb, 0.9);
-			border-top: 1px solid rgba($clr-mint-rgb, 0.2);
-			border-bottom: 1px solid rgba($clr-mint-rgb, 0.2);
-			color: $clr-coral;
+			box-shadow: 0px 0px 30px rgba($clr-teal, 0.9);
+			border-top: 1px solid rgba($clr-teal, 0.2);
+			border-bottom: 1px solid rgba($clr-teal, 0.2);
+			color: $clr-text-main;
 			min-width: 100%;
 			width: fit-content;
 			min-height: 4rem;
@@ -401,7 +390,7 @@
 			font-size: calc(1vh + 1rem);
 
 			padding: 2px 4px;
-			text-shadow: -2px 2px 2px rgba($clr-mint-rgb, 0.9);
+			text-shadow: -2px 2px 2px rgba($clr-teal, 0.9);
 
 			transition: all 0.35s;
 
@@ -435,7 +424,7 @@
 		box-shadow: none;
 		border-top: none;
 		border-bottom: none;
-		color: rgba($clr-mint-rgb, 0.9);
+		color: rgba($clr-teal, 0.9);
 		padding-top: 2px;
 		padding-bottom: 2px;
 		text-shadow: none;
@@ -466,11 +455,11 @@
 			}
 		}
 		li {
-			color: $clr-white;
+			color: $clr-text-main;
 			margin-bottom: 0.5rem;
 
 			&:hover {
-				color: $clr-coral;
+				color: $clr-text-main;
 				transition: all 0.35s;
 			}
 
@@ -489,8 +478,8 @@
 
 	/* Состояние "Первого клика" для мобильных (через класс .isHovered ) */
 	:global(.catalog__card.isHovered) {
-		box-shadow: -4px 4px 2px 2px rgba($clr-coral-rgb, 0.5);
-		outline: 4px solid $clr-coral;
+		box-shadow: -4px 4px 2px 2px rgba($clr-pink, 0.5);
+		outline: 4px solid $clr-pink;
 
 		transition: box-shadow 0.05s;
 		transition: all 0.5s;
@@ -500,10 +489,10 @@
 	}
 
 	:global(.catalog__card.isHovered .catalog__card--title) {
-		box-shadow: 0px 0px 30px rgba($clr-mint-rgb, 0.9);
-		border-top: 1px solid rgba($clr-mint-rgb, 0.2);
-		border-bottom: 1px solid rgba($clr-mint-rgb, 0.2);
-		color: $clr-coral;
+		box-shadow: 0px 0px 30px rgba($clr-teal, 0.9);
+		border-top: 1px solid rgba($clr-teal, 0.2);
+		border-bottom: 1px solid rgba($clr-teal, 0.2);
+		color: $clr-text-main;
 		min-width: 100%;
 		width: fit-content;
 		min-height: 4rem;
@@ -511,7 +500,7 @@
 		font-size: calc(1vh + 1rem);
 
 		padding: 2px 4px;
-		text-shadow: -2px 2px 2px rgba($clr-mint-rgb, 0.9);
+		text-shadow: -2px 2px 2px rgba($clr-teal, 0.9);
 
 		transition: all 0.05s;
 

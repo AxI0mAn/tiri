@@ -1,5 +1,13 @@
 // src/styles/_modal.scss
 
+$clr-bg-card: $clr-bg-card;
+$clr-teal-rgb: $clr-teal-rgb;
+$clr-text-main: $clr-text-main;
+$clr-pink: $clr-pink;
+$clr-bg-dark: $clr-bg-dark;
+$clr-white: $clr-white;
+$clr-teal: $clr-teal;
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -21,7 +29,7 @@
   background-color: $clr-bg-card;
 
   // Добавляем мятную рамку для связи с дизайном калькулятора
-  border: 1px solid rgba($clr-mint-rgb, 0.3);
+  border: 1px solid rgba($clr-teal-rgb, 0.3);
   border-radius: 16px;
   padding: 24px;
   max-width: 400px;
@@ -55,7 +63,7 @@
 
     .btn__clear-all {
       // Опасное действие — используем коралловый акцент
-      background-color: $clr-coral;
+      background-color: $clr-pink;
       color: $clr-text-main;
       border: none;
       padding: 12px;
@@ -65,7 +73,7 @@
       &:hover {
         // Инверсия при наведении
         background-color: $clr-text-main;
-        color: $clr-coral;
+        color: $clr-pink;
         box-shadow: $shadow-neon-coral;
       }
     }
@@ -73,8 +81,8 @@
     .btn__cancel {
       background: transparent;
       // Вместо #444 используем синий оттенок из палитры
-      border: 1px solid $clr-blue-light;
-      color: $clr-slate;
+      border: 1px solid $clr-bg-dark;
+      color: $clr-white;
       margin-top: 5px;
       padding: 10px;
       border-radius: 8px;
@@ -82,8 +90,8 @@
 
       &:hover {
         color: $clr-text-main;
-        border-color: $clr-mint;
-        background-color: rgba($clr-mint-rgb, 0.1);
+        border-color: $clr-teal;
+        background-color: rgba($clr-teal-rgb, 0.1);
       }
     }
   }

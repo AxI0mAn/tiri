@@ -1,1 +1,1 @@
-svelte5-starter-template
+a diary with reminder and calculation functions

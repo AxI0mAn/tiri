@@ -96,11 +96,14 @@
 <style lang="scss">
 	.picture-wrapper {
 		position: relative;
-		display: block;
 		overflow: hidden;
 		background-color: transparent;
 		border-radius: 8px;
 		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.fade-img {
@@ -129,9 +132,9 @@
 		inset: 0;
 		background: linear-gradient(
 			90deg,
-			rgba($clr-bg-darker-rgb, 0.9) 25%,
-			rgba($clr-mint-rgb, 0.2) 50%,
-			rgba($clr-bg-darker-rgb, 0.9) 75%
+			rgba($clr-bg-rgb, 0.9) 25%,
+			rgba($clr-bg-dark-rgb, 0.2) 50%,
+			rgba($clr-bg-rgb, 0.9) 75%
 		);
 		background-size: 200% 100%;
 		animation: skeleton-loading 1.5s infinite;

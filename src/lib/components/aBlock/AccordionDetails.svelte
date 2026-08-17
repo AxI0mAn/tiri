@@ -137,8 +137,8 @@
 				content: '';
 				width: 0.5rem;
 				height: 0.5rem;
-				border-right: 2px solid $clr-mint;
-				border-bottom: 2px solid $clr-mint;
+				border-right: 2px solid $clr-teal;
+				border-bottom: 2px solid $clr-teal;
 				transform: rotate(45deg);
 				transition: transform 0.3s ease;
 				margin-left: 1rem;
@@ -152,11 +152,11 @@
 			border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 			border-radius: 0.5rem;
 			&:hover {
-				color: $clr-coral;
+				color: $clr-pink;
 				border-radius: 0.5rem;
 				&::after {
-					border-right: 2px solid $clr-coral;
-					border-bottom: 2px solid $clr-coral;
+					border-right: 2px solid $clr-pink;
+					border-bottom: 2px solid $clr-pink;
 				}
 			}
 		}

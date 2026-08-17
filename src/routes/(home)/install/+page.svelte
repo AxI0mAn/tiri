@@ -136,6 +136,6 @@
 		letter-spacing: 0.1rem;
 	}
 	.card h2 {
-		color: $clr-mint-soft;
+		color: $clr-teal-soft;
 	}
 </style>

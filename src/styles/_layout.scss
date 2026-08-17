@@ -13,10 +13,7 @@
   (orientation: landscape) and (min-width: 768px) {
     grid-template-columns: 1fr 50vh 1fr;
     grid-template-areas:
-      "left calc right"
-      "left instr ."
-      "left revi .";
-
+      "left main right";
 
     .field_left,
     .field_right {
@@ -30,48 +27,27 @@
       flex-flow: column wrap;
       justify-content: center;
       align-items: center;
-
     }
 
     .field_left {
-      // background: linear-gradient(to right, $clr-black 0%, rgba($clr-bg-darker-rgb, 0.4) 100%);
       background-color: transparent;
       left: 0;
       grid-area: left;
     }
 
     .field_right {
-      // background: linear-gradient(to left, $clr-black 0%, rgba($clr-bg-darker-rgb, 0.4) 100%);
       background-color: transparent;
       right: 0;
       grid-area: right;
     }
 
     .field_main {
-      background: $grad-btn-main;
-      box-shadow: 0px 0px 8px 4px rgba($clr-mint-rgb, 0.75);
+      background-image: $grad-block;
+      box-shadow: 0px 0px 8px 4px rgba($clr-teal-rgb, 0.75);
       top: 0;
-      grid-area: calc;
+      grid-area: main;
       width: 50vh;
       position: relative;
-    }
-
-    .instruction {
-      // background: linear-gradient(180deg, rgba($clr-mint-rgb, 0.05) 0%, rgba($clr-bg-darker-rgb, 0.8) 100%);
-      border-top: 1px solid rgba($clr-mint-rgb, 0.2);
-      grid-area: instr;
-      width: 50vh;
-      min-height: 20vh;
-      padding: 2rem 0;
-    }
-
-    .reviews__old {
-      // background: linear-gradient(180deg, rgba($clr-coral-rgb, 0.01) 0%, rgba($clr-bg-darker-rgb, 0.8) 5%, rgba($clr-coral-rgb, 0.001) 100%);
-      // border-bottom: 1px solid rgba($clr-coral-rgb, 0.2);
-      grid-area: revi;
-      width: 50vh;
-      min-height: 20vh;
-      padding: 2rem 0;
     }
   }
 
@@ -84,11 +60,9 @@
     padding: 0 auto;
     grid-template-columns: 1fr auto 1fr;
     grid-template-areas:
-      ". calc ."
+      ". main ."
       ". left ."
-      ". instr ."
-      ". right ."
-      ". revi .";
+      ". right .";
     justify-content: center;
     row-gap: 4px;
 
@@ -99,23 +73,13 @@
     }
 
     .field_main {
-      grid-area: calc;
-      min-height: 100%;
+      grid-area: main;
+      min-height: 100vh;
     }
 
     .field_left {
       grid-area: left;
       min-height: 4rem;
-      // background: linear-gradient(90deg, $clr-bg-darker 0%, $clr-blue-light 100%);
-      border-radius: 8px;
-    }
-
-    .instruction {
-      grid-area: instr;
-      padding: 1rem;
-      min-height: 4rem;
-      // background: $clr-bg-darker;
-      border: 1px solid rgba($clr-mint-rgb, 0.3);
       border-radius: 8px;
     }
 
@@ -123,16 +87,7 @@
       grid-area: right;
       padding: 1rem;
       min-height: 4rem;
-      // background: rgb($clr-bg-rgb, .5);
-      border: 1px solid rgba($clr-coral-rgb, 0.3);
-      border-radius: 8px;
-    }
-
-    .reviews__old {
-      grid-area: revi;
-      padding: 1rem;
-      min-height: 4rem;
-      // background: linear-gradient(180deg, $clr-bg-darker 0%, $clr-blue-mid 100%);
+      border: 1px solid rgba($clr-pink-rgb, 0.3);
       border-radius: 8px;
     }
   }
@@ -142,17 +97,13 @@
     padding: 0 auto;
     grid-template-columns: 1fr auto 1fr;
     grid-template-areas:
-      ". calc ."
+      ". main ."
       ". left ."
-      ". instr ."
-      ". right ."
-      ". revi .";
+      ". right .";
     justify-content: center;
 
     .field_left,
-    .instruction,
-    .field_right,
-    .reviews__old {
+    .field_right {
       width: 100%;
     }
 
@@ -163,7 +114,7 @@
   overflow: auto;
   // --- Стандарт для Firefox ---
   scrollbar-width: thin; // тонкий скроллбар
-  scrollbar-color: $clr-blue-mid $clr-mint-soft !important; // [цвет ползунка] [цвет дорожки]
+  scrollbar-color: $clr-bg-dark !important; // [цвет ползунка] [цвет дорожки]
 
   // --- WebKit (Chrome, Safari, Edge, Opera) ---
   &::-webkit-scrollbar {
@@ -172,24 +123,24 @@
   }
 
   &::-webkit-scrollbar-track {
-    background-color: $clr-mint-soft !important; // Дорожка (фон)
+    background-color: $clr-teal-soft !important; // Дорожка (фон)
     border-radius: 10px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: $clr-blue-mid !important; // Цвет ползунка
+    background: $clr-bg-dark !important; // Цвет ползунка
     border-radius: 10px;
     // Добавляем эффект свечения
-    box-shadow: 0 0 5px rgba($clr-mint-soft-rgb, 0.5);
+    box-shadow: 0 0 5px rgba($clr-pink, 0.5);
     // border: 1px solid rgba(2, 17, 85, 0.2);
 
     &:hover {
       background: $clr-bg !important;
-      box-shadow: 0 0 10px rgba($clr-mint-rgb, 0.8);
+      box-shadow: 0 0 10px rgba($clr-teal-rgb, 0.8);
     }
 
     &:active {
-      background: $clr-mint; // Меняет цвет на зеленый при нажатии (как ваш main-display)
+      background: $clr-teal; // Меняет цвет на зеленый при нажатии (как ваш main-display)
     }
   }
 }

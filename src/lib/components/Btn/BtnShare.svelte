@@ -81,11 +81,14 @@
 
 		background: none;
 		border: none;
-		color: $clr-bg-card;
+		color: $clr-teal;
 		box-shadow: none;
+		svg {
+			fill: $clr-teal;
+		}
 
 		&:hover {
-			color: $clr-text-main;
+			color: $clr-pink;
 		}
 		&:active {
 			background-color: transparent;
@@ -95,11 +98,11 @@
 	/* Стили всплывающей подсказки */
 	.share-tooltip {
 		position: absolute;
-		bottom: 5%;
+		top: 5%;
 		right: 5%;
 		transform: translateX(-50%);
-		background-color: $clr-text-main;
-		color: inherit;
+		background-color: $clr-white;
+		color: $clr-text-main;
 		padding: 0.5rem 0.75rem;
 		border-radius: 4px;
 		font-size: 0.85rem;
@@ -121,10 +124,10 @@
 	}
 
 	.btn__interface {
-		color: $clr-coral;
+		color: $clr-pink;
 
 		&:hover {
-			color: $clr-mint;
+			color: $clr-teal;
 		}
 		&:active {
 			background-color: transparent; // Сохраняем твою логику прозрачности

@@ -150,7 +150,7 @@
 
 <style lang="scss">
 	.contact-page {
-		color: $clr-sky;
+		color: $clr-teal;
 		padding: 20px;
 		font-family: sans-serif;
 		min-height: 100vh;
@@ -165,7 +165,7 @@
 		gap: 2rem;
 
 		.headerSlogan {
-			color: $clr-coral;
+			color: $clr-pink;
 			font-size: 3rem;
 			display: inline-block;
 			margin: 0;
@@ -187,7 +187,7 @@
 	}
 
 	.label {
-		color: $clr-slate;
+		color: $clr-white;
 		font-size: 0.85rem;
 		text-transform: uppercase;
 	}
@@ -195,9 +195,9 @@
 	.custom-input,
 	.custom-textarea {
 		width: 100%;
-		background: $clr-blue-mid;
+		background: $clr-bg-dark;
 		color: $clr-text-main;
-		border: 1px solid $clr-blue-hover;
+		border: 1px solid $clr-white;
 		padding: 10px;
 		border-radius: 6px;
 		outline: none;
@@ -205,8 +205,8 @@
 		box-sizing: border-box;
 
 		&:focus {
-			border-color: $clr-sky;
-			box-shadow: 0 0 10px rgba($clr-sky-rgb, 0.3);
+			border-color: $clr-teal;
+			box-shadow: 0 0 10px rgba($clr-teal-rgb, 0.3);
 		}
 	}
 
@@ -215,7 +215,7 @@
 	}
 
 	.error-hint {
-		color: $clr-coral;
+		color: $clr-pink;
 		font-size: 0.75rem;
 		margin-top: -5px;
 	}
@@ -224,8 +224,8 @@
 		display: block;
 		width: 100%;
 		padding: 12px 20px;
-		background: linear-gradient(180deg, $clr-blue-mid 0%, $clr-bg-darker 100%);
-		border: 1px solid $clr-blue-hover;
+		background: linear-gradient(180deg, $clr-bg-dark 0%, $clr-bg 100%);
+		border: 1px solid $clr-white;
 		border-radius: 6px;
 		color: $clr-text-main;
 		cursor: pointer;
@@ -241,9 +241,9 @@
 		}
 
 		&:not(:disabled):hover {
-			border-color: $clr-sky;
-			box-shadow: inset 0 0 10px rgba($clr-sky-rgb, 0.5);
-			color: $clr-sky;
+			border-color: $clr-teal;
+			box-shadow: inset 0 0 10px rgba($clr-teal-rgb, 0.5);
+			color: $clr-teal;
 		}
 	}
 
@@ -254,15 +254,15 @@
 		font-size: 0.9rem;
 
 		&.success {
-			color: $clr-mint;
-			background: rgba($clr-mint-rgb, 0.1);
-			border: 1px solid $clr-mint;
+			color: $clr-teal;
+			background: rgba($clr-teal-rgb, 0.1);
+			border: 1px solid $clr-teal;
 		}
 
 		&.error {
-			color: $clr-coral;
-			background: rgba($clr-coral-rgb, 0.1);
-			border: 1px solid $clr-coral;
+			color: $clr-pink;
+			background: rgba($clr-pink-rgb, 0.1);
+			border: 1px solid $clr-pink;
 		}
 	}
 

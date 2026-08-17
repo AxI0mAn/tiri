@@ -242,10 +242,10 @@
 <style lang="scss">
 	// src/styles/_homePages.scss
 	.disclaimer {
-		color: $clr-mint-soft;
+		color: $clr-teal-soft;
 	}
 	.card {
-		background: $clr-bg-darker;
+		background: $clr-bg;
 
 		&:hover {
 			box-shadow: $shadow-neon-coral;

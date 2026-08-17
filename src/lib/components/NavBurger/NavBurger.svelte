@@ -273,7 +273,7 @@
 
 		.line {
 			// Был $burger-color (#1e1e1e)
-			fill: $clr-bg-darker;
+			fill: $clr-teal;
 			transition:
 				transform 0.3s ease-in-out,
 				opacity 0.3s ease-in-out;
@@ -283,7 +283,7 @@
 		&:hover {
 			.line {
 				// При наведении иконка становится белой
-				fill: $clr-white;
+				fill: $clr-pink;
 			}
 		}
 
@@ -291,7 +291,7 @@
 		&.is-active {
 			.top {
 				transform: translate(0, -17.5px) rotate(45deg);
-				fill: $clr-white; // Белый крестик при закрытии
+				fill: $clr-pink; //  крестик при закрытии
 			}
 
 			.middle {
@@ -301,7 +301,7 @@
 
 			.bottom {
 				transform: translate(0, 17.5px) rotate(-45deg);
-				fill: $clr-white;
+				fill: $clr-pink;
 			}
 		}
 	}
@@ -318,10 +318,10 @@
 		padding: 10px 0;
 
 		// Вместо #eee
-		border: 1px solid $clr-blue-light;
+		border: 1px solid $clr-bg-dark;
 
 		// Вместо coral используем переменную (шапка меню)
-		background-color: $clr-coral;
+		background-color: $clr-pink;
 
 		// Добавим тень, чтобы меню "всплывало" над калькулятором
 		box-shadow: $shadow-deep;
@@ -340,7 +340,7 @@
 		cursor: pointer;
 
 		&:focus-visible {
-			outline: 2px solid $clr-mint;
+			outline: 2px solid $clr-teal;
 			outline-offset: -2px;
 			background-color: rgba(255, 255, 255, 0.1);
 		}
@@ -355,7 +355,7 @@
 		text-transform: uppercase;
 		flex-grow: 1;
 		// Текст на коралловом фоне делаем темным, как в шапке
-		color: $clr-bg-darker;
+		color: $clr-bg;
 	}
 
 	/* Обертка для листовых элементов */
@@ -370,13 +370,13 @@
 		flex-grow: 1;
 		padding: 10px 15px;
 		text-decoration: none;
-		color: $clr-bg-darker;
+		color: $clr-bg;
 		transition: background-color 0.15s ease;
 		-webkit-tap-highlight-color: transparent;
 		touch-action: manipulation;
 
 		&:focus-visible {
-			outline: 2px solid $clr-mint;
+			outline: 2px solid $clr-teal;
 			outline-offset: -2px;
 			background-color: rgba(255, 255, 255, 0.1);
 		}
@@ -404,12 +404,12 @@
 		&.level-1 {
 			padding-left: 20px;
 			// Вместо #ccc
-			border-left: 2px solid rgba($clr-bg-darker-rgb, 0.3);
+			border-left: 2px solid rgba($clr-bg-rgb, 0.3);
 		}
 
 		&.level-2 {
 			padding-left: 15px;
-			border-left: 1px solid rgba($clr-bg-darker-rgb, 0.2);
+			border-left: 1px solid rgba($clr-bg-rgb, 0.2);
 		}
 	}
 
@@ -417,7 +417,7 @@
 	.triangle {
 		width: 10px;
 		height: 10px;
-		fill: $clr-bg-darker;
+		fill: $clr-bg;
 		transition: transform 0.2s ease-in-out;
 		transform-origin: 50% 50%;
 

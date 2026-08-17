@@ -1,6 +1,6 @@
 {
-  "short_name": "svelte5ST",
-  "name": "svelte5ST start template",
+  "short_name": "tiri",
+  "name": "notes and managing ",
   "icons": [
     {
       "src": "icon-192.png",
@@ -13,10 +13,10 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/axio_calcul/",
-  "scope": "/axio_calcul/",
+  "start_url": "/tiri/",
+  "scope": "/tiri/",
   "display": "standalone",
-  "background_color": "#1f1f1f",
-  "theme_color": "#0f172a",
-  "description": "start template svelte5"
+  "background_color": "#F6FAFC",
+  "theme_color": "#FFE6EE",
+  "description": "An app for managing client appointments, tracking dates, times and more."
 }

@@ -76,7 +76,7 @@
 
 <style lang="scss">
 	.settings-page {
-		color: $clr-sky; // #00d1ff
+		color: $clr-teal; // #00d1ff
 		padding: 20px;
 		font-family: sans-serif;
 		min-height: 100vh;
@@ -91,7 +91,7 @@
 		gap: 2rem;
 
 		.headerSlogan {
-			color: $clr-coral;
+			color: $clr-pink;
 			font-size: 3rem;
 			display: inline-block;
 		}
@@ -113,7 +113,7 @@
 	}
 
 	.label {
-		color: $clr-slate; // вместо #aaa
+		color: $clr-white; // вместо #aaa
 		font-size: 0.85rem;
 		text-transform: uppercase;
 	}
@@ -126,11 +126,11 @@
 
 	.value-badge {
 		color: $clr-text-main;
-		background: $clr-bg-darker; // вместо #1a202c
+		background: $clr-bg; // вместо #1a202c
 		padding: 2px 10px;
-		border: 1px solid $clr-sky;
+		border: 1px solid $clr-teal;
 		border-radius: 4px;
-		box-shadow: 0 0 10px rgba($clr-sky-rgb, 0.3);
+		box-shadow: 0 0 10px rgba($clr-teal-rgb, 0.3);
 	}
 
 	/* Стилизация Radio как кнопок */
@@ -147,8 +147,8 @@
 		display: block;
 		padding: 10px 20px;
 		// Используем градиент из переменных или на его основе
-		background: linear-gradient(180deg, $clr-blue-mid 0%, $clr-bg-darker 100%);
-		border: 1px solid $clr-blue-hover; // вместо #3d4655
+		background: linear-gradient(180deg, $clr-bg-dark 0%, $clr-bg 100%);
+		border: 1px solid $clr-white; // вместо #3d4655
 		border-radius: 6px;
 		color: $clr-text-main;
 		cursor: pointer;
@@ -158,9 +158,9 @@
 	}
 
 	.radio-item input:checked + .btn-check {
-		border-color: $clr-sky;
-		box-shadow: inset 0 0 10px rgba($clr-sky-rgb, 0.5);
-		color: $clr-sky;
+		border-color: $clr-teal;
+		box-shadow: inset 0 0 10px rgba($clr-teal-rgb, 0.5);
+		color: $clr-teal;
 	}
 
 	/* Стилизация Range (Ползунок) */
@@ -169,7 +169,7 @@
 		margin: 0 auto;
 		width: 50vmin;
 		height: 6px;
-		background: $clr-blue-mid; // вместо #2c3440
+		background: $clr-bg-dark; // вместо #2c3440
 		border-radius: 3px;
 		outline: none;
 	}
@@ -178,25 +178,25 @@
 		-webkit-appearance: none;
 		width: 20px;
 		height: 20px;
-		background: $clr-sky;
+		background: $clr-teal;
 		border-radius: 50%;
 		cursor: pointer;
-		box-shadow: 0 0 10px $clr-sky;
+		box-shadow: 0 0 10px $clr-teal;
 	}
 
 	/* Стилизация Select */
 	.custom-select {
 		min-width: fit-content;
 		max-width: 25vmin;
-		background: $clr-blue-mid;
+		background: $clr-bg-dark;
 		color: $clr-text-main;
-		border: 1px solid $clr-blue-hover;
+		border: 1px solid $clr-white;
 		padding: 10px;
 		border-radius: 6px;
 		outline: none;
 
 		&:focus {
-			border-color: $clr-sky;
+			border-color: $clr-teal;
 		}
 	}
 
