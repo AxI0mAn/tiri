@@ -23,7 +23,7 @@ const config = {
 
 		// 4. Управление путями синхронно с логикой
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/axio_calcul' : '',
+			base: process.env.NODE_ENV === 'production' ? '/tiri' : '',
 		},
 
 		// 5. Конфигурация пререндера

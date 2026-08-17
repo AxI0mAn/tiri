@@ -139,7 +139,7 @@
 			text-align: justify;
 			font-size: 1.5rem;
 
-			color: $clr-mint-soft;
+			color: $clr-teal-soft;
 
 			@media screen and (max-width: 767px) {
 				text-align: left;

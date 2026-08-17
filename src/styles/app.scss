@@ -13,26 +13,30 @@
    чтобы у браузера не было прозрачных "дыр" при скролле */
 html,
 body {
-  /* Замените на цвет фона вашего сайта */
   overscroll-behavior-y: none;
   /* Убирает лишние системные эффекты резинового скролла */
 }
 
 html {
-  background: rgba($clr-bg-rgb, .95);
   scroll-behavior: smooth;
-  min-height: 100%;
+  // min-height: 100%;
+}
+
+body {
   /* Путь к вашей картинке */
-  // background-image: url('$lib/assets/body_bg.png');
+  background-image:
+    linear-gradient(225deg, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.6)),
+    // url('$lib/assets/body_bg3d.webp'),
+    linear-gradient(300deg, #F6FAFC 0%, #7EE7E5 50%, #F6FAFC 100%);
 
-  /* Повторяем только по вертикали (Y) */
-  background-repeat: repeat-y;
 
-  /* Ширина 100vw, а высоту оставляем автоматической, чтобы не искажать пропорции */
-  background-size: 100vw auto;
+  background-repeat: no-repeat, repeat, no-repeat;
+  background-position: center, center, center;
+  background-size: auto, 100% auto, cover;
+  /* 200px или 2.5% — размер узора орнамента */
 
-  /* Центрируем по горизонтали, чтобы картинка не прижималась только к левому краю */
-  background-position: top center;
+  // фиксирует градиенты и орнамент при скролле
+  background-attachment: fixed, scroll, fixed;
 }
 
 a {
@@ -53,7 +57,7 @@ a {
 }
 
 strong {
-  color: $clr-sky;
+  color: $clr-teal;
   padding: auto 2px;
 }
 
@@ -89,7 +93,7 @@ strong {
   }
 
   h2 {
-    color: $clr-coral;
+    color: $clr-pink;
     margin-bottom: 1.5rem;
     font-size: 1.25rem;
   }
@@ -99,7 +103,7 @@ strong {
     margin-bottom: 0.5rem;
 
     &:hover {
-      color: $clr-coral;
+      color: $clr-pink;
       transition: all 0.35s;
     }
 

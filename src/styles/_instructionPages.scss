@@ -34,8 +34,8 @@
 
    padding: 0.5rem;
 
-   border-right: 2px solid $clr-sky;
-   border-bottom: 2px solid $clr-sky;
+   border-right: 2px solid $clr-teal;
+   border-bottom: 2px solid $clr-teal;
    border-left: 1px solid rgba(255, 255, 255, 0.1);
    border-top: 1px solid rgba(255, 255, 255, 0.1);
    border-radius: 0.5rem;
@@ -49,11 +49,11 @@
      border-radius: 8px;
 
      box-shadow: $shadow-inset;
-     color: $clr-sky;
+     color: $clr-teal;
      border-right: 1px solid rgba(255, 255, 255, 0.1);
      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-     border-left: 2px solid $clr-sky;
-     border-top: 2px solid $clr-sky;
+     border-left: 2px solid $clr-teal;
+     border-top: 2px solid $clr-teal;
      transition: all 0.5s;
    }
 
@@ -61,17 +61,17 @@
      -webkit-tap-highlight-color: transparent;
      outline: none;
      opacity: 0.8;
-     background-color: $clr-slate;
+     background-color: $clr-white;
      transform: scale(0.96) translateY(0.5px);
      box-shadow:
        0 0 2px $shd-blue-glow,
-       0 0 8px $clr-mint;
+       0 0 8px $clr-teal;
    }
  }
 
  h2 {
    line-height: 2.5rem;
-   color: $clr-coral;
+   color: $clr-pink;
    text-align: center;
    font-size: 2rem;
  }
@@ -99,7 +99,7 @@
  }
 
  li.example {
-   border-top: 2px solid rgba($clr-sky-rgb, 0.33);
+   border-top: 2px solid rgba($clr-teal-rgb, 0.33);
  }
 
  strong.answer {

@@ -174,8 +174,8 @@
 		}
 	}
 	.instruction {
-		background: transparent; //linear-gradient(180deg, rgba($clr-mint-rgb, 0.05) 0%, rgba($clr-bg-darker-rgb, 0.8) 100%);
-		border-top: 1px solid rgba($clr-mint-rgb, 0.2);
+		background: transparent; //linear-gradient(180deg, rgba($clr-teal-rgb, 0.05) 0%, rgba($clr-bg-rgb, 0.8) 100%);
+		border-top: 1px solid rgba($clr-teal-rgb, 0.2);
 		min-width: 50vh;
 		min-height: 20vh;
 		padding: 2rem 0;

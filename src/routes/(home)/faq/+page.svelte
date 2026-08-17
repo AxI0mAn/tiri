@@ -298,11 +298,11 @@
 <style lang="scss">
 	// src/styles/_homePages.scss
 	.faqPage {
-		color: $clr-mint-soft;
+		color: $clr-teal-soft;
 		h2 {
 			font-size: 2rem;
 			text-align: center;
-			color: $clr-coral;
+			color: $clr-pink;
 			letter-spacing: 0.2rem;
 		}
 	}
@@ -335,7 +335,7 @@
 		}
 		&:hover {
 			strong {
-				color: $clr-coral;
+				color: $clr-pink;
 			}
 			border-right: 1px double $clr-text-main;
 			border-bottom: 1px double $clr-text-main;

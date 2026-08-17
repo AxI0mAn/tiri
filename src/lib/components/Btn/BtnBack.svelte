@@ -73,7 +73,7 @@
 				transform 0.3s,
 				visibility 0.3s;
 			svg {
-				stroke: $clr-coral;
+				stroke: $clr-pink;
 				fill: transparent;
 			}
 		}

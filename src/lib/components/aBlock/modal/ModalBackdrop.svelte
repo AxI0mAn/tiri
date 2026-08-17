@@ -39,7 +39,7 @@
 		background-color: $clr-bg-card;
 
 		// Добавляем мятную рамку для связи с дизайном калькулятора
-		border: 1px solid rgba($clr-mint-rgb, 0.3);
+		border: 1px solid rgba($clr-teal-rgb, 0.3);
 		border-radius: 1rem;
 		padding: 1.5rem;
 		max-width: 50vh;
@@ -73,7 +73,7 @@
 
 			.btn__clear-all {
 				// Опасное действие — используем коралловый акцент
-				background-color: $clr-coral;
+				background-color: $clr-pink;
 				color: $clr-text-main;
 				border: none;
 				padding: 0.75rem;
@@ -83,7 +83,7 @@
 				&:hover {
 					// Инверсия при наведении
 					background-color: $clr-text-main;
-					color: $clr-coral;
+					color: $clr-pink;
 					box-shadow: $shadow-neon-coral;
 				}
 			}
@@ -91,8 +91,8 @@
 			.btn__cancel {
 				background: transparent;
 				// Вместо #444 используем синий оттенок из палитры
-				border: 1px solid $clr-blue-light;
-				color: $clr-slate;
+				border: 1px solid $clr-bg-dark;
+				color: $clr-white;
 				margin-top: 0.25rem;
 				padding: 0.75rem;
 				border-radius: 0.5rem;
@@ -100,8 +100,8 @@
 
 				&:hover {
 					color: $clr-text-main;
-					border-color: $clr-mint;
-					background-color: rgba($clr-mint-rgb, 0.1);
+					border-color: $clr-teal;
+					background-color: rgba($clr-teal-rgb, 0.1);
 				}
 			}
 		}

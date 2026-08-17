@@ -1,0 +1,28 @@
+{
+    ".": {
+        "": {
+            "child.webp": "112x128",
+            "calendar.webp": "128x106",
+            "crypto.webp": "128x106",
+            "male-bearded.png": "112x128",
+            "male.webp": "112x128",
+            "notes.png": "128x106",
+            "male-bearded.webp": "112x128",
+            "date.png": "128x106",
+            "crypto.png": "128x106",
+            "cardG.png": "128x106",
+            "cash.png": "128x106",
+            "female.png": "112x128",
+            "cardG.webp": "128x106",
+            "calendar.png": "128x106",
+            "date.webp": "128x106",
+            "cash.webp": "128x106",
+            "notes.webp": "128x106",
+            "male.png": "112x128",
+            "cardB.webp": "128x106",
+            "child.png": "112x128",
+            "female.webp": "112x128",
+            "cardB.png": "128x106"
+        }
+    }
+}

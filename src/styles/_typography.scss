@@ -1,8 +1,10 @@
 // Подключаем шрифты  
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Rajdhani:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
 // Создаем переменные для удобства (они попадут в дочерние компоненты через Vite)
-$font-main: 'Inter', sans-serif;
+$font-accent: 'Inter', sans-serif;
+$font-main: "Nunito Sans", sans-serif;
 $font-digits: 'Rajdhani', sans-serif;
 
 body {
@@ -25,6 +27,20 @@ a {
   font-family: $font-digits;
   font-variant-numeric: tabular-nums; // Важно: цифры будут одной ширины, дисплей не будет "прыгать"
   letter-spacing: 0.02em;
+}
+
+.font-text {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  font-style: normal;
+  font-optical-sizing: auto;
+
+  font-variation-settings:
+    "wdth" 100,
+    "YTLC" 500;
+
 }
 
 // Применяем сразу к ключевым зонам, чтобы не писать класс вручную везде

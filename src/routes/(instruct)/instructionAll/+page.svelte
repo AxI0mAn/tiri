@@ -47,8 +47,8 @@
 		&:hover {
 			box-shadow: $shadow-neon-coral;
 			.learnMore {
-				color: $clr-coral;
-				border-right: 1px double $clr-coral;
+				color: $clr-pink;
+				border-right: 1px double $clr-pink;
 				border-radius: 0.5rem;
 			}
 		}
