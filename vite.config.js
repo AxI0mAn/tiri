@@ -17,7 +17,7 @@ export default defineConfig({
 				globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,json,jpg,jpeg}'],
 				cleanupOutdatedCaches: true,
 				// Для GitHub Pages меняем на полный путь
-				navigateFallback: '/axio_calcul/index.html',
+				navigateFallback: '/tiri/index.html',
 				navigateFallbackAllowlist: [/^(?!\/__).*/]
 			},
 			devOptions: {
