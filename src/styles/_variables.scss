@@ -146,6 +146,7 @@ $grad-block: linear-gradient(to top, $clr-bg , #97ebef, #afeef6, #c6f1fb, #dcf5f
 //================
 
 $grad-btn-main: linear-gradient(215deg, $clr-bg 0%, $clr-bg 50%, $clr-teal 100%);
+$grad-btn-main-inv: linear-gradient(215deg, $clr-teal 0%, $clr-bg 50%, $clr-bg 100%);
 $grad-op: linear-gradient(45deg, $clr-bg 0%, #252c35 50%, #4b5768 100%);
 $grad-memo: linear-gradient(45deg, $clr-teal-soft 0%, $clr-teal 50%, #4b5768 100%);
 

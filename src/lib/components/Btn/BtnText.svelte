@@ -29,7 +29,7 @@
 		align-items: center;
 		padding: 4px 8px;
 		font-size: calc(1vh + 1rem); //2rem;
-		color: $clr-teal;
+		color: $clr-text-main;
 		cursor: pointer;
 		transition: 0.25s ease;
 
@@ -42,9 +42,13 @@
 		border-radius: 8px;
 
 		// Свечение (Внутреннее и внешнее)
+		// box-shadow:
+		// 	1px 1px 4px 0px rgba($clr-bg-rgb, 0.5),
+		// 	inset 0px 0px 2px $clr-teal-soft;
 		box-shadow:
-			1px 1px 4px 0px rgba($clr-bg-rgb, 0.5),
-			inset 0px 0px 2px $clr-teal-soft;
+			inset 0px 0px 12px 2px rgba($clr-bg-dark-rgb, 0.5),
+			1px 1px 1px 1px $clr-text-accent,
+			-1px -1px 1px 0px $clr-teal;
 
 		@media (orientation: portrait) and (max-width: 432px) {
 			padding: 8px;
@@ -59,11 +63,13 @@
 			&:hover {
 				// Рамка (Берем синий из палитры)
 				outline: 2px solid $clr-bg-dark;
-				background-color: #344e66; // Темно-синий акцент при наведении
-				box-shadow:
-					0 0 4px $clr-teal-soft,
-					0 0 8px $clr-bg-card;
+				background-color: $clr-pink;
+				// box-shadow:
+				// 	0 0 4px $clr-teal-soft,
+				// 	0 0 8px $clr-bg-card;
 				transform: translateY(-0.5px);
+				background: $grad-btn-main-inv;
+				transition: all 0.35s;
 			}
 		}
 
@@ -71,12 +77,18 @@
 		&:active {
 			-webkit-tap-highlight-color: transparent;
 			outline: none;
-			opacity: 0.8;
-			background-color: $clr-white; // #b6d9ff;
+			opacity: 0.5;
+			background: none;
+			background-color: rgba($clr-pink-rgb, 0.8);
 			transform: scale(0.96) translateY(0.5px);
+			// box-shadow:
+			// 	0 0 2px $clr-white,
+			// 	0 0 8px $clr-pink;
 			box-shadow:
-				0 0 2px $shd-blue-glow,
-				0 0 8px $clr-teal;
+				inset 1px 1px 1px 1px $clr-text-accent,
+				inset -1px -1px 1px 0px $clr-teal;
+			transition: all 0.35s;
+			color: $clr-white;
 		}
 	}
 
@@ -103,15 +115,6 @@
 		}
 	}
 
-	.btn.constanta {
-		color: $clr-teal;
-	}
-
-	.btn.btn__memo.btn__memo--full {
-		background: $grad-memo;
-		color: $clr-bg-card;
-	}
-
 	.btn.btn__install {
 		margin: 1rem auto;
 		padding: 1rem 2rem;
@@ -126,47 +129,5 @@
 	.btn.btn__install--mini {
 		padding: 0.25rem;
 		color: $clr-pink;
-	}
-
-	.btn.op.btn__func.trigonom {
-		min-width: fit-content;
-		padding: 2px 4px;
-
-		@media (orientation: portrait) and (max-height: 670px) {
-			padding: 2px 4px;
-			font-size: calc(1vh + 0.6rem);
-		}
-	}
-
-	.btn.trigMode,
-	.btn.fractionSwitch {
-		padding: 2px 8px;
-		font-size: calc(1vh + 0.7rem); //1.2
-		color: $clr-text-main;
-		border: transparent;
-		background: transparent;
-
-		@media (hover: hover) and (pointer: fine) {
-			&:hover {
-				// Рамка (Берем синий из палитры)
-				outline: 2px solid $clr-bg-dark;
-				background-color: #344e66; // Темно-синий акцент при наведении
-				box-shadow:
-					0 0 4px $clr-teal-soft,
-					0 0 8px $clr-bg-card;
-				transform: translateY(-0.5px);
-			}
-		}
-		@media (orientation: portrait) and (max-height: 670px) {
-			padding: calc(0.01rem + 1vh) 4px;
-			font-size: 1rem;
-		}
-	}
-	.btn.trigMode.action,
-	.btn.fractionSwitch.action {
-		color: $clr-pink;
-		box-shadow:
-			0 0 4px $clr-teal-soft,
-			0 0 8px $clr-pink;
 	}
 </style>

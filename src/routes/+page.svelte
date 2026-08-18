@@ -66,6 +66,35 @@
 	// -------------- рекламные горизонтальные банеры для не десктоп уже 1023
 
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
+
+	//-------------------
+	// кнопки
+	import BtnText from '$lib/components/Btn/BtnText.svelte';
+	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
+
+	import imgChild from '$lib/assets/iconPic/128/child.webp';
+	import imgFemale from '$lib/assets/iconPic/128/female.webp';
+	import imgMale from '$lib/assets/iconPic/128/male.webp';
+	import imgMaleBear from '$lib/assets/iconPic/128/male-bearded.webp';
+
+	import imgCash from '$lib/assets/iconPic/128/cash.webp';
+	import imgCardG from '$lib/assets/iconPic/128/cardG.webp';
+	import imgCardB from '$lib/assets/iconPic/128/cardB.webp';
+	import imgCrypto from '$lib/assets/iconPic/128/crypto.webp';
+	import imgCalendar from '$lib/assets/iconPic/128/calendar.webp';
+
+	import imgDate from '$lib/assets/iconPic/128/date.webp';
+	import imgNotes from '$lib/assets/iconPic/128/notes.webp';
+	import imgPhone from '$lib/assets/iconPic/128/phone.webp';
+	import imgTime from '$lib/assets/iconPic/128/time.webp';
+
+	// inputs
+	import InputText from '$lib/components/input/InputText.svelte';
+	import InputNumber from '$lib/components/input/InputNumber.svelte';
+	import InputRange from '$lib/components/input/InputRange.svelte';
+	import InputDate from '$lib/components/input/InputDate.svelte';
+	import InputTime from '$lib/components/input/InputTime.svelte';
+	import Textarea from '$lib/components/input/Textarea.svelte';
 </script>
 
 <div class="app-wrapper">
@@ -74,6 +103,7 @@
 	</aside>
 	<main class="field_main" id="catalogAllFeatures">
 		<div class="headerWrapper" id="top-anchor"><HomeHeader /></div>
+
 		<h1 class="slogan font-digits">
 			<span class="allFunc font-digits"
 				>An app for managing client appointments, tracking dates and times, and recording payments,
@@ -82,19 +112,61 @@
 			<span class="allCalc font-digits">managing commissions and tracking dates and times.</span>
 		</h1>
 
-		<p style="color:#562b0c">
-			Твой выбор #562b0c уже прошел все тесты. Можешь смело использовать его как основной цвет
-			текста. Lorem ipsum dolor sit amet consectetur adipisicing elit. Error id tempore possimus,
-			quidem magnam, accusamus expedita labore sapiente quisquam ut ipsam est minima non incidunt
-			minus.
-		</p>
-		<p style="color:#3D1E08">
-			#3D1E08 (Горький шоколад): Чуть темнее и насыщеннее. Поднимает контраст на самом сложном
-			розовом фоне #FF8FB3 до 6.8:1. Minus iste et perspiciatis neque. Nihil, consequatur debitis
-			iusto amet ea dicta ad quos ullam aliquam dignissimos delectus sapiente ipsam id voluptatibus
-			nam ipsa beatae adipisci?
-		</p>
-
+		<div class="testComponents">
+			<h3>BUTTON GENDER TEST</h3>
+			<div class="btnTested">
+				<BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
+				<BtnImg
+					src={imgMaleBear}
+					alt="test btn img"
+					size={64}
+					onclick="null"
+					customClass="gender notAction"
+				/>
+				<BtnImg src={imgFemale} alt="test btn img" size={64} onclick="null" customClass="gender" />
+				<BtnImg src={imgChild} alt="test btn img" size={64} onclick="null" customClass="gender" />
+			</div>
+			<h3>BUTTON Pay TEST</h3>
+			<div class="btnTested">
+				<BtnImg src={imgCash} alt="test btn img" size={88} onclick="null" customClass="icon" />
+				<BtnImg
+					src={imgCardG}
+					alt="test btn img"
+					size={88}
+					onclick="null"
+					customClass="icon action"
+				/>
+				<BtnImg src={imgCardB} alt="test btn img" size={88} onclick="null" customClass="icon" />
+				<BtnImg
+					src={imgCrypto}
+					alt="test btn img"
+					size={88}
+					onclick="null"
+					customClass="icon notAction"
+				/>
+				<BtnImg src={imgCalendar} alt="test btn img" size={64} onclick="null" customClass="icon" />
+			</div>
+			<h3>BUTTON all other icon</h3>
+			<div class="btnTested">
+				<BtnImg src={imgDate} alt="test btn img" size={44} onclick="null" customClass="" />
+				<BtnImg src={imgNotes} alt="test btn img" size={44} onclick="null" customClass="" />
+				<BtnImg src={imgPhone} alt="test btn img" size={44} onclick="null" customClass="" />
+				<BtnImg src={imgTime} alt="test btn img" size={44} onclick="null" customClass="" />
+			</div>
+			<h3>BUTTON Text</h3>
+			<div class="btnTested">
+				<BtnText buttonText="Test" onclick={() => {}} />
+			</div>
+		</div>
+		<div class="testComponents">
+			<h2>input text</h2>
+			<InputText />
+			<InputNumber />
+			<InputRange />
+			<InputDate />
+			<InputTime />
+			<Textarea />
+		</div>
 		<h2 class="inset">Learn more</h2>
 	</main>
 	<aside class="field_right">
@@ -130,6 +202,16 @@
 </footer>
 
 <style lang="scss">
+	.testComponents {
+		display: flex;
+		flex-flow: column wrap;
+		gap: 1rem;
+	}
+	.btnTested {
+		display: flex;
+		flex-flow: row wrap;
+		gap: 2rem;
+	}
 	.field_left,
 	.field_right {
 		color: $clr-text-main;

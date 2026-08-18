@@ -13,18 +13,21 @@
 <header class="home__header">
 	<div><NavBurger /></div>
 	<div class="logoText">
-		<Picture
-			src={{
-				webp: srcLogoText_webp,
-				jpeg: srcLogoText_png
-			}}
-			alt="Логотип текст"
-			class="bg-image"
-			loading="lazy"
-			decoding="async"
-			// width={128}
-			// height={64}
-		/>
+		<div class="logoText">
+			<Picture
+				src={{
+					webp: srcLogoText_webp,
+					jpeg: srcLogoText_png
+				}}
+				alt="Логотип текст"
+				class="bg-image"
+				loading="eager"
+				decoding="sync"
+				fetchpriority="high"
+				// width={128}
+				// height={64}
+			/>
+		</div>
 	</div>
 	<div class="shareNow">
 		<BtnShare />
@@ -46,7 +49,9 @@
 		color: $clr-bg;
 
 		.logoText {
-			width: 10vw;
+			// width: 10vw;
+			// min-
+			width: 100px;
 			aspect-ratio: 2/1;
 		}
 

@@ -165,7 +165,7 @@
 		gap: 2rem;
 
 		.headerSlogan {
-			color: $clr-pink;
+			// color: $clr-pink;
 			font-size: 3rem;
 			display: inline-block;
 			margin: 0;
