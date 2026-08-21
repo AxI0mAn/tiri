@@ -1,5 +1,5 @@
-<!-- InputTime.svelte -->
 <script>
+	// src/lib/components/input/InputTime.svelte
 	let { value = $bindable(''), label = '' } = $props();
 </script>
 

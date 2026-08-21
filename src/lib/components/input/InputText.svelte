@@ -1,4 +1,5 @@
 <script>
+	// src/lib/components/input/InputText.svelte
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [value='']

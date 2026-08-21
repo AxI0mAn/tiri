@@ -1,21 +1,25 @@
 <script>
+	//src/lib/components/input/InputNumber.svelte
+
 	/**
 	 * @typedef {Object} Props
 	 * @property {number} [value=0]
-	 * @property {number} [min=-Infinity]
+	 * @property {number} [min=0]
 	 * @property {number} [max=Infinity]
 	 * @property {number} [step=1]
 	 * @property {string} [label='']
 	 * @property {string} [customClass='']
+	 * @property {boolean} [disabled=false]
 	 */
 
 	let {
 		value = $bindable(0),
-		min = -Infinity,
+		min = 0,
 		max = Infinity,
 		step = 1,
 		label = '',
-		customClass = ''
+		customClass = '',
+		disabled = false
 	} = $props();
 
 	function sanitizeNumber(val) {
@@ -65,6 +69,7 @@
 			type="text"
 			inputmode="decimal"
 			class="number-input"
+			{disabled}
 			{value}
 			onbeforeinput={handleBeforeInput}
 			oninput={handleInput}

@@ -88,7 +88,7 @@
 	<h1 class="headerSlogan">contact us</h1>
 </header>
 
-<div class="contact-page">
+<div class="homeTextPage contact-page">
 	<form onsubmit={sendEmail} class="feedback-form">
 		<div class="form-group">
 			<label class="label" for="name">Your Name *</label>

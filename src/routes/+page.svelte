@@ -73,9 +73,10 @@
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 
 	import imgChild from '$lib/assets/iconPic/128/child.webp';
+	import imgColorist from '$lib/assets/iconPic/128/colorist.webp';
 	import imgFemale from '$lib/assets/iconPic/128/female.webp';
 	import imgMale from '$lib/assets/iconPic/128/male.webp';
-	import imgMaleBear from '$lib/assets/iconPic/128/male-bearded.webp';
+	import imgMaleBear from '$lib/assets/iconPic/128/male_bearded.webp';
 
 	import imgCash from '$lib/assets/iconPic/128/cash.webp';
 	import imgCardG from '$lib/assets/iconPic/128/cardG.webp';
@@ -95,6 +96,20 @@
 	import InputDate from '$lib/components/input/InputDate.svelte';
 	import InputTime from '$lib/components/input/InputTime.svelte';
 	import Textarea from '$lib/components/input/Textarea.svelte';
+	import CheckBox from '$lib/components/input/CheckBox.svelte';
+	import SelectStatus from '$lib/components/input/SelectStatus.svelte';
+	let currentStatus = $state('use'); // По умолчанию '✓' - use
+
+	import Radio from '$lib/components/input/Radio.svelte';
+	let selectedOption = $state('option1');
+
+	import Select from '$lib/components/input/Select.svelte';
+	let selectedTheme = $state('dark');
+	const themeOptions = [
+		{ value: 'light', label: 'Светлая тема' },
+		{ value: 'dark', label: 'Темная тема' },
+		{ value: 'system', label: 'Системная' }
+	];
 </script>
 
 <div class="app-wrapper">
@@ -116,6 +131,8 @@
 			<h3>BUTTON GENDER TEST</h3>
 			<div class="btnTested">
 				<BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
+				<BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
+				<BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
 				<BtnImg
 					src={imgMaleBear}
 					alt="test btn img"
@@ -124,6 +141,14 @@
 					customClass="gender notAction"
 				/>
 				<BtnImg src={imgFemale} alt="test btn img" size={64} onclick="null" customClass="gender" />
+				<BtnImg
+					src={imgColorist}
+					alt="test btn img"
+					size={64}
+					onclick="null"
+					customClass="gender"
+				/>
+
 				<BtnImg src={imgChild} alt="test btn img" size={64} onclick="null" customClass="gender" />
 			</div>
 			<h3>BUTTON Pay TEST</h3>
@@ -163,8 +188,21 @@
 			<InputText />
 			<InputNumber />
 			<InputRange />
+			<CheckBox label="checkBox" />
+			<SelectStatus bind:value={currentStatus} />
+			<div class="radio-group">
+				<Radio bind:group={selectedOption} value="option1" label="Первый вариант" />
+				<Radio bind:group={selectedOption} value="option2" label="Второй вариант" />
+				<Radio bind:group={selectedOption} value="option3" label="Третий вариант" />
+			</div>
 			<InputDate />
 			<InputTime />
+			<Select
+				bind:value={selectedTheme}
+				options={themeOptions}
+				label="Select: Тема оформления"
+				placeholder="Выберите тему"
+			/>
 			<Textarea />
 		</div>
 		<h2 class="inset">Learn more</h2>
@@ -203,11 +241,13 @@
 
 <style lang="scss">
 	.testComponents {
+		width: fit-content;
 		display: flex;
 		flex-flow: column wrap;
 		gap: 1rem;
 	}
 	.btnTested {
+		width: fit-content;
 		display: flex;
 		flex-flow: row wrap;
 		gap: 2rem;
@@ -280,172 +320,6 @@
 		color: $clr-text-main;
 		text-shadow: 1px 1px 1px rgba($clr-text-main-rgb, 0.9);
 	}
-	// =============================================================
-	.groupCalcAll {
-		display: flex;
-		flex-flow: column nowrap;
-		justify-content: flex-start;
-		align-items: center;
-		flex: 1;
-		gap: 1.6rem;
-	}
-	.groupCalc {
-		display: flex;
-		flex-flow: column nowrap;
-		justify-content: flex-start;
-		align-items: center;
-		gap: 1.6rem;
-	}
-	/* Убираем стандартный маркер у details*/
-	/* Для Chrome, Edge, Safari и Opera */
-	details summary::-webkit-details-marker {
-		display: none;
-	}
-
-	/* Для Firefox и стандартное свойство */
-	details summary {
-		list-style: none;
-	}
-
-	/* На случай, если summary ведет себя как flex/grid (в Safari) */
-	details summary::marker {
-		display: none;
-		content: '';
-	}
-
-	.group__catalog {
-		margin: 0 auto;
-		width: 96%;
-		overflow: hidden;
-
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: space-evenly;
-		row-gap: 1rem;
-		column-gap: clamp(0.5rem, 0.8929rem + 1.7857vw, 2.5rem);
-
-		padding: 1rem;
-
-		background: rgba($clr-bg-rgb, 0.1);
-		box-shadow:
-			0px 0px 30px rgba($clr-bg-rgb, 0.4),
-			$shadow-inset;
-	}
-
-	.catalog__post {
-		width: fit-content;
-		height: fit-content;
-		margin: 0px;
-		padding: 0px;
-	}
-
-	.catalog__card {
-		height: fit-content;
-		width: 20vw;
-
-		position: relative;
-		padding: 0px;
-
-		border-radius: 12px;
-
-		box-shadow: $shadow-neon-mint;
-
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr;
-
-		transition: all 0.35s;
-
-		-webkit-tap-highlight-color: transparent;
-		-webkit-touch-callout: none;
-		user-select: none;
-		touch-action: manipulation;
-
-		@media screen and (min-width: 768px) {
-			width: 15vmin;
-		}
-
-		// --- РЕЖИМ:  TABLET PORTRAIT ---
-		@media screen and (max-width: 767px) {
-			min-width: 30vmin;
-		}
-		// --- РЕЖИМ:  mobile PORTRAIT ---
-		@media (orientation: portrait) and (max-width: 560px) {
-			min-width: 50vw;
-		}
-	}
-
-	.catalog__card--content {
-		grid-column: 1/2;
-		grid-row: 1/2;
-		place-self: center;
-
-		display: block;
-		max-width: 100%;
-		height: auto;
-		object-fit: fill;
-
-		border-radius: 12px;
-	}
-	.groupCalc__title,
-	.catalog__card--title {
-		width: 100%;
-		min-height: 2rem;
-		padding: auto;
-		position: absolute;
-		grid-column: 1/2;
-		grid-row: 1/2;
-		place-self: center;
-
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		font-weight: 800;
-		color: $clr-text-main;
-		text-align: center;
-		// font-size: 1.2rem;
-
-		backdrop-filter: blur(10px);
-		background: rgba($clr-bg-rgb, 0.3);
-		box-shadow:
-			0px 0px 16px rgba($clr-pink, 0.4),
-			$shadow-inset;
-
-		border-top: 1px solid rgba($clr-pink, 0.2);
-		border-bottom: 1px solid rgba($clr-pink, 0.2);
-		transition: all 0.35s;
-	}
-
-	.groupCalc__title {
-		min-height: 3rem;
-		width: 90%;
-		font-size: calc(1vh + 1rem);
-		cursor: pointer;
-
-		border: 1px solid $clr-teal-soft;
-		box-shadow: inset 0px 0px 12px $clr-teal-soft;
-
-		&:hover {
-			box-shadow:
-				0px 0px 12px rgba($clr-pink, 0.4),
-				$shadow-inset;
-			border-top: none;
-			border-right: 8px groove $clr-pink;
-			border-bottom: none;
-			border-left: 8px groove $clr-pink;
-			transition: all 0.35s;
-
-			outline: 2px solid $clr-bg;
-			box-shadow:
-				0 0 4px $clr-teal-soft,
-				0 0 8px $clr-bg-card;
-		}
-	}
-
-	.catalog__card--title {
-		transform: scale(0.01);
-	}
 
 	/* Состояние Hover для устройств с мышью */
 	@media (hover: hover) {
@@ -514,6 +388,8 @@
 
 		transform: translateZ(0px);
 	}
+
+	//=========================
 
 	footer {
 		padding: 1rem;

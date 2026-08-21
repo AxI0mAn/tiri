@@ -1,4 +1,5 @@
 <script>
+// src/lib/components/input/InputRange.svelte
 	/**
 	 * @typedef {Object} Props
 	 * @property {number} [value=50]
@@ -6,9 +7,17 @@
 	 * @property {number} [max=100]
 	 * @property {number} [step=1]
 	 * @property {string} [label='']
+	 * @property {boolean} [disabled=false]
 	 */
 
-	let { value = $bindable(50), min = 0, max = 100, step = 1, label = '' } = $props();
+	let {
+		value = $bindable(50),
+		min = 0,
+		max = 100,
+		step = 1,
+		label = '',
+		disabled = false
+	} = $props();
 
 	// Расчет процента заполнения для градиента трека
 	let progressPercent = $derived.by(() => {
@@ -39,6 +48,7 @@
 		{max}
 		{step}
 		{value}
+		{disabled}
 		oninput={handleInput}
 	/>
 </div>

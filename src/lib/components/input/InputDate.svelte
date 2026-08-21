@@ -1,5 +1,6 @@
-<!-- InputDate.svelte -->
 <script>
+	//src/lib/components/input/InputDate.svelte
+
 	let { value = $bindable(''), label = '', min = '', max = '' } = $props();
 </script>
 

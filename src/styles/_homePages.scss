@@ -3,17 +3,21 @@
 // для файлов в папке src/routes/(home)
 
 .homeTextPage {
-  padding: 2rem;
-  min-height: 100vw;
   color: $clr-text-main;
   line-height: 1.4rem;
 
   margin: 0 auto;
   max-width: 100vmin;
+  min-height: 100vh;
   margin-bottom: 25px;
+  padding: 2rem;
+
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  background-image: $grad-block;
+  box-shadow: 0px 0px 8px 4px rgba($clr-teal-rgb, 0.75);
 }
 
 

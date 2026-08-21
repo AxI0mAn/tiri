@@ -1,4 +1,6 @@
 <script>
+	// src/lib/components/Btn/BtnImg.svelte
+
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [src=''] - Путь к изображению без расширения

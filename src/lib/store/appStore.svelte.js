@@ -1,33 +1,27 @@
 // src/lib/store/appStore.svelte.js
+// данные, которые хранятся между сессиями
 
 // Вместо import { browser } from '$app/environment';
 // Используем это:
 const browser = typeof window !== 'undefined' && typeof document !== 'undefined';
 
 class AppStore {
-  /** цветовая тема приложения
-   * @type {'light' | 'dark'} */
-  theme = $state('dark');
+
+  /** имя пользователя 
+  * @type {string} */
+  master = $state('Master');
 
   /** выбор языка для интерфейсов и текстов
    * @type {'RU' | 'EN' | 'UA' | 'PT' | 'ES'} */
-  lang = $state('EN');
+  lang = $state('RU');
 
-  /** размер шрифта rem
-   * @type {number} */
-  fontSize = $state(16);
+  /** Дата первой заметки. false или строка с датой 'YYYY.MM.DD'
+   * @type {string | boolean} */
+  firstInput = $state(false);
 
   /** точность знаков после запятой
    *  @type {number} */
   toFix = $state(6);
-
-  /** точность вычислений для тригонометрии максимальная
- *  @type {number} */
-  toFixTrigon = $state(12);
-
-  /** количество элементов в истории с предыдущими вычислениями
-   * @type {number} */
-  historyLocal = $state(12);
 
   /** Статус на разрешение установки PWA от браузера
    * @type {boolean}  */
@@ -66,15 +60,12 @@ class AppStore {
     try {
       const parsed = JSON.parse(saved);
       // Прямое присвоение в публичные свойства
-      if (parsed.theme) this.theme = parsed.theme;
+      if (parsed.master) this.master = parsed.master;
       if (parsed.lang) this.lang = parsed.lang;
-      if (parsed.fontSize) this.fontSize = parsed.fontSize;
+      if (parsed.firstInput) this.firstInput = parsed.firstInput;
       if (parsed.toFix) this.toFix = parsed.toFix;
-      if (parsed.historyLocal) this.historyLocal = parsed.historyLocal;
-      if (parsed.installed) this.installed = parsed.installed;
+      if (parsed.canInstall) this.canInstall = parsed.canInstall;
       if (parsed.iAgree) this.iAgree = parsed.iAgree;
-
-
 
       console.log('AppStore: Настройки успешно загружены из localStorage');
     } catch (err) {
@@ -85,12 +76,11 @@ class AppStore {
   /** Сериализация состояния для сохранения */
   serialize() {
     return {
-      theme: this.theme,
+      master: this.master,
       lang: this.lang,
-      fontSize: this.fontSize,
+      firstInput: this.firstInput,
       toFix: this.toFix,
-      historyLocal: this.historyLocal,
-      installed: this.installed,
+      canInstall: this.canInstall,
       iAgree: this.iAgree,
     };
   }
