@@ -1,4 +1,5 @@
 <script>
+	// src/lib/components/Btn/BtnBack.svelte
 	// @ts-nocheck
 
 	import { goto } from '$app/navigation'; // Импортируем нормально наверх

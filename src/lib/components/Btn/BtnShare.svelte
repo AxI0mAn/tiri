@@ -1,4 +1,5 @@
 <script>
+	// src/lib/components/Btn/BtnShare.svelte
 	import Share from '$lib/assets/svgIcon/share.svg?raw';
 	// Принимаем кастомные классы и кастомный текст для шеринга
 	let { customClass = '', shareTitle = 'Check out this page' } = $props();

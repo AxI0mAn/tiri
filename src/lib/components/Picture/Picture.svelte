@@ -79,6 +79,7 @@
 			alt={props.alt || ''}
 			loading={props.loading}
 			decoding={props.decoding}
+			fetchpriority={props.fetchpriority || 'low'}
 			width={props.width}
 			height={props.height}
 			{...props.rest}
@@ -88,7 +89,7 @@
 		/>
 	</picture>
 
-	{#if !isLoaded}
+	{#if !isLoaded && props.fetchpriority !== 'high'}
 		<div class="loader-placeholder" aria-hidden="true"></div>
 	{/if}
 </div>

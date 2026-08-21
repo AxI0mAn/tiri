@@ -1,14 +1,10 @@
 <script>
 	import BtnBack from '$lib/components/Btn/BtnBack.svelte';
 	import { appStore } from '$lib/store/appStore.svelte';
+	import SettingsConstructor from '$lib/components/aPage/SettingsConstructor.svelte';
 
 	// Константы для выбора
-	const languages = ['EN']; //, 'RU', 'UA', 'PT', 'ES'];
-	const fontSizes = [
-		//	{ label: 'Mini', value: 14 },
-		{ label: 'Norm', value: 16 }
-		//	{ label: 'Max', value: 18 }
-	];
+	const languages = ['RU']; //, 'EN', 'UA', 'PT', 'ES'];
 </script>
 
 <svelte:head>
@@ -21,19 +17,14 @@
 	<h1 class="headerSlogan">settings</h1>
 </header>
 
-<div class="settings-page">
+<div class="homeTextPage settings-page">
 	<section class="setting-group">
-		<span class="label">Color theme</span>
-		<div class="radio-group">
-			<label class="radio-item">
-				<input type="radio" bind:group={appStore.theme} value="light" />
-				<span class="btn-check">Light</span>
-			</label>
-			<label class="radio-item">
-				<input type="radio" bind:group={appStore.theme} value="dark" />
-				<span class="btn-check">Dark</span>
-			</label>
-		</div>
+		<span class="label">Interface language</span>
+		<select bind:value={appStore.lang} class="custom-select">
+			{#each languages as l}
+				<option value={l}>{l}</option>
+			{/each}
+		</select>
 	</section>
 
 	<section class="setting-group">
@@ -45,38 +36,16 @@
 		</select>
 	</section>
 
-	<section class="setting-group">
-		<span class="label">Text size</span>
-		<div class="radio-group">
-			{#each fontSizes as fs}
-				<label class="radio-item">
-					<input type="radio" bind:group={appStore.fontSize} value={fs.value} />
-					<span class="btn-check">{fs.label}</span>
-				</label>
-			{/each}
-		</div>
-	</section>
+	<div class="settings-container">
+		<h2>Конструктор заметки</h2>
 
-	<section class="setting-group" id="Accuracy_of_calculations">
-		<div class="label-row">
-			<span class="label">Accuracy of calculations</span>
-			<span class="value-badge">{appStore.toFix}</span>
-		</div>
-		<input type="range" min="0" max="12" bind:value={appStore.toFix} class="custom-range" />
-	</section>
-
-	<section class="setting-group">
-		<div class="label-row">
-			<span class="label">Number of entries in history</span>
-			<span class="value-badge">{appStore.historyLocal}</span>
-		</div>
-		<input type="range" min="1" max="20" bind:value={appStore.historyLocal} class="custom-range" />
-	</section>
+		<SettingsConstructor />
+	</div>
 </div>
 
 <style lang="scss">
 	.settings-page {
-		color: $clr-teal; // #00d1ff
+		// color: $clr-teal; // #00d1ff
 		padding: 20px;
 		font-family: sans-serif;
 		min-height: 100vh;
@@ -91,7 +60,6 @@
 		gap: 2rem;
 
 		.headerSlogan {
-			color: $clr-pink;
 			font-size: 3rem;
 			display: inline-block;
 		}
@@ -113,75 +81,9 @@
 	}
 
 	.label {
-		color: $clr-white; // вместо #aaa
+		color: $clr-text-main;
 		font-size: 0.85rem;
 		text-transform: uppercase;
-	}
-
-	.label-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.value-badge {
-		color: $clr-text-main;
-		background: $clr-bg; // вместо #1a202c
-		padding: 2px 10px;
-		border: 1px solid $clr-teal;
-		border-radius: 4px;
-		box-shadow: 0 0 10px rgba($clr-teal-rgb, 0.3);
-	}
-
-	/* Стилизация Radio как кнопок */
-	.radio-group {
-		display: flex;
-		gap: 10px;
-	}
-
-	.radio-item input {
-		display: none;
-	}
-
-	.btn-check {
-		display: block;
-		padding: 10px 20px;
-		// Используем градиент из переменных или на его основе
-		background: linear-gradient(180deg, $clr-bg-dark 0%, $clr-bg 100%);
-		border: 1px solid $clr-white; // вместо #3d4655
-		border-radius: 6px;
-		color: $clr-text-main;
-		cursor: pointer;
-		text-align: center;
-		min-width: 70px;
-		transition: 0.2s;
-	}
-
-	.radio-item input:checked + .btn-check {
-		border-color: $clr-teal;
-		box-shadow: inset 0 0 10px rgba($clr-teal-rgb, 0.5);
-		color: $clr-teal;
-	}
-
-	/* Стилизация Range (Ползунок) */
-	.custom-range {
-		-webkit-appearance: none;
-		margin: 0 auto;
-		width: 50vmin;
-		height: 6px;
-		background: $clr-bg-dark; // вместо #2c3440
-		border-radius: 3px;
-		outline: none;
-	}
-
-	.custom-range::-webkit-slider-thumb {
-		-webkit-appearance: none;
-		width: 20px;
-		height: 20px;
-		background: $clr-teal;
-		border-radius: 50%;
-		cursor: pointer;
-		box-shadow: 0 0 10px $clr-teal;
 	}
 
 	/* Стилизация Select */

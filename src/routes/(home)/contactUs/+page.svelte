@@ -88,7 +88,7 @@
 	<h1 class="headerSlogan">contact us</h1>
 </header>
 
-<div class="contact-page">
+<div class="homeTextPage contact-page">
 	<form onsubmit={sendEmail} class="feedback-form">
 		<div class="form-group">
 			<label class="label" for="name">Your Name *</label>
@@ -165,7 +165,7 @@
 		gap: 2rem;
 
 		.headerSlogan {
-			color: $clr-pink;
+			// color: $clr-pink;
 			font-size: 3rem;
 			display: inline-block;
 			margin: 0;

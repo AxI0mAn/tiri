@@ -101,33 +101,27 @@
 		}
 	});
 
-	//======================== смена цветовой темы приложения
-	// Руна $effect будет следить за изменением appStore.theme
-	$effect(() => {
-		document.documentElement.setAttribute('data-theme', appStore.theme);
-	});
-
 	// =========== настраиваем глобальный «слушатель» для мобильных устройств. Применяется для работы historyStore - сохранение истории в localStorage при выходе из приложения
 	/**
 	 * Настраиваем отслеживание состояния видимости страницы.
 	 * Это самый надежный способ сохранить данные на мобильных устройствах.
 	 */
-	onMount(() => {
-		const handleVisibilityChange = () => {
-			// Когда пользователь сворачивает браузер, переключает вкладку
-			// или закрывает приложение — состояние становится 'hidden'.
-			if (document.visibilityState === 'hidden') {
-				appState.saveAllActiveSessions();
-			}
-		};
+	// onMount(() => {
+	// 	const handleVisibilityChange = () => {
+	// 		// Когда пользователь сворачивает браузер, переключает вкладку
+	// 		// или закрывает приложение — состояние становится 'hidden'.
+	// 		if (document.visibilityState === 'hidden') {
+	// 			appState.saveAllActiveSessions();
+	// 		}
+	// 	};
 
-		document.addEventListener('visibilitychange', handleVisibilityChange);
+	// 	document.addEventListener('visibilitychange', handleVisibilityChange);
 
-		// Чистим за собой при уничтожении макета
-		return () => {
-			document.removeEventListener('visibilitychange', handleVisibilityChange);
-		};
-	});
+	// 	// Чистим за собой при уничтожении макета
+	// 	return () => {
+	// 		document.removeEventListener('visibilitychange', handleVisibilityChange);
+	// 	};
+	// });
 </script>
 
 <svelte:head>
