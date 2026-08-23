@@ -19,7 +19,7 @@
 
 <svelte:head>
 	<meta name="robots" content="index,follow" />
-	<title>amoca FAQ</title>
+	<title>tiri FAQ</title>
 </svelte:head>
 
 <header class="header" id="top-anchor">

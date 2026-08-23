@@ -39,15 +39,22 @@ import notesWebp from '$lib/assets/iconPic/128/notes.webp';
 import notesPng from '$lib/assets/iconPic/128/notes.png';
 import phoneWebp from '$lib/assets/iconPic/128/phone.webp';
 import phonePng from '$lib/assets/iconPic/128/phone.png';
+import nameWebp from '$lib/assets/iconPic/128/name.webp';
+import namePng from '$lib/assets/iconPic/128/name.png';
+
 import timeWebp from '$lib/assets/iconPic/128/time.webp';
 import timePng from '$lib/assets/iconPic/128/time.png';
 import todayWebp from '$lib/assets/iconPic/128/today.webp';
 import todayPng from '$lib/assets/iconPic/128/today.png';
 
-import nameWebp from '$lib/assets/iconPic/128/name.webp';
-import namePng from '$lib/assets/iconPic/128/name.png';
-import paymentWebp from '$lib/assets/iconPic/128/payment.webp';
-import paymentPng from '$lib/assets/iconPic/128/payment.png';
+import myPercWebp from '$lib/assets/iconPic/128/myPerc.webp';
+import myPercPng from '$lib/assets/iconPic/128/myPerc.png';
+import tipsWebp from '$lib/assets/iconPic/128/tips.webp';
+import tipsPng from '$lib/assets/iconPic/128/tips.png';
+import sumWebp from '$lib/assets/iconPic/128/sum.webp';
+import sumPng from '$lib/assets/iconPic/128/sum.png';
+
+
 
 
 
@@ -59,20 +66,22 @@ const baseSchema = {
   gender: {
     choose: true,  // true - подключено поле,  false - отключено
     required: false, //  true - Обязательное для заполнения
-    label: "Стрижка",
-    title: "текстовое описание поля",
-    options: {
+    label: "Стрижка", // Название поля с опциями
+    title: "текстовое описание поля", // описание поля
+    options: { // опции для этого поля
       male: {
-        label: "Мужская",
-        required: false,
+        label: "Мужская", // название опции
+        required: false,  // false - не обязательно для выбора
         select: true, // true - подключен этот вариант для поля,  false - отключено
-        iconWebp: maleWebp,
-        iconPng: malePng,
+        formView: ['BtnImg'], // что отобразить в форме создания заметки
+        iconWebp: maleWebp, // изображение для иконки
+        iconPng: malePng, //  изображение для иконки
       },
       male_bearded: {
         label: "Борода",
         required: false,
         select: true,
+        formView: ['BtnImg'],
         iconWebp: male_beardeWebp,
         iconPng: male_beardedPng,
       },
@@ -80,6 +89,7 @@ const baseSchema = {
         label: "Женская",
         required: false,
         select: true,
+        formView: ['BtnImg'],
         iconWebp: femaleWebp,
         iconPng: femalePng,
       },
@@ -87,6 +97,7 @@ const baseSchema = {
         label: "Окрашивание",
         required: false,
         select: false,
+        formView: ['BtnImg'],
         iconWebp: coloristWebp,
         iconPng: coloristPng,
       },
@@ -94,6 +105,7 @@ const baseSchema = {
         label: "Детская",
         required: false,
         select: false,
+        formView: ['BtnImg'],
         iconWebp: childWebp,
         iconPng: childPng,
       },
@@ -109,22 +121,38 @@ const baseSchema = {
         label: "Мой процент",
         required: true,
         select: true,
+        formView: ['BtnImg', 'InputNumber'],
         num: 50,
         min: 0,
         max: 100,
         step: 1,
+        iconWebp: myPercWebp,
+        iconPng: myPercPng,
       },
       sum: {
         label: "Стандартный чек",
         required: true,
         select: true,
+        formView: ['BtnImg', 'InputNumber'],
         num: 300,
         min: 50,
         // max: 10000,
         step: 5,
-        iconWebp: paymentWebp,
-        iconPng: paymentPng,
-      }
+        iconWebp: sumWebp,
+        iconPng: sumPng,
+      },
+      tips: {
+        label: "Чаевые",
+        required: false,
+        select: true,
+        formView: ['BtnImg', 'InputNumber'],
+        num: 50,
+        min: 5,
+        // max: 1000,
+        step: 5,
+        iconWebp: tipsWebp,
+        iconPng: tipsPng,
+      },
     }
 
 
@@ -139,6 +167,7 @@ const baseSchema = {
         label: "Наличные",
         required: true,
         select: true,
+        formView: ['BtnImg'],
         iconWebp: cashWebp,
         iconPng: cashPng,
       },
@@ -146,6 +175,7 @@ const baseSchema = {
         label: "Карта1",
         required: true,
         select: true,
+        formView: ['BtnImg'],
         iconWebp: cardBWebp,
         iconPng: cardBPng,
       },
@@ -153,6 +183,7 @@ const baseSchema = {
         label: "Карта2",
         required: false,
         select: false,
+        formView: ['BtnImg'],
         iconWebp: cardGWebp,
         iconPng: cardGPng,
       },
@@ -160,6 +191,7 @@ const baseSchema = {
         label: "Счёт",
         required: false,
         select: false,
+        formView: ['BtnImg'],
         iconWebp: cryptoWebp,
         iconPng: cryptoPng,
       },
@@ -175,6 +207,7 @@ const baseSchema = {
         label: "Заметки",
         required: true,
         select: true,
+        formView: ['BtnImg', 'Textarea'],
         iconWebp: notesWebp,
         iconPng: notesPng,
       },
@@ -182,6 +215,7 @@ const baseSchema = {
         label: "Тел",
         required: false,
         select: true,
+        formView: ['BtnImg', 'InputNumber'],
         iconWebp: phoneWebp,
         iconPng: phonePng,
       },
@@ -189,33 +223,13 @@ const baseSchema = {
         label: "Имя",
         required: false,
         select: true,
+        formView: ['BtnImg', 'InputText'],
         iconWebp: nameWebp,
         iconPng: namePng,
       },
     }
-  },
-  date: {
-    choose: true,
-    required: true,
-    label: "Время и дата",
-    title: "текстовое описание поля",
-    options: {
-      time: {
-        label: "Время",
-        required: true,
-        select: true,
-        iconWebp: timeWebp,
-        iconPng: timePng,
-      },
-      date: {
-        label: "Дата",
-        required: true,
-        select: true,
-        iconWebp: todayWebp,
-        iconPng: todayPng,
-      },
-    }
   }
+
 };
 
 
@@ -324,21 +338,39 @@ export class ReminderConstructorStore extends ConstructorStore {
   addReminderSystemFields() {
     // Вшиваем системные обязательные поля для напоминаний
     this.schema.remind = {
-      type: true,
+      choose: true,
+      required: true,
+      label: "Время для напоминания",
+      title: "текстовое описание поля",
+      options: {
+        time: {
+          label: "Время",
+          required: true,
+          select: true,
+          formView: ['BtnImg', 'InputTime'],
+          iconWebp: timeWebp,
+          iconPng: timePng,
+        },
+      },
+    }
+    this.schema.about = {
+      choose: true,
       required: true,
       label: "Когда напомнить",
-      options: {
-        time: { label: "Время", select: true },
-        date: { label: "Дата", select: true },
-      }
-    };
-    this.schema.about = {
-      type: true,
-      required: false,
-      label: "Что напомнить",
-    };
+      title: "текстовое описание поля",
+      date: {
+        label: "Дата",
+        required: true,
+        select: true,
+        formView: ['BtnImg', 'InputDate'],
+        iconWebp: todayWebp,
+        iconPng: todayPng,
+      },
+    }
+
   }
 }
+
 
 // Экспортируем два готовых экземпляра
 export const constructorStore = new ConstructorStore();

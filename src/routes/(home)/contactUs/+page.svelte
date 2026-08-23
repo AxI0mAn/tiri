@@ -80,7 +80,7 @@
 
 <svelte:head>
 	<meta name="robots" content="index,follow" />
-	<title>amoca contact us</title>
+	<title>tiri contact us</title>
 </svelte:head>
 
 <header class="header">

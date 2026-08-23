@@ -88,6 +88,8 @@
 	import imgNotes from '$lib/assets/iconPic/128/notes.webp';
 	import imgPhone from '$lib/assets/iconPic/128/phone.webp';
 	import imgTime from '$lib/assets/iconPic/128/time.webp';
+	import imgAdd from '$lib/assets/iconPic/128/add.webp';
+	import imgDone from '$lib/assets/iconPic/128/done.webp';
 
 	// inputs
 	import InputText from '$lib/components/input/InputText.svelte';
@@ -128,17 +130,42 @@
 		</h1>
 
 		<div class="testComponents">
+			<h3>NEW ACTION</h3>
+			<div class="btnTested">
+				<a href="{base}/newReminder">
+					<BtnImg
+						src={imgAdd}
+						alt="test btn img"
+						size={88}
+						onclick="null"
+						customClass="actionBtnImg"
+					/>
+				</a>
+				<a href="{base}/newNote">
+					<BtnImg
+						src={imgDone}
+						alt="test btn img"
+						size={88}
+						onclick="null"
+						customClass="actionBtnImg"
+					/>
+				</a>
+			</div>
 			<h3>BUTTON GENDER TEST</h3>
 			<div class="btnTested">
-				<BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
-				<BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
-				<BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
+				<BtnImg
+					src={imgMale}
+					alt="test btn img"
+					size={64}
+					onclick="null"
+					customClass="gender notAction"
+				/>
 				<BtnImg
 					src={imgMaleBear}
 					alt="test btn img"
 					size={64}
 					onclick="null"
-					customClass="gender notAction"
+					customClass="gender action"
 				/>
 				<BtnImg src={imgFemale} alt="test btn img" size={64} onclick="null" customClass="gender" />
 				<BtnImg
@@ -146,7 +173,7 @@
 					alt="test btn img"
 					size={64}
 					onclick="null"
-					customClass="gender"
+					customClass="gender notAction"
 				/>
 
 				<BtnImg src={imgChild} alt="test btn img" size={64} onclick="null" customClass="gender" />
@@ -161,7 +188,13 @@
 					onclick="null"
 					customClass="icon action"
 				/>
-				<BtnImg src={imgCardB} alt="test btn img" size={88} onclick="null" customClass="icon" />
+				<BtnImg
+					src={imgCardB}
+					alt="test btn img"
+					size={88}
+					onclick="null"
+					customClass="icon notAction"
+				/>
 				<BtnImg
 					src={imgCrypto}
 					alt="test btn img"

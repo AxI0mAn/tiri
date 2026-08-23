@@ -17,7 +17,7 @@
 
 <svelte:head>
 	<meta name="robots" content="index,follow" />
-	<title>amoca disclaimer</title>
+	<title>tiri disclaimer</title>
 </svelte:head>
 
 <header class="header" id="top-anchor">

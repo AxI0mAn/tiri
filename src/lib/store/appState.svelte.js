@@ -2,7 +2,7 @@
  * src/lib/store/appState.svelte.js - текущее состояние приложения
  */
 
-// import { appStore } from "./appStore.svelte"; 
+// import { appStore } from "./appStore.svelte";  
 
 class AppState {
   /** @type {string} */

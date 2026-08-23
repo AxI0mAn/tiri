@@ -23,6 +23,7 @@
 
 	function handleChange(e) {
 		value = e.currentTarget.value;
+		e.currentTarget.blur();
 	}
 </script>
 
@@ -112,7 +113,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
-		width: 100%;
+		min-width: 10rem;
+		width: max-content;
 
 		.select-label {
 			font-size: 0.85rem;
@@ -130,7 +132,7 @@
 				height: 44px;
 				padding: 0 40px 0 14px;
 				border-radius: 12px;
-				border: 2px solid rgba(255, 255, 255, 0.2);
+				border: 2px solid $clr-white;
 				background: $clr-bg-card;
 				color: $clr-text-accent;
 				font-family: inherit;

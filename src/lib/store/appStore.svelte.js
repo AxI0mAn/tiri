@@ -5,6 +5,8 @@
 // Используем это:
 const browser = typeof window !== 'undefined' && typeof document !== 'undefined';
 
+import { getBrowserLanguage } from "$lib/utils/getBrowserLanguage";
+
 class AppStore {
 
   /** имя пользователя 
@@ -13,7 +15,19 @@ class AppStore {
 
   /** выбор языка для интерфейсов и текстов
    * @type {'RU' | 'EN' | 'UA' | 'PT' | 'ES'} */
-  lang = $state('RU');
+  /** Доступные языки */
+  langOptions = [
+    { value: 'RU', label: 'русский' },
+    { value: 'EN', label: 'english' },
+    { value: 'UA', label: 'українська' },
+    { value: 'PT', label: 'português' },
+    { value: 'ES', label: 'español' }
+  ];
+  //  Статусная переменная с авто-выбором начального значения
+  lang = $state(
+    (typeof window !== 'undefined' && localStorage.getItem('user_lang')) ||
+    getBrowserLanguage(this.langOptions, 'EN')
+  );
 
   /** Дата первой заметки. false или строка с датой 'YYYY.MM.DD'
    * @type {string | boolean} */
@@ -21,7 +35,7 @@ class AppStore {
 
   /** точность знаков после запятой
    *  @type {number} */
-  toFix = $state(6);
+  toFix = $state(2);
 
   /** Статус на разрешение установки PWA от браузера
    * @type {boolean}  */

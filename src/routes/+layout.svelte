@@ -160,7 +160,7 @@
 	<meta property="og:image:height" content="630" />
 	<meta property="og:image:type" content="image/jpeg" />
 
-	<title>amoca | Math Tools PWA</title>
+	<title>tiri</title>
 </svelte:head>
 
 {@html pwaInfo?.webManifest.linkTag}
