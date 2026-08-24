@@ -4,13 +4,14 @@
 	let {
 		buttonText = '',
 		onclick,
+		disabled = false,
 		customClass = '',
 		svgContent = '', // Для svg как ?raw
 		Icon = null // Для svg как ?svelte
 	} = $props();
 </script>
 
-<button class="btn font-digits {customClass}" {onclick}>
+<button class="btn font-digits {customClass}" {onclick} {disabled}>
 	{#if Icon}
 		<Icon />
 	{:else if svgContent}
@@ -89,6 +90,17 @@
 				inset -1px -1px 1px 0px $clr-teal;
 			transition: all 0.35s;
 			color: $clr-white;
+		}
+
+		/* Стили для неактивного состояния */
+		&:disabled {
+			background-color: rgba($clr-pink-rgb, 0.8);
+			box-shadow:
+				0 0 2px $clr-white,
+				0 0 8px $clr-pink;
+			opacity: 0.4; /* Делаем кнопку полупрозрачной */
+			cursor: not-allowed; /* Меняем курсор на "запрещено" */
+			pointer-events: none; /* Отключаем ховеры и клики на уровне браузера */
 		}
 	}
 

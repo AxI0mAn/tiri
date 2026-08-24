@@ -74,6 +74,7 @@
 			onbeforeinput={handleBeforeInput}
 			oninput={handleInput}
 			onblur={() => (value = sanitizeNumber(value))}
+			onfocus={(e) => e.currentTarget.select()}
 		/>
 
 		<button type="button" class="btn-step" onclick={increment} aria-label="Increase"> + </button>

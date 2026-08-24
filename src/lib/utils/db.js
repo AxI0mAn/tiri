@@ -1,7 +1,7 @@
 // src/lib/utils/db.js
 
 
-const DB_NAME = 'LifeTrackerDB';
+const DB_NAME = 'LiveTiriDB';
 const DB_VERSION = 1;
 
 function openDB() {
@@ -93,11 +93,11 @@ export async function crashData() {
     const req = store.clear();
 
     req.onsuccess = () => {
-      console.log('[LifeTrackerDB] Все данные успешно удалены.');
+      console.log('[LiveTiriDB] Все данные успешно удалены.');
       resolve(true);
     };
     req.onerror = () => {
-      console.error('[LifeTrackerDB] Ошибка при сбросе данных:', req.error);
+      console.error('[LiveTiriDB] Ошибка при сбросе данных:', req.error);
       reject(req.error);
     };
   });

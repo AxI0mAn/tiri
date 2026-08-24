@@ -3,8 +3,15 @@
 	import { untrack } from 'svelte';
 	import { FormDraftManager } from '$lib/store/FormStore.svelte.js';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
+	import BtnText from '$lib/components/Btn/BtnText.svelte';
+
 	import InputNumber from '$lib/components/input/InputNumber.svelte';
 	import InputRange from '$lib/components/input/InputRange.svelte';
+	import InputText from '$lib/components/input/InputText.svelte';
+	import InputTel from '$lib/components/input/InputTel.svelte';
+	import InputDate from '$lib/components/input/InputDate.svelte';
+	import InputTime from '$lib/components/input/InputTime.svelte';
+	import Textarea from '$lib/components/input/Textarea.svelte';
 
 	/**
 	 * @typedef {'note' | 'reminder'} FormType
@@ -21,9 +28,43 @@
 	/** @type {Props} */
 	let { constructorStore, type = 'note', onSave = () => {}, onCancel = () => {} } = $props();
 
-	// untrack() отключает отслеживание первичного чтения пропсов Svelte 5,
-	// избавляя от предупреждения state_referenced_locally
 	const manager = untrack(() => new FormDraftManager(type, constructorStore));
+
+	// Добавляем реактивный список ошибок, отслеживающий изменения внутри manager.draft:
+	let validationErrors = $derived(manager.getValidationErrors());
+
+	// // Проверка: можно ли сохранить форму
+	// let isValid = $derived.by(() => {
+	// 	const schema = constructorStore.schema || {};
+
+	// 	for (const [fieldKey, field] of Object.entries(schema)) {
+	// 		// Пропускаем неактивные поля и служебные дата/время
+	// 		if (field.choose === false || fieldKey === 'dateTime') continue;
+
+	// 		// Получаем все активные опции
+	// 		const validOptions = Object.entries(field.options || {}).filter(
+	// 			([, opt]) => opt.select === true
+	// 		);
+	// 		if (validOptions.length === 0) continue;
+
+	// 		// Проверяем, есть ли в поле инпуты (числа, текст, даты)
+	// 		const hasInputs = validOptions.some(([, opt]) => {
+	// 			const views = Array.isArray(opt.formView) ? opt.formView : [opt.formView || 'BtnImg'];
+	// 			return views.some((v) => v !== 'BtnImg' && v !== 'btnIcon');
+	// 		});
+
+	// 		// Если это секция ТОЛЬКО с кнопками (BtnImg), то выбор обязателен!
+	// 		if (!hasInputs) {
+	// 			const currentValue = manager.draft.value[fieldKey];
+	// 			// Если значение null или undefined — форма невалидна
+	// 			if (currentValue === null || currentValue === undefined) {
+	// 				return false;
+	// 			}
+	// 		}
+	// 	}
+
+	// 	return true;
+	// });
 
 	let dateObj = $derived(new Date(manager.draft.timestamp));
 
@@ -31,7 +72,6 @@
 		dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 	);
 
-	// Исправлено: скобка закрывает весь объект настроек
 	let formattedDate = $derived(
 		dateObj.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })
 	);
@@ -56,9 +96,9 @@
 	>
 		<span class="header-title">
 			{#if type === 'note'}
-				'Заметка'
+				Заметка
 			{:else}
-				'Напоминание'
+				Напоминание
 			{/if}
 		</span>
 		<div class="datetime-block">
@@ -71,51 +111,196 @@
 	<div class="fields-container">
 		{#each Object.entries(constructorStore.schema || {}) as [fieldKey, field]}
 			{#if field.choose !== false && fieldKey !== 'dateTime'}
-				<section class="field-block">
-					{#if field.label || field.title}
+				<!-- Стилизация блока поля через field.fieldClass -->
+				<section class="field-block {field.fieldClass || ''}">
+					<!-- Отображаем label поля -->
+					{#if field.label}
 						<div class="field-title">
-							{#if field.label}<h3>{field.label}</h3>{/if}
-							{#if field.title}<p class="field-subtitle">{field.title}</p>{/if}
+							<h3>{field.label}</h3>
 						</div>
 					{/if}
 
 					<div class="options-grid">
 						{#each Object.entries(field.options || {}) as [optKey, option]}
 							{#if option.select === true}
-								{#if typeof option.num !== 'number'}
-									<div class="btn-wrapper">
-										<BtnImg
-											src={option.iconWebp || option.iconPng || ''}
-											alt={option.label || optKey}
-											customClass={manager.draft.value[fieldKey] === optKey
-												? 'action'
-												: 'notAction'}
-											onclick={() => manager.selectOption(fieldKey, optKey)}
-										/>
-									</div>
-								{:else}
-									<div class="numeric-card">
-										{#if option.label}
-											<span class="option-label">{option.label}</span>
+								{@const viewList = option.formView || ['BtnImg']}
+								{@const isSingleView = viewList.length === 1}
+								{@const isSelected = manager.draft.value[fieldKey] === optKey}
+
+								<!-- Стилизация строки опции через option.optionClass -->
+								<div class="option-row {option.optionClass || ''}" class:multi-view={!isSingleView}>
+									{#each viewList as viewType}
+										<!-- BtnImg -->
+										{#if viewType === 'BtnImg' || viewType === 'btnIcon'}
+											<div class="btn-wrapper">
+												<BtnImg
+													src={option.iconWebp || option.iconPng || ''}
+													alt={option.label || optKey}
+													size={isSingleView ? 88 : 44}
+													customClass="{isSingleView
+														? isSelected
+															? 'action'
+															: 'notAction'
+														: 'icon'} {option.customClass || ''}"
+													onclick={isSingleView
+														? () => manager.selectOption(fieldKey, optKey)
+														: null}
+												/>
+											</div>
 										{/if}
 
-										<InputNumber
-											bind:value={manager.draft.value[fieldKey][optKey]}
-											min={option.min ?? 0}
-											max={option.max ?? Infinity}
-											step={option.step ?? 1}
-										/>
-
-										{#if typeof option.min === 'number' && typeof option.max === 'number'}
-											<InputRange
-												bind:value={manager.draft.value[fieldKey][optKey]}
-												min={option.min}
-												max={option.max}
-												step={option.step ?? 1}
-											/>
+										<!-- Textarea -->
+										{#if viewType === 'Textarea' || viewType === 'textArea'}
+											<div class="input-wrapper flex-grow">
+												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<Textarea
+														bind:value={manager.draft.value[fieldKey][optKey]}
+														placeholder={option.placeholder || ''}
+														label={isSingleView ? option.label || '' : ''}
+													/>
+												{:else}
+													<Textarea
+														bind:value={manager.draft.value[fieldKey]}
+														placeholder={option.placeholder || ''}
+														label={isSingleView ? option.label || '' : ''}
+													/>
+												{/if}
+											</div>
 										{/if}
-									</div>
-								{/if}
+
+										<!-- InputText -->
+										{#if viewType === 'InputText' || viewType === 'inputText'}
+											<div class="input-wrapper flex-grow">
+												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<InputText
+														bind:value={manager.draft.value[fieldKey][optKey]}
+														placeholder={option.placeholder || ''}
+														label={isSingleView ? option.label || '' : ''}
+														customClass={option.customClass || ''}
+													/>
+												{:else}
+													<InputText
+														bind:value={manager.draft.value[fieldKey]}
+														placeholder={option.placeholder || ''}
+														label={isSingleView ? option.label || '' : ''}
+														customClass={option.customClass || ''}
+													/>
+												{/if}
+											</div>
+										{/if}
+
+										<!-- InputTel -->
+										{#if viewType === 'InputTel' || viewType === 'inputTel'}
+											<div class="input-wrapper flex-grow">
+												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<InputTel
+														bind:value={manager.draft.value[fieldKey][optKey]}
+														placeholder={option.placeholder || ''}
+														label={isSingleView ? option.label || '' : ''}
+														customClass={option.customClass || ''}
+													/>
+												{:else}
+													<InputTel
+														bind:value={manager.draft.value[fieldKey]}
+														placeholder={option.placeholder || ''}
+														label={isSingleView ? option.label || '' : ''}
+														customClass={option.customClass || ''}
+													/>
+												{/if}
+											</div>
+										{/if}
+
+										<!-- InputNumber -->
+										{#if viewType === 'InputNumber' || viewType === 'inputNumber'}
+											<div class="input-wrapper">
+												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<InputNumber
+														bind:value={manager.draft.value[fieldKey][optKey]}
+														min={option.min ?? 0}
+														max={option.max ?? Infinity}
+														step={option.step ?? 1}
+														label={isSingleView ? option.label || '' : ''}
+														customClass={option.customClass || ''}
+													/>
+												{:else}
+													<InputNumber
+														bind:value={manager.draft.value[fieldKey]}
+														min={option.min ?? 0}
+														max={option.max ?? Infinity}
+														step={option.step ?? 1}
+														label={isSingleView ? option.label || '' : ''}
+														customClass={option.customClass || ''}
+													/>
+												{/if}
+											</div>
+										{/if}
+
+										<!-- InputRange -->
+										{#if viewType === 'InputRange' || viewType === 'inputRange'}
+											<div class="input-wrapper flex-grow">
+												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<InputRange
+														bind:value={manager.draft.value[fieldKey][optKey]}
+														min={option.min ?? 0}
+														max={option.max ?? 100}
+														step={option.step ?? 1}
+														label={isSingleView ? option.label || '' : ''}
+													/>
+												{:else}
+													<InputRange
+														bind:value={manager.draft.value[fieldKey]}
+														min={option.min ?? 0}
+														max={option.max ?? 100}
+														step={option.step ?? 1}
+														label={isSingleView ? option.label || '' : ''}
+													/>
+												{/if}
+											</div>
+										{/if}
+
+										<!-- InputDate -->
+										{#if viewType === 'InputDate' || viewType === 'inputDate'}
+											<div class="input-wrapper">
+												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<!-- Инициализируем ключ, если его ещё нет, чтобы избежать undefined -->
+													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+													<InputDate
+														bind:value={manager.draft.value[fieldKey][optKey]}
+														min={option.min || ''}
+														max={option.max || ''}
+														label={isSingleView ? option.label || '' : ''}
+													/>
+												{:else}
+													<InputDate
+														bind:value={manager.draft.value[fieldKey]}
+														min={option.min || ''}
+														max={option.max || ''}
+														label={isSingleView ? option.label || '' : ''}
+													/>
+												{/if}
+											</div>
+										{/if}
+
+										<!-- InputTime -->
+										{#if viewType === 'InputTime' || viewType === 'inputTime'}
+											<div class="input-wrapper">
+												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<!-- Инициализируем ключ, если его ещё нет, чтобы избежать undefined -->
+													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+													<InputTime
+														bind:value={manager.draft.value[fieldKey][optKey]}
+														label={isSingleView ? option.label || '' : ''}
+													/>
+												{:else}
+													<InputTime
+														bind:value={manager.draft.value[fieldKey]}
+														label={isSingleView ? option.label || '' : ''}
+													/>
+												{/if}
+											</div>
+										{/if}
+									{/each}
+								</div>
 							{/if}
 						{/each}
 					</div>
@@ -124,10 +309,21 @@
 		{/each}
 	</div>
 
-	<!-- Кнопки действия -->
+	<!-- Блок подсказок над кнопками -->
+	{#if validationErrors.length > 0}
+		<div class="validation-hints">
+			{#each validationErrors as error}
+				<div class="hint-item">
+					<span class="hint-icon">⚠️</span>
+					<span class="hint-text">{error}</span>
+				</div>
+			{/each}
+		</div>
+	{/if}
 	<footer class="form-actions">
-		<button type="button" class="btn-cancel" onclick={handleCancel}>Отмена</button>
-		<button type="button" class="btn-save" onclick={handleSave}>Сохранить</button>
+		<!-- Кнопки действия -->
+		<BtnText buttonText="Отмена" onclick={handleCancel} />
+		<BtnText buttonText="Сохранить" disabled={!manager.isValid} onclick={handleSave} />
 	</footer>
 </div>
 
@@ -168,6 +364,10 @@
 
 <style lang="scss">
 	@use '../../../styles/_variables.scss' as *;
+
+	.notesInForm {
+		outline: 2px solid red;
+	}
 
 	.render-form {
 		display: flex;
