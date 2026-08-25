@@ -11,7 +11,6 @@
 	}
 </script>
 
-<h2>Новое НАПОМИНАНИЕ</h2>
 <RenderForm
 	type="reminder"
 	constructorStore={constructorReminder}

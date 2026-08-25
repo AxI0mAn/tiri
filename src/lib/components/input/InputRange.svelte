@@ -1,5 +1,5 @@
 <script>
-// src/lib/components/input/InputRange.svelte
+	// src/lib/components/input/InputRange.svelte
 	/**
 	 * @typedef {Object} Props
 	 * @property {number} [value=50]

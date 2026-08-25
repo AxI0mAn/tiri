@@ -1,16 +1,11 @@
-// '$lib/store/ConstructorStore.svelte.js
+/* eslint-disable no-unused-vars */
+// $lib/store/ConstructorStore.svelte.js
 
 // конструктор - образец для создания карточек заказа и напоминания
 // использует baseSchema - для заказа и дополнения remind и about - для напоминания
 // хранится в localStorage 
 // при изменении свойства - автоматически перезаписывается в localStorage
 // для переключения свойства использовать toggleField toggleOption
-
-
-// Вместо import { browser } from '$app/environment';
-// Используем это:
-const browser = typeof window !== 'undefined' && typeof document !== 'undefined';
-
 
 // импорты иконок
 import maleWebp from '$lib/assets/iconPic/128/male.webp';
@@ -58,8 +53,13 @@ import sumPng from '$lib/assets/iconPic/128/sum.png';
 
 
 
-const STORAGE_KEY_NOTES = 'card_constructor_notes_v1';
-const STORAGE_KEY_REMINDS = 'card_constructor_reminds_v1';
+// Вместо import { browser } from '$app/environment';
+// Используем это:
+export const browser = typeof window !== 'undefined' && typeof document !== 'undefined';
+
+// названия для localStorage
+export const STORAGE_KEY_NOTES = 'card_constructor_notes_v1';
+export const STORAGE_KEY_REMINDS = 'card_constructor_reminds_v1';
 
 // Наша статическая схема со всеми доступными полями
 const baseSchema = {
@@ -73,7 +73,7 @@ const baseSchema = {
       male: {
         label: "Мужская", // название опции
         required: false,  // false - не обязательно для выбора
-        optionClass: '', // класс для стилизации в форме, но не в свойствах
+        optionClass: 'gender', // класс для стилизации в форме, но не в свойствgenderах
         select: true, // true - подключен этот вариант для поля,  false - отключено
         formView: ['BtnImg'], // что отобразить в форме создания заметки
         iconWebp: maleWebp, // изображение для иконки
@@ -82,7 +82,7 @@ const baseSchema = {
       male_bearded: {
         label: "Борода",
         required: false,
-        optionClass: '',
+        optionClass: 'gender',
         select: true,
         formView: ['BtnImg'],
         iconWebp: male_beardeWebp,
@@ -91,7 +91,7 @@ const baseSchema = {
       female: {
         label: "Женская",
         required: false,
-        optionClass: '',
+        optionClass: 'gender',
         select: true,
         formView: ['BtnImg'],
         iconWebp: femaleWebp,
@@ -100,7 +100,7 @@ const baseSchema = {
       colorist: {
         label: "Окрашивание",
         required: false,
-        optionClass: '',
+        optionClass: 'gender',
         select: false,
         formView: ['BtnImg'],
         iconWebp: coloristWebp,
@@ -109,7 +109,7 @@ const baseSchema = {
       child: {
         label: "Детская",
         required: false,
-        optionClass: '',
+        optionClass: 'gender',
         select: false,
         formView: ['BtnImg'],
         iconWebp: childWebp,
@@ -120,7 +120,7 @@ const baseSchema = {
   percent: {
     choose: true,
     required: true,
-    fieldClass: '',
+    fieldClass: 'percentField',
     label: "Настройки оплаты",
     title: "текстовое описание поля",
     options: {
@@ -215,7 +215,7 @@ const baseSchema = {
   notes: {
     choose: true,
     required: false,
-    fieldClass: 'notesInForm',
+    fieldClass: 'notesField',
     label: "Заметки",
     title: "текстовое описание поля",
     options: {
@@ -251,6 +251,33 @@ const baseSchema = {
 
 };
 
+// ====== СИСТЕМНОЕ ПОЛЕ ДЛЯ НАПОМИНАНИЙ ======
+export const REMIND_FIELD = {
+  choose: true,
+  required: true,
+  optionClass: '',
+  label: "Время и дата события",
+  title: "текстовое описание поля",
+  options: {
+    time: {
+      label: "Время",
+      required: true,
+      select: true,
+      formView: ['BtnImg', 'InputTime'],
+      iconWebp: timeWebp,
+      iconPng: timePng,
+    },
+    date: {
+      label: "Дата",
+      required: true,
+      select: true,
+      formView: ['BtnImg', 'InputDate'],
+      iconWebp: todayWebp,
+      iconPng: todayPng,
+    },
+  }
+}
+
 
 export class ConstructorStore {
   /** @type {Record<string, any>} */
@@ -262,7 +289,7 @@ export class ConstructorStore {
     if (browser) {
       this.initFromStorage();
 
-      // Авто-сохранение по твоему паттерну
+      // Авто-сохранение по паттерну
       $effect.root(() => {
         $effect(() => {
           const data = this.serialize();
@@ -346,45 +373,34 @@ export class ConstructorStore {
 }
 
 
-// Наследуем класс и добавляем специфичные поля для Напоминания
+/**
+ * Класс для напоминаний с системными полями
+ * Наследует ConstructorStore
+ * Системное поле remind добавляется при создании
+ */
 export class ReminderConstructorStore extends ConstructorStore {
 
   constructor(storageKey = STORAGE_KEY_REMINDS) {
+    // Создаем экземпляр
     super(storageKey);
-    this.addReminderSystemFields();
-  }
 
-  addReminderSystemFields() {
-    // Вшиваем системные обязательные поля для напоминаний
-    this.schema.remind = {
-      choose: true,
-      required: true,
-      optionClass: '',
-      label: "Время и дата события",
-      title: "текстовое описание поля",
-      options: {
-        time: {
-          label: "Время",
-          required: true,
-          select: true,
-          formView: ['BtnImg', 'InputTime'],
-          iconWebp: timeWebp,
-          iconPng: timePng,
-        },
-        date: {
-          label: "Дата",
-          required: true,
-          select: true,
-          formView: ['BtnImg', 'InputDate'],
-          iconWebp: todayWebp,
-          iconPng: todayPng,
-        },
-      }
+    // Добавляем системные поля
+    this.addReminderSystemFields();
+
+    // Сохраняем в localStorage
+    if (browser) {
+      const data = this.serialize();
+      localStorage.setItem(this.storageKey, JSON.stringify(data));
     }
   }
+
+  /**
+   * Добавляет системные поля для напоминаний
+   */
+  addReminderSystemFields() {
+    this.schema.remind = REMIND_FIELD;
+  }
 }
-
-
 // Экспортируем два готовых экземпляра
 export const constructorStore = new ConstructorStore();
 export const constructorReminder = new ReminderConstructorStore();

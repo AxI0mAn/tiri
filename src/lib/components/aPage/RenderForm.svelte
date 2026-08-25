@@ -33,39 +33,6 @@
 	// Добавляем реактивный список ошибок, отслеживающий изменения внутри manager.draft:
 	let validationErrors = $derived(manager.getValidationErrors());
 
-	// // Проверка: можно ли сохранить форму
-	// let isValid = $derived.by(() => {
-	// 	const schema = constructorStore.schema || {};
-
-	// 	for (const [fieldKey, field] of Object.entries(schema)) {
-	// 		// Пропускаем неактивные поля и служебные дата/время
-	// 		if (field.choose === false || fieldKey === 'dateTime') continue;
-
-	// 		// Получаем все активные опции
-	// 		const validOptions = Object.entries(field.options || {}).filter(
-	// 			([, opt]) => opt.select === true
-	// 		);
-	// 		if (validOptions.length === 0) continue;
-
-	// 		// Проверяем, есть ли в поле инпуты (числа, текст, даты)
-	// 		const hasInputs = validOptions.some(([, opt]) => {
-	// 			const views = Array.isArray(opt.formView) ? opt.formView : [opt.formView || 'BtnImg'];
-	// 			return views.some((v) => v !== 'BtnImg' && v !== 'btnIcon');
-	// 		});
-
-	// 		// Если это секция ТОЛЬКО с кнопками (BtnImg), то выбор обязателен!
-	// 		if (!hasInputs) {
-	// 			const currentValue = manager.draft.value[fieldKey];
-	// 			// Если значение null или undefined — форма невалидна
-	// 			if (currentValue === null || currentValue === undefined) {
-	// 				return false;
-	// 			}
-	// 		}
-	// 	}
-
-	// 	return true;
-	// });
-
 	let dateObj = $derived(new Date(manager.draft.timestamp));
 
 	let formattedTime = $derived(
@@ -84,6 +51,25 @@
 	function handleCancel() {
 		manager.clearDraft();
 		onCancel();
+	}
+
+	/**
+	 * Определяет класс для BtnImg на основе состояния выбора
+	 * @param {string} fieldKey - ключ поля
+	 * @param {string} optKey - ключ опции
+	 * @param {boolean} isSingleView - одна ли опция
+	 * @param {boolean} isSelected - выбрана ли эта опция
+	 * @returns {string} - класс для BtnImg
+	 */
+	function getBtnClass(fieldKey, optKey, isSingleView, isSelected) {
+		if (!isSingleView) return '';
+
+		const value = manager.draft.value[fieldKey];
+		const hasSelection = value !== null && value !== undefined;
+
+		if (!hasSelection) return '';
+
+		return isSelected ? 'action' : 'notAction';
 	}
 </script>
 
@@ -110,7 +96,7 @@
 	<!-- Список полей -->
 	<div class="fields-container">
 		{#each Object.entries(constructorStore.schema || {}) as [fieldKey, field]}
-			{#if field.choose !== false && fieldKey !== 'dateTime'}
+			{#if field.choose !== false && fieldKey !== 'dateTime' && !(type === 'reminder' && fieldKey === 'pay') && !(type === 'reminder' && fieldKey === 'percent')}
 				<!-- Стилизация блока поля через field.fieldClass -->
 				<section class="field-block {field.fieldClass || ''}">
 					<!-- Отображаем label поля -->
@@ -128,7 +114,7 @@
 								{@const isSelected = manager.draft.value[fieldKey] === optKey}
 
 								<!-- Стилизация строки опции через option.optionClass -->
-								<div class="option-row {option.optionClass || ''}" class:multi-view={!isSingleView}>
+								<div class="option-row" class:multi-view={!isSingleView}>
 									{#each viewList as viewType}
 										<!-- BtnImg -->
 										{#if viewType === 'BtnImg' || viewType === 'btnIcon'}
@@ -136,12 +122,13 @@
 												<BtnImg
 													src={option.iconWebp || option.iconPng || ''}
 													alt={option.label || optKey}
-													size={isSingleView ? 88 : 44}
-													customClass="{isSingleView
-														? isSelected
-															? 'action'
-															: 'notAction'
-														: 'icon'} {option.customClass || ''}"
+													size={isSingleView ? 88 : 64}
+													customClass="{getBtnClass(
+														fieldKey,
+														optKey,
+														isSingleView,
+														isSelected
+													)} {option.optionClass || ''}"
 													onclick={isSingleView
 														? () => manager.selectOption(fieldKey, optKey)
 														: null}
@@ -153,12 +140,16 @@
 										{#if viewType === 'Textarea' || viewType === 'textArea'}
 											<div class="input-wrapper flex-grow">
 												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
 													<Textarea
 														bind:value={manager.draft.value[fieldKey][optKey]}
 														placeholder={option.placeholder || ''}
 														label={isSingleView ? option.label || '' : ''}
 													/>
 												{:else}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{(manager.draft.value[fieldKey] ??= '') && ''}
 													<Textarea
 														bind:value={manager.draft.value[fieldKey]}
 														placeholder={option.placeholder || ''}
@@ -172,6 +163,8 @@
 										{#if viewType === 'InputText' || viewType === 'inputText'}
 											<div class="input-wrapper flex-grow">
 												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
 													<InputText
 														bind:value={manager.draft.value[fieldKey][optKey]}
 														placeholder={option.placeholder || ''}
@@ -179,6 +172,8 @@
 														customClass={option.customClass || ''}
 													/>
 												{:else}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{(manager.draft.value[fieldKey] ??= '') && ''}
 													<InputText
 														bind:value={manager.draft.value[fieldKey]}
 														placeholder={option.placeholder || ''}
@@ -193,6 +188,8 @@
 										{#if viewType === 'InputTel' || viewType === 'inputTel'}
 											<div class="input-wrapper flex-grow">
 												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
 													<InputTel
 														bind:value={manager.draft.value[fieldKey][optKey]}
 														placeholder={option.placeholder || ''}
@@ -200,6 +197,8 @@
 														customClass={option.customClass || ''}
 													/>
 												{:else}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{(manager.draft.value[fieldKey] ??= '') && ''}
 													<InputTel
 														bind:value={manager.draft.value[fieldKey]}
 														placeholder={option.placeholder || ''}
@@ -214,6 +213,8 @@
 										{#if viewType === 'InputNumber' || viewType === 'inputNumber'}
 											<div class="input-wrapper">
 												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{@const _init = manager.draft.value[fieldKey][optKey] ??= 0}
 													<InputNumber
 														bind:value={manager.draft.value[fieldKey][optKey]}
 														min={option.min ?? 0}
@@ -223,6 +224,8 @@
 														customClass={option.customClass || ''}
 													/>
 												{:else}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{@const _init = manager.draft.value[fieldKey] ??= 0}
 													<InputNumber
 														bind:value={manager.draft.value[fieldKey]}
 														min={option.min ?? 0}
@@ -239,6 +242,8 @@
 										{#if viewType === 'InputRange' || viewType === 'inputRange'}
 											<div class="input-wrapper flex-grow">
 												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{(manager.draft.value[fieldKey][optKey] ??= 0) && ''}
 													<InputRange
 														bind:value={manager.draft.value[fieldKey][optKey]}
 														min={option.min ?? 0}
@@ -247,6 +252,8 @@
 														label={isSingleView ? option.label || '' : ''}
 													/>
 												{:else}
+													<!-- ✅ Инициализируем значение, если undefined -->
+													{(manager.draft.value[fieldKey] ??= 0) && ''}
 													<InputRange
 														bind:value={manager.draft.value[fieldKey]}
 														min={option.min ?? 0}
@@ -365,17 +372,14 @@
 <style lang="scss">
 	@use '../../../styles/_variables.scss' as *;
 
-	.notesInForm {
-		outline: 2px solid red;
-	}
-
 	.render-form {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: 1rem;
 		width: 100%;
 		max-width: 600px;
 		margin: 0 auto;
+		padding: 0.5rem;
 
 		.form-header {
 			display: flex;
@@ -417,6 +421,8 @@
 
 		.field-block {
 			background-color: rgba($clr-bg-card, 0.4);
+			border-bottom: 2px solid $clr-white;
+			box-shadow: 0px -2px 4px 0px $clr-white;
 			border-radius: 12px;
 			padding: 14px;
 			margin-bottom: 12px;
@@ -443,6 +449,31 @@
 			flex-wrap: wrap;
 			gap: 10px;
 			align-items: center;
+			justify-content: center;
+			.option-row {
+				display: flex;
+				flex-flow: row;
+				justify-content: center;
+				align-items: center;
+				gap: 0.25rem;
+			}
+		}
+
+		.field-block.percentField,
+		.field-block.notesField {
+			.options-grid {
+				flex-flow: row wrap;
+			}
+		}
+		.field-block.notesField .option-row:last-child {
+			flex: 1 1 100%;
+			.input-wrapper {
+				width: 100%; // !important;
+			}
+		}
+
+		.field-block.notesField {
+			justify-content: flex-start;
 		}
 
 		.numeric-card {
@@ -481,6 +512,10 @@
 					color: $clr-text-main;
 				}
 			}
+		}
+		.form-actions {
+			margin: 0 auto;
+			padding: 1rem auto;
 		}
 	}
 </style>

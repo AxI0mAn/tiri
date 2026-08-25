@@ -26,6 +26,29 @@
 	}
 </script>
 
+<div class="input-field {customClass}" class:has-error={hasError} class:is-disabled={disabled}>
+	{#if label}
+		<label class="input-label" for="txt-input">{label}</label>
+	{/if}
+
+	<div class="input-control">
+		<input
+			id="txt-input"
+			type="text"
+			class="input-element"
+			{value}
+			{placeholder}
+			{disabled}
+			oninput={handleInput}
+			autocomplete="off"
+		/>
+	</div>
+
+	{#if hasError}
+		<span class="error-text">{error}</span>
+	{/if}
+</div>
+
 <!-- ПРИМЕНЕНИЕ
  1. Двусторонняя связь (Рекомендуемый способ)
 Чтобы изменения в инпуте автоматически обновляли userName в сторе, а изменения в сторе обновляли значение в инпуте, используйте директиву bind:value:
@@ -81,29 +104,6 @@
   oninput={handleInput}
 />
 -->
-
-<div class="input-field {customClass}" class:has-error={hasError} class:is-disabled={disabled}>
-	{#if label}
-		<label class="input-label" for="txt-input">{label}</label>
-	{/if}
-
-	<div class="input-control">
-		<input
-			id="txt-input"
-			type="text"
-			class="input-element"
-			{value}
-			{placeholder}
-			{disabled}
-			oninput={handleInput}
-			autocomplete="off"
-		/>
-	</div>
-
-	{#if hasError}
-		<span class="error-text">{error}</span>
-	{/if}
-</div>
 
 <style lang="scss">
 	@use '../../../styles/_variables.scss' as *;

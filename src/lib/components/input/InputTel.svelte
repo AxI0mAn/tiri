@@ -83,6 +83,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
+		min-width: 10rem;
 		width: 100%;
 
 		.input-label {

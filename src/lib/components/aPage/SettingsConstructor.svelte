@@ -6,7 +6,11 @@
     ПРИМЕНЕНИЕ описано ниже 
    */
 
+	import { onDestroy } from 'svelte';
+
 	import { constructorStore as defaultStore } from '$lib/store/ConstructorStore.svelte.js';
+	import { rebuildReminderSchema } from '$lib/store/rebuildReminder';
+
 	import CheckBox from '../input/CheckBox.svelte';
 	import SelectStatus from '../input/SelectStatus.svelte';
 	import BtnImg from '../Btn/BtnImg.svelte';
@@ -46,6 +50,11 @@
 			if (btn) btn.click();
 		}
 	}
+
+	// При уходе со страницы пересобираем шаблон напоминалки в localStorage
+	onDestroy(() => {
+		rebuildReminderSchema();
+	});
 </script>
 
 <div class="settings-constructor {customClass}">
@@ -70,7 +79,7 @@
 				{/if}
 			</header>
 
-			<div class="options-grid">
+			<div class="options-grid {field.fieldClass || ''}">
 				{#each Object.entries(field.options || {}) as [optionKey, opt]}
 					{@const optType = getOptionType(opt)}
 					{@const isOptRequired = field.required || opt.required}
@@ -93,7 +102,7 @@
 										src={getImgPath(opt)}
 										alt={opt.label || ''}
 										size={64}
-										customClass="icon"
+										customClass={opt.optionClass || ''}
 										onclick={() =>
 											!isFieldDisabled &&
 											!isOptRequired &&

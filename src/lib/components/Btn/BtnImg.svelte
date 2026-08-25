@@ -111,6 +111,11 @@
 			opacity 0.15s ease;
 		-webkit-tap-highlight-color: transparent;
 
+		@media (max-width: 500px) {
+			width: 44px !important;
+			height: 44px !important;
+		}
+
 		.cone-bg {
 			display: none;
 		}
@@ -177,7 +182,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid $clr-white;
+				border: 2px solid rgba(255, 255, 255, 0.01);
 				box-sizing: border-box;
 				overflow: hidden;
 				transition: border-color 0.2s ease;
@@ -205,6 +210,7 @@
 			box-shadow:
 				inset 3px 3px 6px rgba(0, 0, 0, 0.45),
 				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
+			background-color: $clr-pink;
 
 			.oval-inner {
 				border-color: $clr-pink;
@@ -277,13 +283,16 @@
 		}
 
 		&:hover {
+			box-shadow:
+				inset 3px 3px 6px rgba(250, 250, 250, 0.95),
+				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
 			.oval-outer,
 			.oval-inner {
-				border-color: $clr-teal;
+				border-color: $clr-white;
 			}
 			.bg-hover,
 			.cone-bg {
-				opacity: 1;
+				opacity: 0;
 			}
 		}
 
@@ -291,7 +300,7 @@
 		&.action {
 			transform: scale(0.95);
 			box-shadow:
-				inset 3px 3px 6px rgba(0, 0, 0, 0.45),
+				inset 3px 3px 6px rgba(250, 250, 250, 0.95),
 				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
 
 			.oval-outer,
@@ -332,7 +341,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid $clr-white;
+				border: 2px solid rgba(255, 255, 255, 0.01);
 				padding: 3px;
 				box-sizing: border-box;
 				transition: border-color 0.2s ease;
@@ -343,7 +352,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid $clr-white;
+				border: 2px solid rgba(255, 255, 255, 0.01);
 				box-sizing: border-box;
 				overflow: hidden;
 				transition: border-color 0.2s ease;

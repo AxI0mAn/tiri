@@ -10,5 +10,4 @@
 	}
 </script>
 
-<h2>Новая ЗАМЕТКА</h2>
 <RenderForm type="note" {constructorStore} onSave={handleBack} onCancel={handleBack} />
