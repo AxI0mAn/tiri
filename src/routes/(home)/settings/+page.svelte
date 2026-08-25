@@ -2,38 +2,36 @@
 	import BtnBack from '$lib/components/Btn/BtnBack.svelte';
 	import { appStore } from '$lib/store/appStore.svelte';
 	import SettingsConstructor from '$lib/components/aPage/SettingsConstructor.svelte';
+	import InputText from '$lib/components/input/InputText.svelte';
+	import Select from '$lib/components/input/Select.svelte';
+	import { getBrowserLanguage } from '$lib/utils/getBrowserLanguage';
 
-	// Константы для выбора
-	const languages = ['RU']; //, 'EN', 'UA', 'PT', 'ES'];
+	// Динамическая валидация userName через $derived
+	let nameError = $derived(appStore.master.trim().length === 0 ? 'Имя не может быть пустым' : '');
+
+	// Константы для языка интерфейса
+	let selectedLang = $state('RU');
 </script>
 
 <svelte:head>
 	<meta name="robots" content="index,follow" />
-	<title>amoca settings</title>
+	<title>tiri settings</title>
 </svelte:head>
 
 <header class="header">
 	<BtnBack />
-	<h1 class="headerSlogan">settings</h1>
+	<h1 class="headerSlogan">настройки</h1>
 </header>
 
 <div class="homeTextPage settings-page">
 	<section class="setting-group">
-		<span class="label">Interface language</span>
-		<select bind:value={appStore.lang} class="custom-select">
-			{#each languages as l}
-				<option value={l}>{l}</option>
-			{/each}
-		</select>
+		<span class="label">Имя мастера</span>
+		<InputText placeholder="Мастер" bind:value={appStore.master} error={nameError} />
 	</section>
 
 	<section class="setting-group">
-		<span class="label">Interface language</span>
-		<select bind:value={appStore.lang} class="custom-select">
-			{#each languages as l}
-				<option value={l}>{l}</option>
-			{/each}
-		</select>
+		<span class="label">Язык приложения</span>
+		<Select bind:value={selectedLang} options={appStore.langOptions} label="" placeholder="" />
 	</section>
 
 	<div class="settings-container">
@@ -72,11 +70,12 @@
 	}
 
 	.setting-group {
-		margin: 0 auto;
+		// margin: 0 auto;
 		max-width: 50vmin;
 		margin-bottom: 25px;
 		display: flex;
-		flex-direction: column;
+		flex-flow: row wrap;
+		align-items: center;
 		gap: 10px;
 	}
 

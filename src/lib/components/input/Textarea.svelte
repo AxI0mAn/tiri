@@ -46,7 +46,7 @@
 		.textarea-element {
 			width: 100%;
 			flex: 1; // <--- Заставляет textarea занять всё оставшееся место по высоте
-			min-height: 80px; // Предотвращаем схлопывание
+			min-height: 3rem; // Предотвращаем схлопывание
 			padding: 12px 14px;
 			border-radius: 12px;
 			border: 2px solid rgba(255, 255, 255, 0.2);
@@ -55,7 +55,7 @@
 			font-family: inherit;
 			font-size: 0.95rem;
 			outline: none;
-			resize: vertical;
+			resize: vertical; /* разрешить пользователю менять */
 			box-sizing: border-box;
 			transition:
 				border-color 0.2s ease,

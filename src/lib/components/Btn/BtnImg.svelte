@@ -1,4 +1,11 @@
 <script>
+	/*
+    Применение: 
+      <BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
+      <BtnImg src={imgCash} alt="test btn img" size={88} onclick="null" customClass="icon" />
+      <BtnImg src={imgDate} alt="test btn img" size={44} onclick="null" customClass="" />
+    */
+
 	// src/lib/components/Btn/BtnImg.svelte
 
 	/**
@@ -9,13 +16,6 @@
 	 * @property {(() => void)|null} [onclick=null] - Обработчик клика
 	 * @property {string} [customClass=''] - Дополнительные CSS-классы (без класса - в одном круге, .gender - снизу овал, .icon - в двойном круге, .notAction для .gender И .action для .icon - вид как при :active)
 	 */
-
-	/*
-    Применение: 
-      <BtnImg src={imgMale} alt="test btn img" size={64} onclick="null" customClass="gender" />
-      <BtnImg src={imgCash} alt="test btn img" size={88} onclick="null" customClass="icon" />
-      <BtnImg src={imgDate} alt="test btn img" size={44} onclick="null" customClass="" />
-    */
 
 	let { src = '', alt = '', size = 64, onclick = null, customClass = '' } = $props();
 
@@ -111,6 +111,11 @@
 			opacity 0.15s ease;
 		-webkit-tap-highlight-color: transparent;
 
+		@media (max-width: 500px) {
+			width: 44px !important;
+			height: 44px !important;
+		}
+
 		.cone-bg {
 			display: none;
 		}
@@ -141,6 +146,19 @@
 		transition: opacity 0.2s ease;
 	}
 
+	.actionBtnImg {
+		padding: 0;
+		inset: 1;
+		&:hover {
+			inset: 0;
+			outline: 2px solid $clr-teal;
+		}
+		&:active {
+			outline: 0px solid $clr-teal;
+			transition: all 0.35s;
+		}
+	}
+
 	/* ==========================================================================
      1. DEFAULT РЕЖИМ (По умолчанию, когда нет .gender и .icon)
      Одно кольцо $clr-white, :hover -> $clr-teal, :active/.action -> неоморфизм
@@ -164,7 +182,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid $clr-white;
+				border: 2px solid rgba(255, 255, 255, 0.01);
 				box-sizing: border-box;
 				overflow: hidden;
 				transition: border-color 0.2s ease;
@@ -192,6 +210,7 @@
 			box-shadow:
 				inset 3px 3px 6px rgba(0, 0, 0, 0.45),
 				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
+			background-color: $clr-pink;
 
 			.oval-inner {
 				border-color: $clr-pink;
@@ -264,24 +283,32 @@
 		}
 
 		&:hover {
+			box-shadow:
+				inset 3px 3px 6px rgba(250, 250, 250, 0.95),
+				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
 			.oval-outer,
 			.oval-inner {
-				border-color: $clr-teal;
+				border-color: $clr-white;
 			}
 			.bg-hover,
 			.cone-bg {
-				opacity: 1;
+				opacity: 0;
 			}
 		}
 
 		&:active,
-		&.notAction {
-			transform: scale(0.92);
-			opacity: 0.5;
+		&.action {
+			transform: scale(0.95);
+			box-shadow:
+				inset 3px 3px 6px rgba(250, 250, 250, 0.95),
+				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
 
 			.oval-outer,
 			.oval-inner {
 				border-color: $clr-pink;
+			}
+			.oval-inner {
+				background-color: $clr-pink;
 			}
 			.bg-hover {
 				opacity: 0;
@@ -289,8 +316,14 @@
 			.bg-active {
 				opacity: 1;
 			}
-			.cone-bg {
-				opacity: 0;
+		}
+		&.notAction {
+			transform: scale(0.92);
+			opacity: 0.5;
+			.oval-outer,
+			.oval-inner {
+				border-color: transparent;
+				background: transparent;
 			}
 		}
 	}
@@ -308,7 +341,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid rgba(255, 255, 255, 0.6);
+				border: 2px solid rgba(255, 255, 255, 0.01);
 				padding: 3px;
 				box-sizing: border-box;
 				transition: border-color 0.2s ease;
@@ -319,7 +352,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid rgba(255, 255, 255, 0.6);
+				border: 2px solid rgba(255, 255, 255, 0.01);
 				box-sizing: border-box;
 				overflow: hidden;
 				transition: border-color 0.2s ease;

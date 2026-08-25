@@ -4,7 +4,7 @@
 
 <svelte:head>
 	<meta name="robots" content="index,follow" />
-	<title>amoca about</title>
+	<title>tiri about</title>
 </svelte:head>
 
 <header class="header">

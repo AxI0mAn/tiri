@@ -23,7 +23,7 @@
 
 <svelte:head>
 	<meta name="robots" content="index,follow" />
-	<title>amoca install</title>
+	<title>tiri install</title>
 </svelte:head>
 
 <header class="header" id="top-anchor">

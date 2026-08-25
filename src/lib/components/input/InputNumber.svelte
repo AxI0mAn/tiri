@@ -74,6 +74,7 @@
 			onbeforeinput={handleBeforeInput}
 			oninput={handleInput}
 			onblur={() => (value = sanitizeNumber(value))}
+			onfocus={(e) => e.currentTarget.select()}
 		/>
 
 		<button type="button" class="btn-step" onclick={increment} aria-label="Increase"> + </button>
@@ -98,6 +99,8 @@
 			display: inline-flex;
 			justify-content: space-around;
 			align-items: center;
+
+			padding: 4px;
 			height: 44px;
 			border-radius: 12px;
 			border: 2px solid rgba(255, 255, 255, 0.2);
@@ -118,7 +121,7 @@
 		}
 
 		.btn-step {
-			width: 40px;
+			width: 1rem;
 			height: 100%;
 			background: transparent;
 			border: none;
@@ -142,7 +145,7 @@
 		}
 
 		.number-input {
-			width: 60px;
+			width: 3rem;
 			height: 100%;
 			border: none;
 			background: transparent;
