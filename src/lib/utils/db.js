@@ -39,6 +39,7 @@ export async function saveEntry(entry) {
 
     const record = {
       ...entry,
+      type: entry.types || entry.type, // ← универсально
       dateStr,
       yearMonth,
       year: eventDate.getFullYear()

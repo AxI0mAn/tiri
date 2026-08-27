@@ -24,7 +24,7 @@ html {
 
 body {
   /* Путь к вашей картинке */
-  background-image:
+  background:
     linear-gradient(225deg, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.6)),
     // url('$lib/assets/body_bg3d.webp'),
     linear-gradient(300deg, #F6FAFC 0%, #7EE7E5 50%, #F6FAFC 100%);
@@ -36,7 +36,7 @@ body {
   /* 200px или 2.5% — размер узора орнамента */
 
   // фиксирует градиенты и орнамент при скролле
-  background-attachment: fixed, scroll, fixed;
+  background-attachment: fixed, fixed, fixed;
 }
 
 a {

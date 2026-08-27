@@ -39,8 +39,8 @@ import namePng from '$lib/assets/iconPic/128/name.png';
 
 import timeWebp from '$lib/assets/iconPic/128/time.webp';
 import timePng from '$lib/assets/iconPic/128/time.png';
-import todayWebp from '$lib/assets/iconPic/128/today.webp';
-import todayPng from '$lib/assets/iconPic/128/today.png';
+import dateWebp from '$lib/assets/iconPic/128/date.webp';
+import datePng from '$lib/assets/iconPic/128/date.png';
 
 import myPercWebp from '$lib/assets/iconPic/128/myPerc.webp';
 import myPercPng from '$lib/assets/iconPic/128/myPerc.png';
@@ -68,7 +68,7 @@ const baseSchema = {
     required: false, //  true - Обязательное для заполнения
     fieldClass: '', // класс для стилизации в форме, но не в свойствах
     label: "Стрижка", // Название поля с опциями
-    title: "текстовое описание поля", // описание поля
+    title: "Какие именно работы ты выполняешь:", // описание поля
     options: { // опции для этого поля
       male: {
         label: "Мужская", // название опции
@@ -92,7 +92,7 @@ const baseSchema = {
         label: "Женская",
         required: false,
         optionClass: 'gender',
-        select: true,
+        select: false,
         formView: ['BtnImg'],
         iconWebp: femaleWebp,
         iconPng: femalePng,
@@ -119,13 +119,13 @@ const baseSchema = {
   },
   percent: {
     choose: true,
-    required: true,
+    required: false,
     fieldClass: 'percentField',
     label: "Настройки оплаты",
-    title: "текстовое описание поля",
+    title: "Введи стартовые цифры - которые используются чаще всего.",
     options: {
       myPercent: {
-        label: "Мой процент",
+        label: "Процент, который ты оставляешь себе.",
         required: true,
         optionClass: '',
         select: true,
@@ -138,7 +138,7 @@ const baseSchema = {
         iconPng: myPercPng,
       },
       sum: {
-        label: "Стандартный чек",
+        label: "Стоимость для клиента.",
         required: true,
         optionClass: '',
         select: true,
@@ -151,7 +151,7 @@ const baseSchema = {
         iconPng: sumPng,
       },
       tips: {
-        label: "Чаевые",
+        label: "Чаевые - все твои.",
         required: false,
         optionClass: '',
         select: true,
@@ -164,15 +164,13 @@ const baseSchema = {
         iconPng: tipsPng,
       },
     }
-
-
   },
   pay: {
     choose: true,
     required: false,
     fieldClass: '',
     label: "Тип оплаты",
-    title: "текстовое описание поля",
+    title: "Оплата:",
     options: {
       cash: {
         label: "Наличные",
@@ -184,25 +182,25 @@ const baseSchema = {
         iconPng: cashPng,
       },
       card1: {
-        label: "Карта1",
-        required: true,
-        optionClass: '',
-        select: true,
-        formView: ['BtnImg'],
-        iconWebp: cardBWebp,
-        iconPng: cardBPng,
-      },
-      card2: {
-        label: "Карта2",
+        label: "Твоя Карта",
         required: false,
         optionClass: '',
-        select: false,
+        select: true,
         formView: ['BtnImg'],
         iconWebp: cardGWebp,
         iconPng: cardGPng,
       },
+      card2: {
+        label: "Карта для процента",
+        required: false,
+        optionClass: '',
+        select: false,
+        formView: ['BtnImg'],
+        iconWebp: cardBWebp,
+        iconPng: cardBPng,
+      },
       crypto: {
-        label: "Счёт",
+        label: "Счёт для процента",
         required: false,
         optionClass: '',
         select: false,
@@ -217,7 +215,7 @@ const baseSchema = {
     required: false,
     fieldClass: 'notesField',
     label: "Заметки",
-    title: "текстовое описание поля",
+    title: "Можно в бланке заказа или напоминания, хранить эту дополнительную информацию.",
     options: {
       name: {
         label: "Имя",
@@ -272,8 +270,8 @@ export const REMIND_FIELD = {
       required: true,
       select: true,
       formView: ['BtnImg', 'InputDate'],
-      iconWebp: todayWebp,
-      iconPng: todayPng,
+      iconWebp: dateWebp,
+      iconPng: datePng,
     },
   }
 }

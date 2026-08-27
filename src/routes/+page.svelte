@@ -129,6 +129,8 @@
 			<span class="allCalc font-digits">managing commissions and tracking dates and times.</span>
 		</h1>
 
+		<a href="{base}/month">Calendar from month</a>
+
 		<div class="testComponents">
 			<h3>NEW ACTION</h3>
 			<div class="btnTested">

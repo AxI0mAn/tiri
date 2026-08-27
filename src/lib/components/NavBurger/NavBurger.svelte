@@ -272,7 +272,6 @@
 		touch-action: manipulation;
 
 		.line {
-			// Был $burger-color (#1e1e1e)
 			fill: $clr-teal;
 			transition:
 				transform 0.3s ease-in-out,
