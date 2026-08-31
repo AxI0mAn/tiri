@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 // $lib/store/ConstructorStore.svelte.js
 
-// конструктор - образец для создания карточек заказа и напоминания
-// использует baseSchema - для заказа и дополнения remind и about - для напоминания
+// конструктор - образец для создания карточек заметки и напоминания
+// использует baseSchema - для заметки и дополнения remind и about - для напоминания
 // хранится в localStorage 
 // при изменении свойства - автоматически перезаписывается в localStorage
 // для переключения свойства использовать toggleField toggleOption
@@ -50,9 +50,6 @@ import sumWebp from '$lib/assets/iconPic/128/sum.webp';
 import sumPng from '$lib/assets/iconPic/128/sum.png';
 
 
-
-
-
 // Вместо import { browser } from '$app/environment';
 // Используем это:
 export const browser = typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -65,7 +62,7 @@ export const STORAGE_KEY_REMINDS = 'card_constructor_reminds_v1';
 const baseSchema = {
   gender: {
     choose: true,  // true - подключено поле,  false - отключено
-    required: false, //  true - Обязательное для заполнения
+    required: true, //  true - Обязательное для заполнения
     fieldClass: '', // класс для стилизации в форме, но не в свойствах
     label: "Стрижка", // Название поля с опциями
     title: "Какие именно работы ты выполняешь:", // описание поля
@@ -119,7 +116,7 @@ const baseSchema = {
   },
   percent: {
     choose: true,
-    required: false,
+    required: true,
     fieldClass: 'percentField',
     label: "Настройки оплаты",
     title: "Введи стартовые цифры - которые используются чаще всего.",
@@ -167,7 +164,7 @@ const baseSchema = {
   },
   pay: {
     choose: true,
-    required: false,
+    required: true,
     fieldClass: '',
     label: "Тип оплаты",
     title: "Оплата:",
@@ -255,7 +252,7 @@ export const REMIND_FIELD = {
   required: true,
   optionClass: '',
   label: "Время и дата события",
-  title: "текстовое описание поля",
+  title: "Когда напоминание появится в списке дня.",
   options: {
     time: {
       label: "Время",

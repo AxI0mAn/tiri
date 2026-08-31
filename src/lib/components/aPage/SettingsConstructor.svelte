@@ -171,17 +171,15 @@
 							{/if}
 
 							<!-- Селектор статуса -->
-							{#if !isOptRequired}
-								<div class="status-container" bind:this={selectStatusRefs[statusKey]}>
-									<SelectStatus
-										bind:value={
-											() => (opt.select ? 'use' : 'not_use'),
-											(v) => constructorStore.setOptionSelect(fieldKey, optionKey, v === 'use')
-										}
-										disabled={isFieldDisabled}
-									/>
-								</div>
-							{/if}
+							<div class="status-container" bind:this={selectStatusRefs[statusKey]}>
+								<SelectStatus
+									bind:value={
+										() => (opt.select ? 'use' : 'not_use'),
+										(v) => constructorStore.setOptionSelect(fieldKey, optionKey, v === 'use')
+									}
+									disabled={isFieldDisabled}
+								/>
+							</div>
 						</div>
 
 						{#if opt.label}
@@ -229,6 +227,7 @@ Svelte
 		width: 100%;
 
 		.options-list {
+			margin-top: 1rem;
 			display: flex;
 			flex-direction: column;
 			gap: 16px;
@@ -237,6 +236,8 @@ Svelte
 			transition:
 				background-color 0.25s ease,
 				opacity 0.25s ease;
+
+			outline: 2px solid $clr-white;
 
 			&.is-required {
 				background-color: transparent;
@@ -332,6 +333,7 @@ Svelte
 			}
 
 			.card-content {
+				padding-top: 2rem;
 				position: relative;
 				display: flex;
 				flex-direction: column;
