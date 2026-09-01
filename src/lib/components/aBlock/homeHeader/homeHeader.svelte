@@ -14,19 +14,21 @@
 	<div><NavBurger /></div>
 	<div class="logoText">
 		<div class="logoText">
-			<Picture
-				src={{
-					webp: srcLogoText_webp,
-					jpeg: srcLogoText_png
-				}}
-				alt="Логотип текст"
-				class="bg-image"
-				loading="eager"
-				decoding="sync"
-				fetchpriority="high"
-				// width={128}
-				// height={64}
-			/>
+			<a href="/">
+				<Picture
+					src={{
+						webp: srcLogoText_webp,
+						jpeg: srcLogoText_png
+					}}
+					alt="Логотип текст"
+					class="bg-image"
+					loading="eager"
+					decoding="sync"
+					fetchpriority="high"
+					// width={128}
+					// height={64}
+				/></a
+			>
 		</div>
 	</div>
 	<div class="shareNow">
@@ -36,21 +38,18 @@
 
 <style lang="scss">
 	.home__header {
-		background-color: transparent; // Используем наш утвержденный акцент
-		width: 100%;
+		margin: 0 auto;
+		background-color: transparent;
+		min-width: 100%;
 		padding: 0.25rem 0.5rem;
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: space-between;
 		align-items: center;
 		gap: 1rem;
-
-		// Текст внутри коралловой шапки должен быть темным для контраста
 		color: $clr-bg;
 
 		.logoText {
-			// width: 10vw;
-			// min-
 			width: 100px;
 			aspect-ratio: 2/1;
 		}

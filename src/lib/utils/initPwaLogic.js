@@ -9,7 +9,7 @@ src/lib/utils/initPwaLogic.js
 */
 
 import { appStore } from "$lib/store/appStore.svelte";
-import { getCurrentISODate } from "./getCurrentISODate";
+import { getCurrentISODate } from "./dateHelpers";
 
 
 let deferredPrompt; // переменная для хранения события beforeinstallprompt

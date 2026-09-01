@@ -1,4 +1,5 @@
 <script>
+	// src/lib/components/aBlock/modal/ModalBackdrop.svelte
 	import { fade } from 'svelte/transition';
 
 	// Принимаем состояние открытия и кастомные классы/содержимое через пропсы Svelte 5

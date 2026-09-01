@@ -1,6 +1,6 @@
 <script>
 	// src/lib/components/input/InputTime.svelte
-	let { value = $bindable(''), label = '' } = $props();
+	let { value = $bindable('09:30'), label = '' } = $props();
 </script>
 
 <div class="time-field">

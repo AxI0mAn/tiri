@@ -4,7 +4,7 @@
 	 * @typedef {Object} Props
 	 * @property {string} [value='']
 	 * @property {string} [label='']
-	 * @property {string} [placeholder='+7 (___) ___-__-__']
+	 * @property {string} [placeholder='+__ (___) ___-__-__']
 	 * @property {string} [customClass='']
 	 * @property {boolean} [disabled=false]
 	 */
@@ -12,7 +12,7 @@
 	let {
 		value = $bindable(''),
 		label = '',
-		placeholder = '+7 (___) ___-__-__',
+		placeholder = '+__ (___) ___-__-__',
 		customClass = '',
 		disabled = false
 	} = $props();

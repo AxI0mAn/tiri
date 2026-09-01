@@ -92,9 +92,11 @@
 	/* БАЗОВЫЕ СТИЛИ */
 	.btn-img {
 		position: relative;
-		width: var(--btn-size);
-		height: var(--btn-size);
-		padding: 8px;
+		max-width: var(--btn-size);
+		width: 10vw;
+		max-height: var(--btn-size);
+		height: 10vw;
+		padding: 4px;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -110,11 +112,6 @@
 			box-shadow 0.15s ease,
 			opacity 0.15s ease;
 		-webkit-tap-highlight-color: transparent;
-
-		@media (max-width: 500px) {
-			width: 44px !important;
-			height: 44px !important;
-		}
 
 		.cone-bg {
 			display: none;
