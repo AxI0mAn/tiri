@@ -152,6 +152,15 @@
 						customClass="actionBtnImg"
 					/>
 				</a>
+				<a href="{base}/day">
+					<BtnImg
+						src={imgDate}
+						alt="test btn img"
+						size={88}
+						onclick="null"
+						customClass="actionBtnImg"
+					/>
+				</a>
 			</div>
 			<h3>BUTTON GENDER TEST</h3>
 			<div class="btnTested">

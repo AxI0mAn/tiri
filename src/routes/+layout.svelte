@@ -63,7 +63,7 @@
 		};
 	});
 
-	// ===========  Для плавного появления модалки с ячейками памяти
+	// ===========  Для плавного появления модалки
 	//============ встроенные эффекты Svelte5
 	import { cubicInOut } from 'svelte/easing';
 
@@ -75,13 +75,19 @@
 	let isTimerReady = $state(false);
 
 	onMount(() => {
-		// Таймер только для модалки соглашения (60 секунд)
+		// Таймер только для модалки соглашения
 		const timer = setTimeout(() => {
 			isTimerReady = true;
 		}, 100000);
 
 		return () => clearTimeout(timer);
 	});
+
+	// ======== модалки отчётов
+	import Modal_XreportDay from '$lib/components/aBlock/modal/Modal_XreportDay.svelte';
+
+	import Toast from '$lib/components/aBlock/Toast.svelte';
+	import { toastStore } from '$lib/store/toastStore.svelte.js';
 
 	// ============ плавные переходы для работы QuickMenu.svelte
 	// import { menuMaps } from '$lib/config/mathMenuMaps';
@@ -203,6 +209,18 @@
 		</button>
 	</div>
 </ModalBackdrop>
+
+<!-- Модалка X-отчета  -->
+<Modal_XreportDay />
+<!-- Модалка сохранения Z-отчета на странице src/routes/(date)/day_Zreport/+page.svelte -->
+
+<!-- Toast уведомление -->
+<Toast
+	message={toastStore.message}
+	type={toastStore.type}
+	isOpen={toastStore.visible}
+	onClose={() => toastStore.hide()}
+/>
 
 <style>
 	.page-wrapper {

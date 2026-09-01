@@ -52,9 +52,12 @@ export class CalculationsDay {
   }
 
   /**
-   * Вычисляет значение комиссии для заметки (округленно до целого)
+   * Вычисляет значение не комиссии, а моего зароботка для заметки (округленно до целого)
+   * sum - то что заплатил клиент (без чаевых)
+   * give - комиссия (sum * myPercent / 100)
+   * my - то что моё (sum - (sum * myPercent / 100))
    * @param {Object} entry - запись заметки
-   * @returns {number} - значение комиссии (sum * myPercent / 100), округленное до целого
+   * @returns {number} - значение (sum - (sum * myPercent / 100)), округленное до целого
    */
   cardPercent(entry) {
     try {
@@ -307,9 +310,8 @@ export class CalculationsDay {
 
         sum += entrySum;
         my += tips + entryPercent;
-        give += entrySum - (entrySum * entryPercent / 100); // TODO было entrySum - entryPercent
+        give += entryPercent;  // TODO было entrySum - entryPercent        
       }
-
       return {
         sum: Math.round(sum),
         my: Math.round(my),

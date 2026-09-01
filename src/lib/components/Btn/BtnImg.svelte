@@ -93,9 +93,9 @@
 	.btn-img {
 		position: relative;
 		max-width: var(--btn-size);
-		width: 10vmin;
+		width: 10vw;
 		max-height: var(--btn-size);
-		height: 10vmin;
+		height: 10vw;
 		padding: 4px;
 		display: inline-flex;
 		align-items: center;

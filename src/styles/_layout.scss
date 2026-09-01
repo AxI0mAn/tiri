@@ -95,8 +95,8 @@
     }
   }
 
-  // --- МОБИЛЬНЫЙ LANDSCAPE (6 строк, 12 колонок) ---
-  @media (max-height: 500px) and (orientation: landscape) {
+  // --- МОБИЛЬНЫЙ   ---
+  @media (max-width: 501px) {
     padding: 0 auto;
     grid-template-columns: 1fr auto 1fr;
     grid-template-areas:

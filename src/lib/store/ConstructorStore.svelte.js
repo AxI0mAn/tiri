@@ -273,7 +273,8 @@ export const REMIND_FIELD = {
   }
 }
 
-
+/**
+ * Класс для заметок  */
 export class ConstructorStore {
   /** @type {Record<string, any>} */
 
