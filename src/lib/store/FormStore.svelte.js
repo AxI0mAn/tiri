@@ -1,6 +1,7 @@
 /* eslint-disable svelte/prefer-svelte-reactivity */
 // src/lib/store/FormStore.svelte.js
 import { saveEntry } from '$lib/utils/db.js';
+import { createLocalTimestamp, formatDateISOLocal } from '$lib/utils/dateHelpers.js';
 
 export class FormDraftManager {
   // 1. $state объявляется строго как поле класса на верхнем уровне
@@ -34,7 +35,9 @@ export class FormDraftManager {
     this.storageKey = 'draft_entry';
 
     const savedDraft = this.loadDraft();
-    const now = Date.now();
+    const now = Date.now(); //  локальное время
+
+
 
     // 2. Наполняем уже объявленное поле draft значениями
     if (savedDraft && savedDraft.types === types) {
@@ -164,47 +167,22 @@ export class FormDraftManager {
 
     // ====== СПЕЦИАЛЬНАЯ ОБРАБОТКА ДЛЯ REMINDER ======
     if (this.types === 'reminder') {
-      // Получаем данные из поля remind
       const remindData = record.value?.remind;
 
-      // Если есть данные remind с date и time - формируем timestamp из них
       if (remindData && typeof remindData === 'object' && remindData.date && remindData.time) {
         const { date, time } = remindData;
-        const [year, month, day] = date.split('-').map(Number);
-        const [hours, minutes] = time.split(':').map(Number);
 
-        // Создаем timestamp из даты и времени напоминания (используем Date.UTC)
-        const reminderTimestamp = Date.UTC(year, month - 1, day, hours, minutes);
+        // ✅ Создаем timestamp в ЛОКАЛЬНОМ времени
+        const reminderTimestamp = createLocalTimestamp(date, time);
 
-        // Обновляем id, timestamp и добавляем dateStr
         record.id = `${this.types}_${reminderTimestamp}`;
         record.timestamp = reminderTimestamp;
-        record.dateStr = date; // дата из поля remind
-        record.year = year; // год из remind
-        record.yearMonth = `${year}-${String(month).padStart(2, '0')}`; // год-месяц из remind
+        record.dateStr = date;
+        record.year = parseInt(date.split('-')[0], 10);
+        record.yearMonth = date.slice(0, 7);
 
-        // Добавляем dateCreate (дата создания черновика)
         const createTimestamp = this.draft.timestamp || Date.now();
-        // Используем Date.UTC для получения компонентов даты
-        const createDateObj = new Date(createTimestamp);
-        const createYear = createDateObj.getUTCFullYear();
-        const createMonth = String(createDateObj.getUTCMonth() + 1).padStart(2, '0');
-        const createDay = String(createDateObj.getUTCDate()).padStart(2, '0');
-        record.dateCreate = `${createYear}-${createMonth}-${createDay}`;
-      } else {
-        // fallback: если remind не заполнен, используем текущий timestamp
-        const now = Date.now();
-        record.id = `${this.types}_${now}`;
-        record.timestamp = now;
-        // Используем Date.UTC для получения компонентов даты
-        const dateObj = new Date(now);
-        const year = dateObj.getUTCFullYear();
-        const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
-        const day = String(dateObj.getUTCDate()).padStart(2, '0');
-        record.dateStr = `${year}-${month}-${day}`;
-        record.dateCreate = record.dateStr;
-        record.year = year;
-        record.yearMonth = `${year}-${month}`;
+        record.dateCreate = formatDateISOLocal(createTimestamp);
       }
     } else {
       // ====== ДЛЯ NOTE: используем текущий timestamp ======

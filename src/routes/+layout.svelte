@@ -222,7 +222,7 @@
 	onClose={() => toastStore.hide()}
 />
 
-<style>
+<style lang="scss">
 	.page-wrapper {
 		width: 100%;
 	}

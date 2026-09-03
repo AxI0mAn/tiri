@@ -71,6 +71,7 @@
 {/if}
 
 <style lang="scss">
+@use '../../../styles/_variables.scss' as *;
 	.btn-share {
 		display: inline-flex;
 		align-items: center;

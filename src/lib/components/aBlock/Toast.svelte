@@ -49,7 +49,7 @@
 	</div>
 {/if}
 
-<style>
+<style lang="scss">
 	.toast {
 		position: fixed;
 		top: 20%;

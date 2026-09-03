@@ -180,11 +180,11 @@
 			<!-- Вкладки -->
 			<div class="tabs">
 				<button
-					class="tab {activeTab === 0 ? 'active' : ''}"
-					style="background: {activeTab === 0 ? 'var(--clr-bg-card)' : 'transparent'};"
-					onclick={() => setTab(0)}
+					class="tab {activeTab === 2 ? 'active' : ''}"
+					style="background: {activeTab === 2 ? 'var(--clr-bg-dark)' : 'transparent'};"
+					onclick={() => setTab(2)}
 				>
-					Аренда
+					Клиенты
 				</button>
 				<button
 					class="tab {activeTab === 1 ? 'active' : ''}"
@@ -194,11 +194,11 @@
 					Доход
 				</button>
 				<button
-					class="tab {activeTab === 2 ? 'active' : ''}"
-					style="background: {activeTab === 2 ? 'var(--clr-bg-dark)' : 'transparent'};"
-					onclick={() => setTab(2)}
+					class="tab {activeTab === 0 ? 'active' : ''}"
+					style="background: {activeTab === 0 ? 'var(--clr-bg-card)' : 'transparent'};"
+					onclick={() => setTab(0)}
 				>
-					Клиенты
+					Аренда
 				</button>
 				<button
 					class="tab {activeTab === 3 ? 'active' : ''}"
@@ -213,20 +213,20 @@
 			<div class="blocks">
 				<!-- Блок 0: Аренда -->
 				{#if activeTab === 0}
-					<div class="block" style="background: var(--clr-bg-card);">
+					<div class="block">
 						<h2>Аренда:</h2>
 						<div class="block-content">
 							<div class="row">
 								<span class="label">Уже оплачено</span>
 								<span class="value font-digits">{reportData.payments.nowGive}</span>
 							</div>
-							<div class="hint">пояснение мелким шрифтом.</div>
+							<div class="hint">Суммы, которые уже оплачены на карту аренды и счёт аренды.</div>
 
 							<div class="row">
 								<span class="label">Доплатить</span>
 								<span class="value font-digits">{reportData.payments.moreGive}</span>
 							</div>
-							<div class="hint">пояснение мелким шрифтом.</div>
+							<div class="hint">Остаток, которые необходимо оплатить в счёт аренды.</div>
 
 							<div class="row total">
 								<span class="label">Всего</span>
@@ -234,33 +234,33 @@
 									>{reportData.payments.allGive}</span
 								>
 							</div>
-							<div class="hint">пояснение мелким шрифтом.</div>
+							<div class="hint">Сколько необходимо оплатить за аренду.</div>
 						</div>
 					</div>
 				{/if}
 
 				<!-- Блок 1: Доход -->
 				{#if activeTab === 1}
-					<div class="block" style="background: var(--clr-teal-soft);">
+					<div class="block">
 						<h2>Доход:</h2>
 						<div class="block-content">
 							<div class="row">
 								<span class="label">Валовый</span>
 								<span class="value font-digits">{reportData.payments.gross}</span>
 							</div>
-							<div class="hint">пояснение мелким шрифтом.</div>
+							<div class="hint">Всё что получено от клиентов (оплата и чаевые).</div>
 
 							<div class="row">
 								<span class="label">Работа</span>
 								<span class="value font-digits">{reportData.payments.my}</span>
 							</div>
-							<div class="hint">пояснение мелким шрифтом.</div>
+							<div class="hint">Заработано после оплаты аренды. (без чаевых)</div>
 
 							<div class="row">
 								<span class="label">Чаевые</span>
 								<span class="value font-digits">{reportData.payments.tips}</span>
 							</div>
-							<div class="hint">пояснение мелким шрифтом.</div>
+							<div class="hint">Заработано чаевых.</div>
 
 							<div class="row total">
 								<span class="label">Итого</span>
@@ -268,14 +268,14 @@
 									>{reportData.payments.allMy}</span
 								>
 							</div>
-							<div class="hint">пояснение мелким шрифтом.</div>
+							<div class="hint">Заработано за день (с чаевыми).</div>
 						</div>
 					</div>
 				{/if}
 
 				<!-- Блок 2: Клиенты -->
 				{#if activeTab === 2}
-					<div class="block" style="background: var(--clr-bg-dark); color: var(--clr-text-main);">
+					<div class="block">
 						<h2>Клиенты:</h2>
 						<div class="block-content">
 							{#if reportData.clients.male > 0}
@@ -325,7 +325,7 @@
 
 				<!-- Блок 3: Достижения -->
 				{#if activeTab === 3}
-					<div class="block" style="background: var(--clr-pink);">
+					<div class="block">
 						<h2>Достижения:</h2>
 						<div class="block-content">
 							<p style="color: var(--clr-text-secondary); text-align: center; padding: 20px 0;">
@@ -340,7 +340,8 @@
 	<Modal_ZreportSaved onSend={handleSend} />
 </div>
 
-<style>
+<style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	.z-report-page {
 		display: flex;
 		flex-direction: column;
@@ -348,6 +349,20 @@
 		max-height: 100vh;
 		background: var(--clr-bg-primary, #f5f5f5);
 		overflow: hidden;
+
+		margin: 0 auto;
+		// --- РЕЖИМ: DESKTOP & TABLET LANDSCAPE ---
+		@media (min-width: 1024px), (orientation: landscape) and (min-width: 768px) {
+			max-width: 60vw;
+		}
+		// --- РЕЖИМ: MOBILE & TABLET PORTRAIT ---
+		@media (max-width: 1023px) and (orientation: portrait), (max-width: 767px) {
+			max-width: 80vw;
+		}
+		// --- МОБИЛЬНЫЙ   ---
+		@media (max-width: 501px) {
+			max-width: 100vw;
+		}
 	}
 
 	.header {
@@ -355,7 +370,7 @@
 		display: flex;
 		align-items: center;
 		padding: 8px 16px;
-		background: var(--clr-bg-card, #ffffff);
+		background: var(--clr-bg-card, $clr-white);
 		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 		min-height: 56px;
 	}
@@ -363,9 +378,9 @@
 	.headerSlogan {
 		flex: 1;
 		text-align: center;
-		font-size: 18px;
+		font-size: 1rem;
 		font-weight: 600;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 		margin: 0;
 	}
 
@@ -465,14 +480,24 @@
 		flex: 1;
 		overflow: hidden;
 		position: relative;
+		max-width: max-content;
+		min-width: 60%;
+		margin: 0 auto;
+		color: $clr-text-main;
+		border: 2px solid $clr-white;
+		border-radius: 1rem;
+		background-image: $grad-block;
 	}
 
 	.block {
 		height: 100%;
-		border-radius: 16px;
 		padding: 20px 20px 24px;
 		overflow-y: auto;
 		animation: fadeIn 0.25s ease;
+		background-image: url('../../../lib/assets/iconPic/256/logo_report3d.webp');
+		background-repeat: no-repeat;
+		background-position: right bottom;
+		background-size: 30vw 30vw;
 	}
 
 	.block::-webkit-scrollbar {
@@ -515,6 +540,7 @@
 		padding: 4px 0;
 		font-size: 16px;
 		color: var(--clr-text-main, #1a1a1a);
+		border-bottom: 1px dotted $clr-white;
 	}
 
 	.row .label {

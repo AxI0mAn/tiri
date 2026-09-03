@@ -1,7 +1,9 @@
 <!-- src/lib/components/Cards/ShowCard.svelte -->
 
 <script>
-	// @ts-nocheck
+	// @ts-ignore
+	import { base } from '$app/paths';
+	// @ts-ignore
 	import { goto } from '$app/navigation'; // Импортируем нормально наверх
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import { formatTime } from '$lib/utils/dateHelpers.js';
@@ -15,7 +17,7 @@
 
 	function getTime() {
 		if (isReminder && entry.value?.remind?.time) {
-			return entry.value.remind.time;
+			return entry.value.remind.time; // строка "14:30"
 		}
 		return formatTime(entry.timestamp);
 	}
@@ -59,13 +61,19 @@
 	function handleEdit() {
 		appState.editEntryId = entry.id;
 		appState.editEntryDate = entry.dateStr;
-		goto('/edit');
+		goto(`${base}/edit`);
 	}
 
 	const sum = entry.value?.percent?.sum || 0;
+	const perc = entry.value?.percent?.myPercent;
 </script>
 
-<div class="show-card" class:is-note={isNote} class:is-reminder={isReminder}>
+<div
+	class="show-card"
+	class:is-note={isNote}
+	class:is-reminder={isReminder}
+	class:is-allMy={perc === 100}
+>
 	<div class="cardInfo">
 		<span class="time">{getTime()}</span>
 
@@ -99,6 +107,8 @@
 </div>
 
 <style lang="scss">
+	@use '../../../../styles/_variables.scss' as *;
+
 	.show-card {
 		display: flex;
 		flex-flow: row nowrap;
@@ -109,25 +119,29 @@
 		min-height: 56px;
 		padding: 8px 12px;
 		border-radius: 10px;
-		background: var(--clr-bg-card, #ffffff);
+		background: $clr-bg-card;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 		transition: all 0.2s;
 		flex-shrink: 0;
 	}
 
 	.show-card.is-note {
-		background: var(--clr-teal-soft, #e6f5f0);
+		background: $clr-teal-soft;
 	}
 
 	.show-card.is-reminder {
-		background: var(--clr-bg-pink, #fce8ed);
+		background: $clr-pink;
+	}
+
+	.show-card.is-allMy {
+		background: transparent;
 	}
 
 	.cardInfo {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 1rem;
+		gap: 1vw;
 	}
 
 	.time {

@@ -24,6 +24,7 @@
 </button>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	.btn {
 		display: flex;
 		justify-content: center;
