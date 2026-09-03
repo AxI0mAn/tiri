@@ -76,6 +76,30 @@
 
 	const sum = entry.value?.percent?.sum || 0;
 	const perc = entry.value?.percent?.myPercent;
+
+	// === -📝=TODO=📝- === 3е сентября
+	import { deleteEntry } from '$lib/utils/db.js';
+	import { toastStore } from '$lib/store/toastStore.svelte.js';
+
+	async function handleDelete() {
+		if (confirm(`Удалить запись ${entry.id}?`)) {
+			try {
+				await deleteEntry(entry.id);
+				toastStore.show('Запись удалена', 'success');
+				// Обновить список
+				if (typeof window !== 'undefined') {
+					window.dispatchEvent(
+						new CustomEvent('db:entry_saved', {
+							detail: { ...entry, _deleted: true }
+						})
+					);
+				}
+			} catch (error) {
+				toastStore.show('Ошибка удаления', 'error');
+			}
+		}
+	}
+	// === -📝=TODO=📝- === 3е сентября
 </script>
 
 <div
@@ -116,6 +140,9 @@
 			</svg>
 		</button>
 	{/if}
+	<!-- // === -📝=TODO=📝- === 3е сентября убери эту кнопку Удалить -->
+	<button class="delete-btn" onclick={handleDelete} aria-label="Удалить"> 🗑️ </button>
+	<!-- // === -📝=TODO=📝- === 3е сентября -->
 </div>
 
 <style lang="scss">

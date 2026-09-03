@@ -81,6 +81,7 @@
 		</div>
 		<!-- <a href="{base}/month">Calendar from month</a> -->
 
+		<a href="{base}/admin">ВВод заметок за прошлый период</a>
 		<div class="testComponents">
 			<div class="btnTested">
 				<a href="{base}/newReminder" class="testLink">

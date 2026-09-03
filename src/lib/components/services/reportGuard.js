@@ -40,11 +40,16 @@ export async function canEditEntry(entry, dateStr) {
  * @returns {Promise<boolean>}
  */
 export async function canAddNote(dateStr) {
+  // === -📝=TODO=📝- 3у сентября=== убери return  и раскоментируй ниже
+  return true; // Временно — всегда можно
+  // === -📝=TODO=📝- 3у сентября===
+  /*
   const today = getTodayDate();
   if (dateStr !== today) return false; // Только сегодня
 
   const report = await getReport_Z_date(today);
   return !report; // Можно только если нет Z-отчета за сегодня
+  */
 }
 
 /**
