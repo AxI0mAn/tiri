@@ -43,20 +43,6 @@
 
 	import Picture from '$lib/components/Picture/Picture.svelte';
 
-	// import srcExample_jpeg from '$lib/assets/iconPic/512/png_catalog.jpeg';
-	// import srcExample_webp from '$lib/assets/iconPic/512/png_catalog.webp';
-
-	// import srcLogo_webp from '$lib/assets/png_logo_transparent.png';
-
-	// import srcBasic_jpeg from '$lib/assets/iconPic/512/png_math_basic.jpeg';
-	// import srcBasic_webp from '$lib/assets/iconPic/512/png_math_basic.webp';
-	// import srcEngineer_jpeg from '$lib/assets/iconPic/512/png_math_engineer.jpeg';
-	// import srcEngineer_webp from '$lib/assets/iconPic/512/png_math_engineer.webp';
-	// import srcTrigonom_jpeg from '$lib/assets/iconPic/512/png_math_trigonometry.jpeg';
-	// import srcTrigonom_webp from '$lib/assets/iconPic/512/png_math_trigonometry.webp';
-	// import srcFraction_jpeg from '$lib/assets/iconPic/512/png_Fraction.jpeg';
-	// import srcFraction_webp from '$lib/assets/iconPic/512/png_Fraction.webp';
-
 	// ----------------
 
 	// -------------- рекламные вертикальные банеры для десктоп шире 1023

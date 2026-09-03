@@ -16,6 +16,8 @@
 	import { canAddNote } from '$lib/components/services/reportGuard';
 	import { getTodayDate } from '$lib/utils/dateHelpers.js';
 
+	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
+
 	let canAddNoteToday = $state(true);
 
 	onMount(async () => {
@@ -60,6 +62,7 @@
 
 		<BtnCreateZReport />
 	</footer>
+	<AdvertisementGor setBanners="1" />
 </div>
 
 <style lang="scss">
