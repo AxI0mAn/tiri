@@ -40,7 +40,8 @@
 		// 		// { label: 'old history', href: `${base}/history` }
 		// 	]
 		// },
-		{ label: 'settings', href: `${base}/settings` },
+		{ label: 'settings', href: `${base}/settings` }
+		/*
 		{ label: 'install', href: `${base}/install` },
 		{ label: 'about', href: `${base}/about` },
 		{ label: 'FAQ', href: `${base}/faq` },
@@ -48,6 +49,7 @@
 		{ label: 'privacy policy', href: `${base}/privacyPolicy` },
 		{ label: 'disclaimer', href: `${base}/disclaimer` },
 		{ label: 'contact us', href: `${base}/contactUs` }
+		 */
 	]);
 
 	/**

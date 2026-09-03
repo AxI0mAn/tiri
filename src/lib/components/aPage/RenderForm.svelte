@@ -524,6 +524,22 @@
 				flex-flow: row wrap;
 			}
 		}
+
+		// === -📝=TODO=📝- ===
+		// нужно было выделить поле ввода суммы
+		// оно должно быть первым!!! вообще-то
+		.field-block.percentField {
+			.option-row:nth-of-type(2) {
+				min-width: 100%;
+				.input-wrapper {
+					min-width: 60%;
+					.input-number-field {
+						min-width: 300px;
+					}
+				}
+			}
+		}
+
 		.field-block.notesField .option-row:last-child {
 			flex: 1 1 100%;
 			.input-wrapper {

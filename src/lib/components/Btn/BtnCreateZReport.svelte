@@ -115,7 +115,7 @@
 	<BtnImg
 		src={imgReport3d}
 		alt="Создать Z-отчёт"
-		size={88}
+		size={64}
 		customClass="actionBtnImg {hasReportForDate ? 'opacity-50' : ''}"
 	/>
 </button>
@@ -285,5 +285,8 @@
 	.modal-actions :global(.btn-confirm-modal:disabled) {
 		opacity: 0.5 !important;
 		cursor: not-allowed !important;
+	}
+	button {
+		background-color: transparent;
 	}
 </style>

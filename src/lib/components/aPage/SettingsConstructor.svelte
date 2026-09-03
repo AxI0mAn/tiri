@@ -121,7 +121,7 @@
 										disabled={isOptDisabled}
 									/>
 
-									{#if typeof opt.min !== 'undefined' && typeof opt.max !== 'undefined'}
+									<!-- {#if typeof opt.min !== 'undefined' && typeof opt.max !== 'undefined'}
 										<InputRange
 											bind:value={opt.num}
 											min={opt.min}
@@ -129,7 +129,7 @@
 											step={opt.step || 1}
 											disabled={isOptDisabled}
 										/>
-									{/if}
+									{/if} -->
 								</div>
 
 								<!-- ТИП 3: Инпуты + Картинка -->
@@ -144,7 +144,7 @@
 											disabled={isOptDisabled}
 										/>
 
-										{#if typeof opt.min !== 'undefined' && typeof opt.max !== 'undefined'}
+										<!-- {#if typeof opt.min !== 'undefined' && typeof opt.max !== 'undefined'}
 											<InputRange
 												bind:value={opt.num}
 												min={opt.min}
@@ -152,7 +152,7 @@
 												step={opt.step || 1}
 												disabled={isOptDisabled}
 											/>
-										{/if}
+										{/if} -->
 									</div>
 
 									<div class="image-wrapper">

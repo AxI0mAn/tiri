@@ -140,9 +140,8 @@
 			</svg>
 		</button>
 	{/if}
-	<!-- // === -📝=TODO=📝- === 3е сентября убери эту кнопку Удалить -->
-	<button class="delete-btn" onclick={handleDelete} aria-label="Удалить"> 🗑️ </button>
-	<!-- // === -📝=TODO=📝- === 3е сентября -->
+	<!-- TODO нужно ли ??????????? -->
+	<!-- <button class="delete-btn" onclick={handleDelete} aria-label="Удалить"> 🗑️ </button>  -->
 </div>
 
 <style lang="scss">
