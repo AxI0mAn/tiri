@@ -79,6 +79,15 @@
 
 		// 2. Прошлые дни — переход на страницу Z-отчета
 		if (isPast) {
+			const report = await getReport_Z_date(dateStr);
+
+			if (!report) {
+				// ❌ Нет Z-отчета — ничего не делаем
+				console.log('[AssemblyDay] Нет Z-отчета за', dateStr);
+				return;
+			}
+
+			// ✅ Есть Z-отчет — переход на страницу Z-отчета
 			appState.now_mode = 'z_report';
 			appState.now_date = dateStr;
 			goto('/day_Zreport');

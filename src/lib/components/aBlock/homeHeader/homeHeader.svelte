@@ -1,6 +1,9 @@
 <script>
 	// src/lib/components/aBlock/homeHeader/homeHeader.svelte
 
+	// @ts-ignore
+	import { base } from '$app/paths';
+
 	import NavBurger from '$lib/components/NavBurger/NavBurger.svelte';
 	import BtnShare from '$lib/components/Btn/BtnShare.svelte';
 	import { appStore } from '$lib/store/appStore.svelte';
@@ -14,7 +17,7 @@
 	<div><NavBurger /></div>
 	<div class="logoText">
 		<div class="logoText">
-			<a href="/">
+			<a href="{base}/">
 				<Picture
 					src={{
 						webp: srcLogoText_webp,
