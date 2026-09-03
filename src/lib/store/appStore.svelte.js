@@ -6,6 +6,7 @@
 const browser = typeof window !== 'undefined' && typeof document !== 'undefined';
 
 import { getBrowserLanguage } from "$lib/utils/getBrowserLanguage";
+import { formatDateDotted } from '$lib/utils/dateHelpers.js';
 
 class AppStore {
 
@@ -101,7 +102,8 @@ class AppStore {
 
   /** Устанавливает текущую дату установки в нужном формате */
   setInstalled() {
-    this.installed = new Date().toISOString().split('T')[0].replace(/-/g, '.');
+    this.installed = formatDateDotted(new Date());
+    // this.installed = new Date().toISOString().split('T')[0].replace(/-/g, '.');
   }
 }
 

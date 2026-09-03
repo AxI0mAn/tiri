@@ -44,7 +44,7 @@
 	{/snippet}
 </ModalBackdrop>
 
-<style>
+<style lang="scss">
 	.modal-saved {
 		background: var(--clr-bg-card, #ffffff);
 		border-radius: 16px;

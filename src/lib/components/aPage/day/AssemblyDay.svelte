@@ -2,11 +2,14 @@
 <script>
 	// @ts-ignore
 	import { goto } from '$app/navigation';
-	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import ShowCard from './ShowCard.svelte';
-	import todayWebp from '$lib/assets/iconPic/128/today.webp';
+
+	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
+	import logo_job3dWebp from '$lib/assets/iconPic/64/logo_job3d.webp';
+	import imgReport3d from '$lib/assets/iconPic/64/logo_report3d.webp';
+
 	import { getAllThisDayRecords, getReport_Z_date } from '$lib/utils/db.js';
-	import { getTodayDate } from '$lib/utils/dateHelpers.js';
+	import { formatDateISOLocal, getTodayDate } from '$lib/utils/dateHelpers.js';
 	import { appState } from '$lib/store/appState.svelte.js';
 
 	// Props
@@ -129,6 +132,9 @@
 			};
 		}
 	});
+
+	// ✅ Определяем, какую иконку показывать
+	let reportIcon = $derived(hasReport ? imgReport3d : logo_job3dWebp);
 </script>
 
 <div class="assemblyDay">
@@ -140,7 +146,7 @@
 			<!-- Показываем кнопку только для сегодня и прошлых дней -->
 			{#if !isFuture && (isToday || isPast)}
 				<BtnImg
-					src={todayWebp}
+					src={reportIcon}
 					alt="button report"
 					size={44}
 					onclick={handleReportClick}
@@ -164,7 +170,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
 	.assemblyDay {
 		display: flex;
 		flex-direction: column;

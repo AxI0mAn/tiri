@@ -1,7 +1,10 @@
 <!-- src/lib/components/RenderForm.svelte -->
 <script>
 	import { untrack } from 'svelte';
+
 	import { FormDraftManager } from '$lib/store/FormStore.svelte.js';
+	import { formatTime, formatDateFromTimestamp } from '$lib/utils/dateHelpers.js';
+
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 
@@ -19,29 +22,66 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {Object} constructorStore
-	 * @property {FormType} [type]
-	 * @property {Function} [onSave]
-	 * @property {Function} [onCancel]
+	 * @property {Object} constructorStore - экземпляр ConstructorStore
+	 * @property {FormType} [type] - тип формы ('note' | 'reminder')
+	 * @property {Object} [entry] - существующая запись для редактирования
+	 * @property {Function} [onUpdate] - колбэк при изменении данных
+	 * @property {Function} [onSave] - колбэк при сохранении
+	 * @property {Function} [onCancel] - колбэк при отмене
+	 * @property {boolean} [hideActions=false] - скрыть footer с кнопками
 	 */
 
 	/** @type {Props} */
-	let { constructorStore, type = 'note', onSave = () => {}, onCancel = () => {} } = $props();
+	let {
+		constructorStore,
+		type = 'note',
+		entry = $bindable(null),
+		onUpdate = () => {},
+		onSave = () => {},
+		onCancel = () => {},
+		hideActions = false
+	} = $props();
 
-	const manager = untrack(() => new FormDraftManager(type, constructorStore));
+	// Создаем менеджер формы
+	const manager = untrack(() => {
+		const m = new FormDraftManager(type, constructorStore);
+
+		if (entry) {
+			m.draft = {
+				id: entry.id,
+				timestamp: entry.timestamp,
+				types: entry.types || entry.type,
+				value: JSON.parse(JSON.stringify(entry.value))
+			};
+		}
+
+		return m;
+	});
+
+	// Единственный $effect — синхронизация формы → entry
+	$effect(() => {
+		if (entry && manager.draft) {
+			const snapshot = $state.snapshot(manager.draft);
+			const newEntry = {
+				...entry,
+				value: JSON.parse(JSON.stringify(snapshot.value)),
+				timestamp: snapshot.timestamp,
+				types: snapshot.types || entry.types
+			};
+
+			// Обновляем entry только если данные изменились
+			if (JSON.stringify(entry) !== JSON.stringify(newEntry)) {
+				entry = newEntry;
+			}
+		}
+	});
 
 	// Добавляем реактивный список ошибок, отслеживающий изменения внутри manager.draft:
 	let validationErrors = $derived(manager.getValidationErrors());
 
-	let dateObj = $derived(new Date(manager.draft.timestamp));
-
-	let formattedTime = $derived(
-		dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-	);
-
-	let formattedDate = $derived(
-		dateObj.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })
-	);
+	// Используем функции из dateHelpers.js (локальное время)
+	let formattedTime = $derived(formatTime(manager.draft.timestamp));
+	let formattedDate = $derived(formatDateFromTimestamp(manager.draft.timestamp));
 
 	async function handleSave() {
 		await manager.save();
@@ -70,6 +110,22 @@
 		if (!hasSelection) return '';
 
 		return isSelected ? 'action' : 'notAction';
+	}
+
+	/**
+	 * Возвращает текущее состояние черновика из формы
+	 * @returns {Object} - копия draft
+	 */
+	function getDraft() {
+		return $state.snapshot(manager.draft);
+	}
+
+	/**
+	 * Возвращает текущее значение value из формы
+	 * @returns {Object} - копия value
+	 */
+	function getValue() {
+		return JSON.parse(JSON.stringify(manager.draft.value));
 	}
 </script>
 
@@ -327,11 +383,14 @@
 			{/each}
 		</div>
 	{/if}
-	<footer class="form-actions">
-		<!-- Кнопки действия -->
-		<BtnText buttonText="Отмена" onclick={handleCancel} />
-		<BtnText buttonText="Сохранить" disabled={!manager.isValid} onclick={handleSave} />
-	</footer>
+	<!-- ✅ FOOTER — показываем только если hideActions === false -->
+	{#if !hideActions}
+		<footer class="form-actions">
+			<!-- Кнопки действия -->
+			<BtnText buttonText="Отмена" onclick={handleCancel} />
+			<BtnText buttonText="Сохранить" disabled={!manager.isValid} onclick={handleSave} />
+		</footer>
+	{/if}
 </div>
 
 <!-- 
@@ -516,6 +575,11 @@
 		.form-actions {
 			margin: 0 auto;
 			padding: 1rem auto;
+			flex-shrink: 0;
+			display: flex;
+			gap: 12px;
+			justify-content: center;
+			border-top: 1px solid rgba(0, 0, 0, 0.06);
 		}
 	}
 </style>

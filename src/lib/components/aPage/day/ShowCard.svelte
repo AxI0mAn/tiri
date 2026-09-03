@@ -1,21 +1,32 @@
 <!-- src/lib/components/Cards/ShowCard.svelte -->
 
 <script>
-	// @ts-nocheck
+	// @ts-ignore
+	import { base } from '$app/paths';
+	// @ts-ignore
 	import { goto } from '$app/navigation'; // Импортируем нормально наверх
+	import { onMount } from 'svelte';
+
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import { formatTime } from '$lib/utils/dateHelpers.js';
 	import { appState } from '$lib/store/appState.svelte.js';
 	import { constructorStore } from '$lib/store/ConstructorStore.svelte.js';
+	import { canEditEntry } from '$lib/components/services/reportGuard';
 
 	let { entry } = $props();
 
 	const isNote = entry.type === 'note' || entry.types === 'note';
 	const isReminder = entry.type === 'reminder' || entry.types === 'reminder';
 
+	let canEdit = $state(true);
+
+	onMount(async () => {
+		canEdit = await canEditEntry(entry, entry.dateStr);
+	});
+
 	function getTime() {
 		if (isReminder && entry.value?.remind?.time) {
-			return entry.value.remind.time;
+			return entry.value.remind.time; // строка "14:30"
 		}
 		return formatTime(entry.timestamp);
 	}
@@ -57,15 +68,22 @@
 	}
 
 	function handleEdit() {
+		if (!canEdit) return;
 		appState.editEntryId = entry.id;
 		appState.editEntryDate = entry.dateStr;
-		goto('/edit');
+		goto(`${base}/edit`);
 	}
 
 	const sum = entry.value?.percent?.sum || 0;
+	const perc = entry.value?.percent?.myPercent;
 </script>
 
-<div class="show-card" class:is-note={isNote} class:is-reminder={isReminder}>
+<div
+	class="show-card"
+	class:is-note={isNote}
+	class:is-reminder={isReminder}
+	class:is-allMy={perc === 100}
+>
 	<div class="cardInfo">
 		<span class="time">{getTime()}</span>
 
@@ -90,15 +108,19 @@
 
 		<span class="sum">{sum}</span>
 	</div>
-	<button class="edit-btn" onclick={handleEdit} aria-label="Редактировать">
-		<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor">
-			<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2" />
-			<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2" />
-		</svg>
-	</button>
+	{#if canEdit}
+		<button class="edit-btn" onclick={handleEdit} aria-label="Редактировать">
+			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor">
+				<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2" />
+				<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2" />
+			</svg>
+		</button>
+	{/if}
 </div>
 
 <style lang="scss">
+	@use '../../../../styles/_variables.scss' as *;
+
 	.show-card {
 		display: flex;
 		flex-flow: row nowrap;
@@ -109,25 +131,29 @@
 		min-height: 56px;
 		padding: 8px 12px;
 		border-radius: 10px;
-		background: var(--clr-bg-card, #ffffff);
+		background: $clr-bg-card;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 		transition: all 0.2s;
 		flex-shrink: 0;
 	}
 
 	.show-card.is-note {
-		background: var(--clr-teal-soft, #e6f5f0);
+		background: $clr-teal-soft;
 	}
 
 	.show-card.is-reminder {
-		background: var(--clr-bg-pink, #fce8ed);
+		background: $clr-pink;
+	}
+
+	.show-card.is-allMy {
+		background: transparent;
 	}
 
 	.cardInfo {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 1rem;
+		gap: 1vw;
 	}
 
 	.time {

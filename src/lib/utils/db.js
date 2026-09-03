@@ -1,5 +1,7 @@
 // src/lib/utils/db.js
 
+import { formatDateISOLocal } from '$lib/utils/dateHelpers.js';
+
 const DB_NAME = 'LiveTiriDB';
 const DB_VERSION = 3;
 
@@ -46,7 +48,7 @@ export async function saveEntry(entry) {
     const store = tx.objectStore('entries');
 
     const eventDate = new Date(entry.timestamp);
-    const dateStr = eventDate.toISOString().split('T')[0];
+    const dateStr = formatDateISOLocal(entry.timestamp);
     const yearMonth = dateStr.slice(0, 7);
 
     const record = {
@@ -402,7 +404,33 @@ export async function getReportsByMonth(yearMonth) {
   }
 }
 
+/**
+ * Удаляет запись из IndexedDB по id
+ * @param {string} id - идентификатор записи
+ * @returns {Promise<void>}
+ */
+export async function deleteEntry(id) {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('entries', 'readwrite');
+      const store = tx.objectStore('entries');
+      const req = store.delete(id);
 
+      req.onsuccess = () => {
+        console.log(`[deleteEntry] Запись ${id} удалена`);
+        resolve();
+      };
+      req.onerror = () => {
+        console.error(`[deleteEntry] Ошибка удаления ${id}:`, req.error);
+        reject(req.error);
+      };
+    });
+  } catch (error) {
+    console.error('[deleteEntry] Критическая ошибка:', error);
+    throw error;
+  }
+}
 
 // === -📝=TODO=📝- ===
 // ВРЕМЕННО: для ручного тестирования (удалить после проверки)

@@ -7,6 +7,9 @@
 
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
 
+	import logo_job3dWebp from '$lib/assets/iconPic/64/logo_job3d.webp';
+	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
+
 	// Состояние для данных отчета
 	let xReportData = $state(null);
 	let dateStr = $state('');
@@ -46,21 +49,29 @@
 <ModalBackdrop isOpen={appState.modal_xReportDay} maxWidth="400px">
 	{#snippet children()}
 		<div class="x-report-modal">
-			<h2>X-отчет за {dateStr}</h2>
-
+			<h2>
+				X-отчет за {dateStr}
+			</h2>
+			<BtnImg
+				src={logo_job3dWebp}
+				alt="button report"
+				size={44}
+				onclick={() => {}}
+				customClass=""
+			/>
 			{#if xReportData}
 				<div class="report-content">
 					<div class="report-row">
-						<span class="label">Cумма за все услуги:</span>
+						<span class="label">Касса (без чаевых):</span>
 						<span class="value">{xReportData.sum}</span>
+					</div>
+					<div class="report-row">
+						<span class="label">Оплатить за аренду:</span>
+						<span class="value">{xReportData.give}</span>
 					</div>
 					<div class="report-row">
 						<span class="label">Мои с чаевыми:</span>
 						<span class="value">{xReportData.my}</span>
-					</div>
-					<div class="report-row">
-						<span class="label">Всего за аренду:</span>
-						<span class="value">{xReportData.give}</span>
 					</div>
 				</div>
 			{:else}
@@ -73,7 +84,7 @@
 	{/snippet}
 </ModalBackdrop>
 
-<style>
+<style lang="scss">
 	.x-report-modal {
 		background: var(--clr-bg-card, #ffffff);
 		border-radius: 16px;

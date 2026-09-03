@@ -93,10 +93,10 @@
 	.btn-img {
 		position: relative;
 		max-width: var(--btn-size);
-		width: 10vw;
+		width: 12.5vw;
 		max-height: var(--btn-size);
-		height: 10vw;
-		padding: 4px;
+		height: 12.5vw;
+		padding: 2px;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -243,7 +243,7 @@
 			position: absolute;
 			left: 0;
 			/* Динамический расчет сдвига овала в зависимости от --btn-size */
-			bottom: 0;
+			bottom: -0.5rem;
 			z-index: 2;
 
 			.oval-outer {

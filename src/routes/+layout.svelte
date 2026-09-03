@@ -89,6 +89,8 @@
 	import Toast from '$lib/components/aBlock/Toast.svelte';
 	import { toastStore } from '$lib/store/toastStore.svelte.js';
 
+	// ===================================
+
 	// ============ плавные переходы для работы QuickMenu.svelte
 	// import { menuMaps } from '$lib/config/mathMenuMaps';
 	// АВТОМАТИЧЕСКАЯ ЛОГИКА: подробности применения в 	$lib/config/mathMenuMaps';
@@ -187,7 +189,7 @@
 			amount: 12
 		}}
 	>
-		{@render children()} если используешь эт, то убери дублирующую запись ниже
+		{@render children()} если используешь эт0, то убери дублирующую запись ниже
 	</div>
 {/key} -->
 
@@ -222,7 +224,7 @@
 	onClose={() => toastStore.hide()}
 />
 
-<style>
+<style lang="scss">
 	.page-wrapper {
 		width: 100%;
 	}

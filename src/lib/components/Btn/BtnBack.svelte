@@ -40,6 +40,7 @@
 </button>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	/* Базовые аскетичные стили, которые не ломают общую верстку */
 	.btn-back {
 		min-width: 40px;

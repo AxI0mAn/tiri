@@ -27,8 +27,8 @@ export class CalculationsDay {
     console.log(`[CalculationsDay] Инициализирован: ${this.allThisDayNotes_dateStr.length} заметок из ${allThisDayRecords.length} записей`);
   }
 
-  /**
-   * Возвращает сумму (percent.sum) из заметки
+  /** sum - оплата за услугу без чаевых
+   *  cardSum(entry) - Возвращает сумму (percent.sum) из заметки
    * @param {Object} entry - запись заметки
    * @returns {number} - значение суммы или 0
    */
@@ -51,15 +51,15 @@ export class CalculationsDay {
     }
   }
 
-  /**
-   * Вычисляет значение не комиссии, а моего зароботка для заметки (округленно до целого)
+  /** myPart - моя доля от того что заплатил клиент (без чаевых)
+   *  cardMyPart(entry) - Вычисляет значение не комиссии, а моего зароботка для заметки (округленно до целого)
    * sum - то что заплатил клиент (без чаевых)
-   * give - комиссия (sum * myPercent / 100)
-   * my - то что моё (sum - (sum * myPercent / 100))
+   * myPart - то что моё (sum * myPercent / 100)
+   * give - отдать за аренду (sum - my)
    * @param {Object} entry - запись заметки
    * @returns {number} - значение (sum - (sum * myPercent / 100)), округленное до целого
    */
-  cardPercent(entry) {
+  cardMyPart(entry) {
     try {
       if (!entry || typeof entry !== 'object') {
         return 0;
@@ -73,21 +73,21 @@ export class CalculationsDay {
       const sum = typeof percent.sum === 'number' && !isNaN(percent.sum) ? percent.sum : 0;
       const myPercent = typeof percent.myPercent === 'number' && !isNaN(percent.myPercent) ? percent.myPercent : 0;
 
-      const result = Math.round(sum - (sum * myPercent / 100)); // TODO было (sum * myPercent)/ 100
+      const myPart = Math.round(sum * myPercent / 100)
 
-      if (!isFinite(result)) {
+      if (!isFinite(myPart)) {
         return 0;
       }
 
-      return result;
+      return myPart;
     } catch (error) {
-      console.warn('[cardPercent] Ошибка при вычислении комиссии:', error.message);
+      console.warn('[cardMyPercent] Ошибка при вычислении комиссии:', error.message);
       return 0;
     }
   }
 
-  /**
-   * Получает чаевые из заметки
+  /** чаевые от клиента
+   * cardTips(entry) - Получает чаевые из заметки
    * @param {Object} entry - запись заметки
    * @returns {number} - значение чаевых или 0
    */
@@ -110,7 +110,7 @@ export class CalculationsDay {
     }
   }
 
-  /**
+  /** тип оплаты наличные/ моя карта/ карта для аренды / наличка для аренды
    * Получает тип оплаты из заметки
    * @param {Object} entry - запись заметки
    * @returns {string|null} - тип оплаты или null
@@ -159,19 +159,19 @@ export class CalculationsDay {
   }
 
   /**
-   * Рассчитывает валовый оборот (gross) = сумма всех доходов (sum) + чаевые (tips)
+   * calcul_gross() - Рассчитывает валовый оборот (gross) = сумма всех доходов (sum) + чаевые (tips)
    * @returns {number} - валовый оборот
    */
   calcul_gross() {
     let gross = 0;
     for (const entry of this.allThisDayNotes_dateStr) {
-      gross += this.cardSum(entry) + this.cardTips(entry);
+      gross += (this.cardSum(entry) + this.cardTips(entry));
     }
     return Math.round(gross);
   }
 
   /**
-   * Рассчитывает валовый доход (summary) = сумма всех sum
+   * calcul_summary() - Рассчитывает валовый доход (summary) = сумма всех sum
    * @returns {number} - валовый доход
    */
   calcul_summary() {
@@ -183,19 +183,22 @@ export class CalculationsDay {
   }
 
   /**
-   * Рассчитывает общую аренду (allGive) = сумма всех give из каждого note
+   * calcul_allGive() - Рассчитывает общую аренду (allGive) = сумма всех give (= sum - my) для каждого note
+   * give = sum - my
    * @returns {number} - общая аренда
    */
   calcul_allGive() {
     let allGive = 0;
     for (const entry of this.allThisDayNotes_dateStr) {
-      allGive += this.cardPercent(entry);
+      allGive += (this.cardSum(entry) - this.cardMyPart(entry));
     }
     return Math.round(allGive);
   }
 
   /**
-   * Рассчитывает оплаченную аренду (nowGive) = сумма give для карточек с pay === "card2" или pay === "crypto"
+   * calcul_nowGive() - Рассчитывает уже оплаченную аренду nowGive = (sum + tips), если оплата "card2" или "crypto"
+   * Это вся оплаченная сумма для карточек с pay === "card2" или pay === "crypto"
+   * nowGive = (sum + tips) 
    * @returns {number} - оплаченная аренда
    */
   calcul_nowGive() {
@@ -203,14 +206,14 @@ export class CalculationsDay {
     for (const entry of this.allThisDayNotes_dateStr) {
       const pay = this.cardPay(entry);
       if (pay === 'card2' || pay === 'crypto') {
-        nowGive += this.cardPercent(entry);
+        nowGive += (this.cardSum(entry) + this.cardTips(entry));
       }
     }
     return Math.round(nowGive);
   }
 
   /**
-   * Рассчитывает остаток аренды (moreGive) = allGive - nowGive
+   * calcul_moreGive() - Рассчитывает остаток аренды (moreGive) = allGive - nowGive
    * Если результат отрицательный, выводит предупреждение
    * @param {number} allGive - общая аренда
    * @param {number} nowGive - оплаченная аренда
@@ -218,7 +221,7 @@ export class CalculationsDay {
    * @returns {number} - остаток аренды
    */
   calcul_moreGive(allGive, nowGive, dateStr = '') {
-    const moreGive = allGive - nowGive;
+    const moreGive = (allGive - nowGive);
 
     if (moreGive < 0) {
       console.warn(
@@ -226,12 +229,11 @@ export class CalculationsDay {
         `allGive (${allGive}) - nowGive (${nowGive}) = ${moreGive}`
       );
     }
-
     return Math.round(moreGive);
   }
 
-  /**
-   * Рассчитывает сдачу (changeGive) = nowGive - allGive (если moreGive отрицательный)
+  /** сумма переплаты по аренде - вернуть мне
+   * calcul_changeGive() - Рассчитывает сдачу (changeGive) = nowGive - allGive (если moreGive отрицательный)
    * @param {number} allGive - общая аренда
    * @param {number} nowGive - оплаченная аренда
    * @param {number} moreGive - остаток аренды
@@ -239,13 +241,14 @@ export class CalculationsDay {
    */
   calcul_changeGive(allGive, nowGive, moreGive) {
     if (moreGive < 0) {
-      return Math.round(nowGive - allGive);
+      const changeGive = (nowGive - allGive)
+      return Math.round(changeGive);
     }
     return 0;
   }
 
   /**
-   * Рассчитывает чаевые за день (tips) = сумма всех tips
+   * calcul_tips() - Рассчитывает чаевые за день (tips) = сумма всех tips
    * @returns {number} - чаевые за день
    */
   calcul_tips() {
@@ -256,25 +259,27 @@ export class CalculationsDay {
     return Math.round(tips);
   }
 
-  /**
-   * Рассчитывает доход за день (my) = summary - allGive + changeGive
+  /** ***
+   * calcul_my() - Рассчитывает доход от работы за день (my) = summary - allGive + changeGive
    * @param {number} summary - валовый доход
    * @param {number} allGive - общая аренда
    * @param {number} changeGive - сдача
    * @returns {number} - доход за день
    */
   calcul_my(summary, allGive, changeGive) {
-    return Math.round(summary - allGive + changeGive);
+    const my = (summary - allGive + changeGive);
+    return Math.round(my);
   }
 
   /**
-   * Рассчитывает доход с чаевыми (allMy) = tips + my
+   * calcul_allMy() - Рассчитывает доход с чаевыми (allMy) = tips + my = tips + (summary - allGive + changeGive)
    * @param {number} tips - чаевые за день
    * @param {number} my - доход за день
    * @returns {number} - доход с чаевыми
    */
   calcul_allMy(tips, my) {
-    return Math.round(tips + my);
+    const allMy = tips + my;
+    return Math.round(allMy);
   }
 
   /**
@@ -304,13 +309,14 @@ export class CalculationsDay {
       let give = 0;
 
       for (const entry of this.allThisDayNotes_dateStr) {
-        const entrySum = this.cardSum(entry);
-        const entryPercent = this.cardPercent(entry);
-        const tips = this.cardTips(entry);
+        const entrySum = this.cardSum(entry); // cardSum(entry) - Возвращает сумму оплаты клиента без чаевых (percent.sum) из заметки
+        const entryPercent = this.cardMyPart(entry);  // cardMyPart(entry) - Вычисляет мою долю от того, что заплатил клиент (без чаевых)
+        const tips = this.cardTips(entry);  // cardTips(entry) - Получает чаевые из заметки
 
-        sum += entrySum;
-        my += tips + entryPercent;
-        give += entryPercent;  // TODO было entrySum - entryPercent        
+
+        sum += entrySum; // Сколько заплатили клиенты без чаевых
+        my += (tips + entryPercent); // Моя сумма = чаевые + моя часть
+        give += (entrySum - entryPercent);  // сколько нужно оплатить за аренду    
       }
       return {
         sum: Math.round(sum),
@@ -332,15 +338,15 @@ export class CalculationsDay {
   report_Z(dateStr = '') {
     try {
       // ===== ПЕРЕМЕННЫЕ ДЛЯ РАСЧЕТОВ =====
-      const summary = this.calcul_summary();     // Валовый доход (сумма всех sum)
+      const gross = this.calcul_gross();         // Валовый оборот  (sum + tips)
+      const summary = this.calcul_summary();     // Валовый доход (сумма всех sum без tips)
       const allGive = this.calcul_allGive();     // Общая аренда (сумма всех give)
       const nowGive = this.calcul_nowGive();     // Оплаченная аренда (card2 + crypto)
       const moreGive = this.calcul_moreGive(allGive, nowGive, dateStr); // Остаток аренды
-      const changeGive = this.calcul_changeGive(allGive, nowGive, moreGive);     // Сдача (если moreGive < 0)
+      const changeGive = this.calcul_changeGive(allGive, nowGive, moreGive);  // Переплата аренды (если moreGive < 0)
       const tips = this.calcul_tips();           // Чаевые за день
-      const my = this.calcul_my(summary, allGive, changeGive); // Доход за день
-      const allMy = this.calcul_allMy(tips, my); // Доход с чаевыми
-      const gross = this.calcul_gross();         // Валовый оборот
+      const my = this.calcul_my(summary, allGive, changeGive); // Доход за весь день (summary - allGive + changeGive)
+      const allMy = this.calcul_allMy(tips, my); // Доход с чаевыми ( tips + (summary - allGive + changeGive) )
 
       // ===== КЛИЕНТСКАЯ СТАТИСТИКА =====
       const heads = this.allThisDayNotes_dateStr.length; // Всего клиентов (заметок)
