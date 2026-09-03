@@ -498,6 +498,9 @@
 		background-repeat: no-repeat;
 		background-position: right bottom;
 		background-size: 30vw 30vw;
+		@media screen and (min-width: 767px) {
+			background-size: 20vw 20vw;
+		}
 	}
 
 	.block::-webkit-scrollbar {

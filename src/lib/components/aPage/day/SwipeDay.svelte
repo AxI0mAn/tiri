@@ -4,7 +4,7 @@
 	import AssemblyDay from './AssemblyDay.svelte';
 	import { getTodayDate, getDateOffset } from '$lib/utils/dateHelpers.js';
 
-	// Состояние: массив дат для отображения (максимум 5)
+	// Состояние: массив дат для отображения
 	let visibleDates = $state([]);
 	let activeIndex = $state(0); // индекс текущего дня в массиве
 	let touchStartX = $state(0);

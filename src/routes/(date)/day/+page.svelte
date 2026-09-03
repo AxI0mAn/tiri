@@ -2,12 +2,26 @@
 	// src/routes/(date)/day/+page.svelte
 	// @ts-ignore
 	import { base } from '$app/paths';
+	import { onMount } from 'svelte';
+
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import imgAdd from '$lib/assets/iconPic/128/add.webp';
 	import imgDone from '$lib/assets/iconPic/128/done.webp';
 
+	import BtnCreateZReport from '$lib/components/Btn/BtnCreateZReport.svelte';
+
 	import HomeHeader from '$lib/components/aBlock/homeHeader/homeHeader.svelte';
 	import SwipeDay from '$lib/components/aPage/day/SwipeDay.svelte';
+
+	import { canAddNote } from '$lib/components/services/reportGuard';
+	import { getTodayDate } from '$lib/utils/dateHelpers.js';
+
+	let canAddNoteToday = $state(true);
+
+	onMount(async () => {
+		const today = getTodayDate();
+		canAddNoteToday = await canAddNote(today);
+	});
 </script>
 
 <div class="showDay">
@@ -21,20 +35,30 @@
 
 	<footer>
 		<!-- <QuickMenu /> -->
-		<a href="{base}/newNote" class="testLink">
-			<span>Выполнено</span>
+		<a
+			href="{base}/newNote"
+			class="iconLink"
+			class:disabled={!canAddNoteToday}
+			onclick={(e) => {
+				if (!canAddNoteToday) {
+					e.preventDefault();
+				}
+			}}
+		>
+			<!-- <span>Выполнено</span> -->
 			<BtnImg
 				src={imgDone}
 				alt="test btn img"
 				size={88}
-				onclick="null"
-				customClass="actionBtnImg"
+				customClass="actionBtnImg {!canAddNoteToday ? 'opacity-50' : ''}"
 			/>
 		</a>
-		<a href="{base}/newReminder" class="testLink">
-			<span>Запись</span>
+		<a href="{base}/newReminder" class="iconLink">
+			<!-- <span>Запись</span> -->
 			<BtnImg src={imgAdd} alt="test btn img" size={88} onclick="null" customClass="actionBtnImg" />
 		</a>
+
+		<BtnCreateZReport />
 	</footer>
 </div>
 
@@ -86,9 +110,7 @@
 		flex-flow: row nowrap;
 		justify-content: space-evenly;
 		align-items: center;
-		.testLink {
-			border: 2px solid $clr-white;
-			border-radius: 1rem;
+		.iconLink {
 			padding: 0.5rem;
 			width: 20%;
 			min-width: fit-content;
@@ -103,5 +125,15 @@
 				font-weight: 777;
 			}
 		}
+	}
+
+	.iconLink.disabled {
+		opacity: 0.5;
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+
+	.opacity-50 {
+		opacity: 0.5;
 	}
 </style>
