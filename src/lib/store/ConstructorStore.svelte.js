@@ -234,7 +234,7 @@ const baseSchema = {
       },
       text: {
         label: "Заметки",
-        required: true,
+        required: false,
         optionClass: '',
         select: true,
         formView: ['BtnImg', 'Textarea'],

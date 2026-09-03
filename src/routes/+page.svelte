@@ -79,9 +79,10 @@
 			<h2>Ничего не попадает в сеть!</h2>
 			<h2><em>Твои секреты - только твои!</em></h2>
 		</div>
-		<!-- <a href="{base}/month">Calendar from month</a> -->
 
-		<a href="{base}/admin">ВВод заметок за прошлый период</a>
+		<!-- <a href="{base}/month">Calendar from month</a> -->
+		<!-- <a href="{base}/admin">ВВод заметок за прошлый период</a> -->
+
 		<div class="testComponents">
 			<div class="btnTested">
 				<a href="{base}/newReminder" class="testLink">
@@ -127,10 +128,11 @@
 		</div> -->
 	</aside>
 </div>
-<footer>
+
+<!-- <footer>
 	<ul>
-		<!-- <li><a href="{base}/install"><span>How install App.</span></a></li>
-		<li><a href="{base}/share"><span>How share App.</span></a></li>  -->
+		  <li><a href="{base}/install"><span>How install App.</span></a></li>
+		<li><a href="{base}/share"><span>How share App.</span></a></li>   
 		<li><a href="{base}/faq"><span>FAQ</span></a></li>
 		<li><a href="{base}/instructionAll"><span>Instruction for App.</span></a></li>
 		<li><p></p></li>
@@ -148,7 +150,7 @@
 			<span class=""> that work together.</span>
 		</h2>
 	</div>
-</footer>
+</footer> -->
 
 <style lang="scss">
 	@use '../styles/variables';

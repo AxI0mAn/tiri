@@ -20,12 +20,10 @@
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
 
 	let canAddNoteToday = $state(true);
-	// === -📝=TODO=📝- 3у сентября=== раскоментируй onMount
-	// onMount(async () => {
-	// 	const today = getTodayDate();
-	// 	canAddNoteToday = await canAddNote(today);
-
-	// });
+	onMount(async () => {
+		const today = getTodayDate();
+		canAddNoteToday = await canAddNote(today);
+	});
 </script>
 
 <div class="showDay">
@@ -39,6 +37,11 @@
 
 	<footer>
 		<!-- <QuickMenu /> -->
+		<a href="{base}/newReminder" class="iconLink">
+			<!-- <span>Запись</span> -->
+			<BtnImg src={imgAdd} alt="test btn img" size={64} onclick="null" customClass="actionBtnImg" />
+		</a>
+
 		<a
 			href="{base}/newNote"
 			class="iconLink"
@@ -56,10 +59,6 @@
 				size={88}
 				customClass="actionBtnImg {!canAddNoteToday ? 'opacity-50' : ''}"
 			/>
-		</a>
-		<a href="{base}/newReminder" class="iconLink">
-			<!-- <span>Запись</span> -->
-			<BtnImg src={imgAdd} alt="test btn img" size={88} onclick="null" customClass="actionBtnImg" />
 		</a>
 
 		<BtnCreateZReport />

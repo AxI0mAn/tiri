@@ -66,7 +66,7 @@
 						<span class="value">{xReportData.sum}</span>
 					</div>
 					<div class="report-row">
-						<span class="label">Оплатить за аренду:</span>
+						<span class="label">Оплатить %:</span>
 						<span class="value">{xReportData.give}</span>
 					</div>
 					<div class="report-row">
