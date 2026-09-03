@@ -15,15 +15,17 @@
 
 	import { canAddNote } from '$lib/components/services/reportGuard';
 	import { getTodayDate } from '$lib/utils/dateHelpers.js';
+	import { appState } from '$lib/store/appState.svelte.js';
 
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
 
 	let canAddNoteToday = $state(true);
+	// === -📝=TODO=📝- 3у сентября=== раскоментируй onMount
+	// onMount(async () => {
+	// 	const today = getTodayDate();
+	// 	canAddNoteToday = await canAddNote(today);
 
-	onMount(async () => {
-		const today = getTodayDate();
-		canAddNoteToday = await canAddNote(today);
-	});
+	// });
 </script>
 
 <div class="showDay">
