@@ -1,9 +1,12 @@
 <script>
 	// src/routes/(date)/day/+page.svelte
-	import { appState } from '$lib/store/appState.svelte';
+	// @ts-ignore
+	import { base } from '$app/paths';
+	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
+	import imgAdd from '$lib/assets/iconPic/128/add.webp';
+	import imgDone from '$lib/assets/iconPic/128/done.webp';
 
 	import HomeHeader from '$lib/components/aBlock/homeHeader/homeHeader.svelte';
-	import QuickMenu from '$lib/components/aBlock/QuickMenu.svelte';
 	import SwipeDay from '$lib/components/aPage/day/SwipeDay.svelte';
 </script>
 
@@ -17,8 +20,21 @@
 	</main>
 
 	<footer>
-		<h2>footer</h2>
 		<!-- <QuickMenu /> -->
+		<a href="{base}/newNote" class="testLink">
+			<span>Выполнено</span>
+			<BtnImg
+				src={imgDone}
+				alt="test btn img"
+				size={88}
+				onclick="null"
+				customClass="actionBtnImg"
+			/>
+		</a>
+		<a href="{base}/newReminder" class="testLink">
+			<span>Запись</span>
+			<BtnImg src={imgAdd} alt="test btn img" size={88} onclick="null" customClass="actionBtnImg" />
+		</a>
 	</footer>
 </div>
 
@@ -62,7 +78,30 @@
 	}
 
 	footer {
+		width: 80%;
 		flex-shrink: 0;
 		z-index: 10;
+		margin: 0 auto;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-evenly;
+		align-items: center;
+		.testLink {
+			border: 2px solid $clr-white;
+			border-radius: 1rem;
+			padding: 0.5rem;
+			width: 20%;
+			min-width: fit-content;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: center;
+			gap: 0.5rem;
+			span {
+				font-size: calc(0.4rem + 0.6vw);
+				text-transform: uppercase;
+				font-weight: 777;
+			}
+		}
 	}
 </style>

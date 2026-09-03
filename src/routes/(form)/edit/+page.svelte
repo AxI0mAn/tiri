@@ -31,7 +31,7 @@
 		error = null;
 
 		try {
-			// ✅ Берем id ТОЛЬКО из appState
+			//  Берем id ТОЛЬКО из appState
 			const entryId = appState.editEntryId;
 			if (!entryId) {
 				error = 'ID записи не указан';
@@ -103,7 +103,7 @@
 		try {
 			const entryValue = JSON.parse(JSON.stringify(entry.value || {}));
 
-			// ✅ Гарантируем уникальность ID
+			//  Гарантируем уникальность ID
 			const newId = `${entry.types || entry.type}_${Date.now()}`;
 
 			const newEntry = {
@@ -112,7 +112,7 @@
 				value: entryValue
 			};
 
-			// ✅ Сначала сохраняем, потом удаляем
+			//  Сначала сохраняем, потом удаляем
 			await saveEntry(newEntry);
 			await deleteEntry(entry.id);
 
@@ -162,7 +162,7 @@
 				value: entryValue
 			};
 
-			// ✅ Сначала сохраняем, потом удаляем
+			//  Сначала сохраняем, потом удаляем
 			await saveEntry(newEntry);
 			await deleteEntry(entry.id);
 
@@ -188,10 +188,36 @@
 		if (!entry || !isReminder) return;
 
 		try {
+			const { saveEntry, deleteEntry } = await import('$lib/utils/db.js');
+
 			const entryValue = JSON.parse(JSON.stringify(entry.value || {}));
 
-			const now = Date.now(); //  локальное время
-			const today = formatDateISOLocal(now);
+			const now = Date.now();
+			const today = new Date(now).toISOString().split('T')[0];
+
+			const newId = `note_${now}`;
+
+			// ✅ Получаем дефолтные значения из конструктора
+			let defaultSum = 0;
+			let defaultMyPercent = 0;
+			let defaultTips = 0;
+
+			try {
+				const constructorData = localStorage.getItem('card_constructor_notes_v1');
+				if (constructorData) {
+					const schema = JSON.parse(constructorData);
+
+					// Получаем значения num из percent.options
+					if (schema.percent?.options) {
+						const options = schema.percent.options;
+						defaultSum = options.sum?.num ?? 0;
+						defaultMyPercent = options.myPercent?.num ?? 0;
+						defaultTips = options.tips?.num ?? 0;
+					}
+				}
+			} catch (e) {
+				console.warn('[handleComplete] Ошибка чтения конструктора:', e);
+			}
 
 			const newEntry = {
 				id: `note_${now}`,
@@ -205,15 +231,19 @@
 				value: {
 					gender: entryValue.gender || 'male',
 					notes: entryValue.notes || { name: '', phone: '', text: '' },
-					percent: { sum: 0, myPercent: 0, tips: 0 },
+					percent: {
+						sum: defaultSum,
+						myPercent: defaultMyPercent,
+						tips: defaultTips
+					},
 					pay: null
 				}
 			};
 
-			// ✅ Сначала сохраняем
+			//  1.1. Сохраняем новую заметку
 			await saveEntry(newEntry);
 
-			// ✅ Потом удаляем
+			//  2. Удаляем старое напоминание
 			await deleteEntry(entry.id);
 
 			toastStore.show('Напоминание выполнено → заполните поля заметки', 'success');
@@ -226,13 +256,30 @@
 				);
 			}
 
+			// ✅ 3. Обновляем appState для перехода на страницу дня
+			appState.now_mode = 'tiri';
+			appState.now_date = today;
+
+			// 4.1. Устанавливаем режим до перехода
+			appState.now_mode = 'edit';
 			appState.editEntryId = newEntry.id;
 			appState.editEntryDate = newEntry.dateStr;
 
-			// ✅ Принудительная перезагрузка
-			if (typeof window !== 'undefined') {
-				window.location.reload();
-			}
+			// 4.2. Переходим на страницу дня
+			goto(`${base}/day`);
+
+			// 4.3. Через 200ms (после fade-out) переходим на редактирование
+			setTimeout(() => {
+				goto(`${base}/edit`);
+			}, 50);
+
+			// ✅ 5. После перехода открываем заметку для редактирования
+			// Используем setTimeout, чтобы дождаться перехода
+			setTimeout(() => {
+				appState.editEntryId = newEntry.id;
+				appState.editEntryDate = newEntry.dateStr;
+				goto(`${base}/edit`);
+			}, 100);
 		} catch (err) {
 			console.error('[edit] Ошибка выполнения:', err);
 			toastStore.show('Ошибка при выполнении', 'error');
@@ -244,7 +291,7 @@
 		if (!entry) return;
 
 		try {
-			// ✅ Используем deleteEntry из db.js
+			//  Используем deleteEntry из db.js
 			await deleteEntry(entry.id);
 
 			toastStore.show('Запись удалена', 'success');

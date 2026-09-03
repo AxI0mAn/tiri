@@ -1,3 +1,19 @@
+/*
+Полный список функций в dateHelpers.js (сводка)
+
+Функция	Формат	Пример
+formatDate(date)	    YYYY-MM-DD	    2026-09-03
+formatDateDotted(date)	    YYYY.MM.DD	    2026.09.03
+formatDateFromTimestamp(timestamp)	    DD.MM.YYYY	03.09.2026
+formatDateISOLocal(timestamp)	    YYYY-MM-DD	    2026-09-03
+formatDateDottedFromTimestamp(timestamp)	YYYY.MM.DD	    2026.09.03
+formatTime(timestamp)	    HH:MM	14:30
+createLocalTimestamp(dateStr, timeStr)	number	1700000000000
+getTodayDate()	    YYYY-MM-DD	    2026-09-03
+getDateOffset(dateStr, offset)	    YYYY-MM-DD	    2026-09-04
+*/
+
+
 // src/lib/utils/dateHelpers.js
 
 /**

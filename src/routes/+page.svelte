@@ -72,46 +72,10 @@
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 
-	import imgChild from '$lib/assets/iconPic/128/child.webp';
-	import imgColorist from '$lib/assets/iconPic/128/colorist.webp';
-	import imgFemale from '$lib/assets/iconPic/128/female.webp';
-	import imgMale from '$lib/assets/iconPic/128/male.webp';
-	import imgMaleBear from '$lib/assets/iconPic/128/male_bearded.webp';
-
-	import imgCash from '$lib/assets/iconPic/128/cash.webp';
-	import imgCardG from '$lib/assets/iconPic/128/cardG.webp';
-	import imgCardB from '$lib/assets/iconPic/128/cardB.webp';
-	import imgCrypto from '$lib/assets/iconPic/128/crypto.webp';
-	import imgCalendar from '$lib/assets/iconPic/128/calendar.webp';
-
 	import imgDate from '$lib/assets/iconPic/128/date.webp';
-	import imgNotes from '$lib/assets/iconPic/128/notes.webp';
-	import imgPhone from '$lib/assets/iconPic/128/phone.webp';
-	import imgTime from '$lib/assets/iconPic/128/time.webp';
+	import imgFlauer3d from '$lib/assets/iconPic/128/flauer3d.webp';
 	import imgAdd from '$lib/assets/iconPic/128/add.webp';
 	import imgDone from '$lib/assets/iconPic/128/done.webp';
-
-	// inputs
-	import InputText from '$lib/components/input/InputText.svelte';
-	import InputNumber from '$lib/components/input/InputNumber.svelte';
-	import InputRange from '$lib/components/input/InputRange.svelte';
-	import InputDate from '$lib/components/input/InputDate.svelte';
-	import InputTime from '$lib/components/input/InputTime.svelte';
-	import Textarea from '$lib/components/input/Textarea.svelte';
-	import CheckBox from '$lib/components/input/CheckBox.svelte';
-	import SelectStatus from '$lib/components/input/SelectStatus.svelte';
-	let currentStatus = $state('use'); // По умолчанию '✓' - use
-
-	import Radio from '$lib/components/input/Radio.svelte';
-	let selectedOption = $state('option1');
-
-	import Select from '$lib/components/input/Select.svelte';
-	let selectedTheme = $state('dark');
-	const themeOptions = [
-		{ value: 'light', label: 'Светлая тема' },
-		{ value: 'dark', label: 'Темная тема' },
-		{ value: 'system', label: 'Системная' }
-	];
 </script>
 
 <div class="app-wrapper">
@@ -121,20 +85,20 @@
 	<main class="field_main" id="catalogAllFeatures">
 		<div class="headerWrapper" id="top-anchor"><HomeHeader /></div>
 
-		<h1 class="slogan font-digits">
-			<span class="allFunc font-digits"
-				>An app for managing client appointments, tracking dates and times, and recording payments,
-				income, and commissions..</span
-			>
-			<span class="allCalc font-digits">managing commissions and tracking dates and times.</span>
-		</h1>
-
-		<a href="{base}/month">Calendar from month</a>
+		<h1 class="slogan font-digits">Привет, я Tiri</h1>
+		<div class="testText">
+			<h2>Приложение, которое помагает Мастерам работающим на проценте.</h2>
+			<h2>Со мной проще вести запись и учёт клиентов, сохранять и рассчитывать доход.</h2>
+			<h2>Всё сохраняется ТОЛЬКО на твоём устройстве.</h2>
+			<h2>Ничего не попадает в сеть!</h2>
+			<h2><em>Твои секреты - только твои!</em></h2>
+		</div>
+		<!-- <a href="{base}/month">Calendar from month</a> -->
 
 		<div class="testComponents">
-			<h3>NEW ACTION</h3>
 			<div class="btnTested">
-				<a href="{base}/newReminder">
+				<a href="{base}/newReminder" class="testLink">
+					<span>Запись</span>
 					<BtnImg
 						src={imgAdd}
 						alt="test btn img"
@@ -143,16 +107,8 @@
 						customClass="actionBtnImg"
 					/>
 				</a>
-				<a href="{base}/newNote">
-					<BtnImg
-						src={imgDone}
-						alt="test btn img"
-						size={88}
-						onclick="null"
-						customClass="actionBtnImg"
-					/>
-				</a>
-				<a href="{base}/day">
+				<a href="{base}/day" class="testLink">
+					<span>Сегодня</span>
 					<BtnImg
 						src={imgDate}
 						alt="test btn img"
@@ -161,93 +117,17 @@
 						customClass="actionBtnImg"
 					/>
 				</a>
+				<a href="{base}/settings" class="testLink">
+					<span>Настройки</span>
+					<BtnImg
+						src={imgFlauer3d}
+						alt="test btn img"
+						size={88}
+						onclick="null"
+						customClass="actionBtnImg"
+					/>
+				</a>
 			</div>
-			<h3>BUTTON GENDER TEST</h3>
-			<div class="btnTested">
-				<BtnImg
-					src={imgMale}
-					alt="test btn img"
-					size={64}
-					onclick="null"
-					customClass="gender notAction"
-				/>
-				<BtnImg
-					src={imgMaleBear}
-					alt="test btn img"
-					size={64}
-					onclick="null"
-					customClass="gender action"
-				/>
-				<BtnImg src={imgFemale} alt="test btn img" size={64} onclick="null" customClass="gender" />
-				<BtnImg
-					src={imgColorist}
-					alt="test btn img"
-					size={64}
-					onclick="null"
-					customClass="gender notAction"
-				/>
-
-				<BtnImg src={imgChild} alt="test btn img" size={64} onclick="null" customClass="gender" />
-			</div>
-			<h3>BUTTON Pay TEST</h3>
-			<div class="btnTested">
-				<BtnImg src={imgCash} alt="test btn img" size={88} onclick="null" customClass="icon" />
-				<BtnImg
-					src={imgCardG}
-					alt="test btn img"
-					size={88}
-					onclick="null"
-					customClass="icon action"
-				/>
-				<BtnImg
-					src={imgCardB}
-					alt="test btn img"
-					size={88}
-					onclick="null"
-					customClass="icon notAction"
-				/>
-				<BtnImg
-					src={imgCrypto}
-					alt="test btn img"
-					size={88}
-					onclick="null"
-					customClass="icon notAction"
-				/>
-				<BtnImg src={imgCalendar} alt="test btn img" size={64} onclick="null" customClass="icon" />
-			</div>
-			<h3>BUTTON all other icon</h3>
-			<div class="btnTested">
-				<BtnImg src={imgDate} alt="test btn img" size={44} onclick="null" customClass="" />
-				<BtnImg src={imgNotes} alt="test btn img" size={44} onclick="null" customClass="" />
-				<BtnImg src={imgPhone} alt="test btn img" size={44} onclick="null" customClass="" />
-				<BtnImg src={imgTime} alt="test btn img" size={44} onclick="null" customClass="" />
-			</div>
-			<h3>BUTTON Text</h3>
-			<div class="btnTested">
-				<BtnText buttonText="Test" onclick={() => {}} />
-			</div>
-		</div>
-		<div class="testComponents">
-			<h2>input text</h2>
-			<InputText />
-			<InputNumber />
-			<InputRange />
-			<CheckBox label="checkBox" />
-			<SelectStatus bind:value={currentStatus} />
-			<div class="radio-group">
-				<Radio bind:group={selectedOption} value="option1" label="Первый вариант" />
-				<Radio bind:group={selectedOption} value="option2" label="Второй вариант" />
-				<Radio bind:group={selectedOption} value="option3" label="Третий вариант" />
-			</div>
-			<InputDate />
-			<InputTime />
-			<Select
-				bind:value={selectedTheme}
-				options={themeOptions}
-				label="Select: Тема оформления"
-				placeholder="Выберите тему"
-			/>
-			<Textarea />
 		</div>
 		<h2 class="inset">Learn more</h2>
 	</main>
@@ -284,17 +164,47 @@
 </footer>
 
 <style lang="scss">
+	@use '../styles/variables';
 	.testComponents {
-		width: fit-content;
+		width: 100%;
 		display: flex;
 		flex-flow: column wrap;
 		gap: 1rem;
 	}
 	.btnTested {
-		width: fit-content;
+		width: 100%;
 		display: flex;
 		flex-flow: row wrap;
-		gap: 2rem;
+		justify-content: space-around;
+		align-items: center;
+	}
+	.testLink {
+		border: 2px solid $clr-white;
+		border-radius: 1rem;
+		padding: 0.5rem;
+		width: 20%;
+		min-width: fit-content;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
+		span {
+			font-size: calc(0.4rem + 0.6vw);
+			text-transform: uppercase;
+			font-weight: 777;
+		}
+	}
+	.testText {
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		gap: 1.5rem;
+		max-width: 80%;
+		font-size: 1.25rem;
+		font-weight: 777;
+		letter-spacing: 0.25rem;
+		line-height: 1.75rem;
 	}
 	.field_left,
 	.field_right {
