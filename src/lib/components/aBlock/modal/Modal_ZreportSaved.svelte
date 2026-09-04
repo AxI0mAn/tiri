@@ -10,9 +10,6 @@
 	// Принимаем onSend как пропс
 	let { onSend = () => {} } = $props();
 
-	// Запоминаем, откуда пришли
-	// let fromPath = $state('/day');
-
 	function closeModal() {
 		appState.closeZReportSaved();
 		goto(`${base}/day`);

@@ -1,7 +1,7 @@
 /**
  * src/lib/store/appState.svelte.js - текущее состояние приложения
  */
-
+import { openModalWithBack } from "$lib/utils/modalHelpers";
 
 class AppState {
   /** @type {string} */
@@ -38,13 +38,24 @@ class AppState {
     this.now_date = date;
   }
 
+  // ✅ X-отчет — с поддержкой кнопки "Назад"
   openXReport(date) {
     this.modal_xReportDate = date;
-    this.modal_xReportDay = true;
+
+    openModalWithBack(
+      () => { this.modal_xReportDay = true; },
+      () => { this.modal_xReportDay = false; },
+      'xReportModal'
+    );
   }
 
+  // ✅ Z-отчет сохранен — с поддержкой кнопки "Назад"
   openZReportSaved() {
-    this.modal_zReportSaved = true;
+    openModalWithBack(
+      () => { this.modal_zReportSaved = true; },
+      () => { this.modal_zReportSaved = false; },
+      'zReportSavedModal'
+    );
   }
 
   closeZReportSaved() {

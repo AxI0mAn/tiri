@@ -4,17 +4,19 @@
 	import { appState } from '$lib/store/appState.svelte';
 	import { CalculationsDay } from '$lib/components/services/calculationsOneDay.js';
 	import { getAllThisDayRecords } from '$lib/utils/db.js';
+	import BtnCreateZReport from '$lib/components/Btn/BtnCreateZReport.svelte';
 
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
 
 	import logo_job3dWebp from '$lib/assets/iconPic/64/logo_job3d.webp';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
+	import BtnText from '$lib/components/Btn/BtnText.svelte';
 
 	// Состояние для данных отчета
 	let xReportData = $state(null);
 	let dateStr = $state('');
 
-	// Функция закрытия
+	// Функция закрытия (вызывается из кнопки)
 	function closeModal() {
 		appState.modal_xReportDay = false;
 		xReportData = null;
@@ -48,43 +50,52 @@
 
 <ModalBackdrop isOpen={appState.modal_xReportDay} maxWidth="400px">
 	{#snippet children()}
-		<div class="x-report-modal">
-			<h2>
-				X-отчет за {dateStr}
-			</h2>
-			<BtnImg
-				src={logo_job3dWebp}
-				alt="button report"
-				size={44}
-				onclick={() => {}}
-				customClass=""
-			/>
-			{#if xReportData}
-				<div class="report-content">
-					<div class="report-row">
-						<span class="label">Касса (без чаевых):</span>
-						<span class="value">{xReportData.sum}</span>
+		<div class="report-modal">
+			<div class="x-report-modal">
+				<h2>
+					X-отчет за {dateStr}
+				</h2>
+				<BtnImg
+					src={logo_job3dWebp}
+					alt="button report"
+					size={44}
+					onclick={() => {}}
+					customClass=""
+				/>
+				{#if xReportData}
+					<div class="report-content">
+						<div class="report-row">
+							<span class="label">Касса (без чаевых):</span>
+							<span class="value">{xReportData.sum}</span>
+						</div>
+						<div class="report-row">
+							<span class="label">Оплатить %:</span>
+							<span class="value">{xReportData.give}</span>
+						</div>
+						<div class="report-row">
+							<span class="label">Мои с чаевыми:</span>
+							<span class="value">{xReportData.my}</span>
+						</div>
 					</div>
-					<div class="report-row">
-						<span class="label">Оплатить %:</span>
-						<span class="value">{xReportData.give}</span>
-					</div>
-					<div class="report-row">
-						<span class="label">Мои с чаевыми:</span>
-						<span class="value">{xReportData.my}</span>
-					</div>
-				</div>
-			{:else}
-				<p>Нет данных для отчета</p>
-			{/if}
+				{:else}
+					<p>Нет данных для отчета</p>
+				{/if}
 
-			<button class="close-btn" onclick={closeModal}>Закрыть</button>
+				<BtnText buttonText="Закрыть" onclick={closeModal} customClass="close-btn" />
+			</div>
+			<AdvertisementGor />
+			<BtnCreateZReport />
 		</div>
-		<AdvertisementGor />
 	{/snippet}
 </ModalBackdrop>
 
 <style lang="scss">
+	.report-modal {
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: center;
+		gap: 2rem;
+	}
 	.x-report-modal {
 		background: var(--clr-bg-card, #ffffff);
 		border-radius: 16px;
@@ -126,16 +137,7 @@
 	}
 
 	.close-btn {
-		width: 100%;
-		padding: 12px;
-		border: none;
-		border-radius: 10px;
-		background: var(--clr-teal, #0d9488);
-		color: white;
-		font-size: 16px;
-		font-weight: 600;
-		cursor: pointer;
-		transition: background 0.2s;
+		margin: 0 auto;
 	}
 
 	.close-btn:hover {
