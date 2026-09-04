@@ -88,6 +88,59 @@
 
 	const sum = entry.value?.percent?.sum || 0;
 	const perc = entry.value?.percent?.myPercent;
+
+	// ВРЕМЕННО ПОДКЛЮЧАЕТСЯ кнопка Удалить для каждой заметки или напоминания.
+	// ВРЕМЯ ДЕЙСТВИЯ 1 ЧАС.
+	// ВКЛЮЧАЕТСЯ НА СТРАНИЦЕ src/routes/(home)/adminClear/+page.svelte
+
+	import { deleteEntry } from '$lib/utils/db.js';
+	import { toastStore } from '$lib/store/toastStore.svelte.js';
+
+	let showDeleteBtn = $state(false);
+
+	// Проверяем, активна ли кнопка удаления
+	function checkDeleteButtonStatus() {
+		if (typeof window === 'undefined') return false;
+		const expiry = localStorage.getItem('show_delete_btn_expiry');
+		if (expiry) {
+			const expiryTime = parseInt(expiry, 10);
+			return Date.now() < expiryTime;
+		}
+		return false;
+	}
+
+	onMount(() => {
+		showDeleteBtn = checkDeleteButtonStatus();
+
+		// Обновляем статус каждые 10 секунд
+		const interval = setInterval(() => {
+			const newStatus = checkDeleteButtonStatus();
+			if (newStatus !== showDeleteBtn) {
+				showDeleteBtn = newStatus;
+			}
+		}, 10000);
+
+		return () => clearInterval(interval);
+	});
+
+	async function handleDelete() {
+		if (confirm(`Удалить запись ${entry.id}?`)) {
+			try {
+				await deleteEntry(entry.id);
+				toastStore.show('Запись удалена', 'success');
+				// Обновить список
+				if (typeof window !== 'undefined') {
+					window.dispatchEvent(
+						new CustomEvent('db:entry_saved', {
+							detail: { ...entry, _deleted: true }
+						})
+					);
+				}
+			} catch (error) {
+				toastStore.show('Ошибка удаления', 'error');
+			}
+		}
+	}
 </script>
 
 <div
@@ -130,13 +183,16 @@
 
 		<span class="sum">{sum}</span>
 	</div>
-	{#if canEdit}
+	{#if canEdit && !showDeleteBtn}
 		<button class="edit-btn" onclick={handleEditClick} aria-label="Редактировать">
 			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor">
 				<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2" />
 				<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2" />
 			</svg>
 		</button>
+	{/if}
+	{#if showDeleteBtn}
+		<button class="delete-btn" onclick={handleDelete} aria-label="Удалить"> 🗑️ </button>
 	{/if}
 </div>
 
@@ -221,5 +277,26 @@
 	/* Стили для BtnImg внутри карточки */
 	:global(.iconCard) {
 		flex-shrink: 0;
+	}
+
+	.delete-btn {
+		flex-shrink: 0;
+		width: 32px;
+		height: 32px;
+		border: none;
+		border-radius: 50%;
+		background: rgba(231, 76, 60, 0.1);
+		color: var(--clr-error, #e74c3c);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s;
+		font-size: 16px;
+	}
+
+	.delete-btn:hover {
+		background: rgba(231, 76, 60, 0.2);
+		transform: scale(1.1);
 	}
 </style>

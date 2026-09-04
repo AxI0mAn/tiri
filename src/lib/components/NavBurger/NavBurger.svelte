@@ -42,7 +42,10 @@
 		// },
 		{ label: 'настройки', href: `${base}/settings` },
 		{ label: 'блокнот', href: `${base}/stickers` },
-		{ label: 'instruction', href: `${base}/instructionAll` }
+		{ label: 'инструкция', href: `${base}/instructionAll` },
+		{ label: 'добавить заметки', href: `${base}/admin` },
+		{ label: 'администрирование', href: `${base}/adminClear` }
+
 		/*
 		{ label: 'install', href: `${base}/install` },
 		{ label: 'about', href: `${base}/about` },
