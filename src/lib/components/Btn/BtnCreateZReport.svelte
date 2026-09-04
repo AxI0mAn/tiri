@@ -33,37 +33,6 @@
 		}
 	});
 
-	async function handleOpenConfirm() {
-		// ✅ Если отчёт уже есть — ничего не делаем (кнопка заблокирована)
-		if (hasReportForDate) return;
-
-		const today = dateStr;
-		currentDate = today;
-
-		const existingReport = await hasZReport(today);
-		if (existingReport) {
-			appState.now_mode = 'z_report';
-			appState.now_date = today;
-			goto(`${base}/day_Zreport`);
-			return;
-		}
-
-		const result = await canCreateZReport(today);
-
-		if (!result.allowed) {
-			if (result.reason?.includes('напоминания')) {
-				warningReason = result.reason;
-				showWarningModal = true;
-				return;
-			}
-			toastStore.show(result.reason, 'warning');
-			return;
-		}
-
-		// ✅ Открываем модалку подтверждения
-		showConfirmModal = true;
-	}
-
 	async function handleCreateZReport() {
 		const today = dateStr; // ← используем проп
 
@@ -92,6 +61,38 @@
 		}
 	}
 
+	// ✅ Функция для проверки и показа причины блокировки
+	async function handleOpenConfirm() {
+		const today = dateStr;
+
+		// 1. Проверяем, есть ли Z-отчёт
+		const existingReport = await hasZReport(today);
+		if (existingReport) {
+			// Если отчёт есть — переходим на страницу отчёта
+			appState.now_mode = 'z_report';
+			appState.now_date = today;
+			goto(`${base}/day_Zreport`);
+			return;
+		}
+
+		// 2. Проверяем, можно ли создать Z-отчёт
+		const result = await canCreateZReport(today);
+
+		if (!result.allowed) {
+			if (result.reason?.includes('напоминания')) {
+				warningReason = result.reason;
+				showWarningModal = true;
+				return;
+			}
+			// ✅ Показываем Toast с причиной
+			toastStore.show(result.reason, 'warning');
+			return;
+		}
+
+		// 3. Открываем модалку подтверждения
+		showConfirmModal = true;
+	}
+
 	function closeWarningModal() {
 		showWarningModal = false;
 		warningReason = '';
@@ -103,11 +104,11 @@
 	}
 </script>
 
-<!-- Кнопка — блокируется при наличии отчёта -->
+<!-- ✅ Кнопка — блокируется, но при клике показывает Toast -->
 <BtnText
 	buttonText="создать z-отчёт"
 	onclick={handleOpenConfirm}
-	disabled={isCreating || hasReportForDate}
+	disabled={isCreating}
 	customClass="btn-zreport {hasReportForDate ? 'disabled' : ''}"
 />
 
