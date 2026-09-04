@@ -9,6 +9,8 @@
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 	import { toastStore } from '$lib/store/toastStore.svelte.js';
 
+	import ModalBackdrop from '$lib/components/aBlock/modal/ModalBackdrop.svelte';
+
 	// ===== СОСТОЯНИЕ =====
 	let password = $state('');
 	let isAuthorized = $state(false);
@@ -198,15 +200,24 @@
 		}
 	}
 
-	// ===== БЛОК 3: Сброс настроек =====
-	async function resetSettings() {
+	// ===== СОСТОЯНИЕ МОДАЛКИ для БЛОК 3: Полный сброс=====
+	let showResetModal = $state(false);
+
+	// ===== БЛОК 3: Сброс настроек (открывает модалку) =====
+	function openResetModal() {
 		if (!isAuthorized) {
 			addLog('❌ Введите пароль для выполнения действий.', true);
 			return;
 		}
+		showResetModal = true;
+	}
 
-		if (!confirm('ВНИМАНИЕ! Это удалит ВСЕ данные приложения. Продолжить?')) {
-			addLog('⚠️ Сброс настроек отменён пользователем.');
+	// ===== БЛОК 3: Полный сброс (выполняется из модалки) =====
+	async function confirmResetSettings() {
+		showResetModal = false;
+
+		if (!isAuthorized) {
+			addLog('❌ Введите пароль для выполнения действий.', true);
 			return;
 		}
 
@@ -220,7 +231,8 @@
 				'card_constructor_notes_v1',
 				'card_constructor_reminds_v1',
 				'draft_entry',
-				'report_settings'
+				'report_settings',
+				'show_delete_btn_expiry' // тоже очищаем
 			];
 			let clearedLocal = 0;
 			for (const key of localStorageKeys) {
@@ -363,7 +375,7 @@
 		</div>
 	</div>
 
-	<!-- Блок 3: Сброс настроек -->
+	<!-- Блок 3: Сброс настроек (кнопка открывает модалку) -->
 	<div class="block danger-block">
 		<h2>🔥 Блок 3: Сброс настроек</h2>
 		<p class="warning">
@@ -373,12 +385,51 @@
 		<div class="row">
 			<BtnText
 				buttonText="Сброс настроек"
-				onclick={resetSettings}
+				onclick={openResetModal}
 				disabled={!isAuthorized || isProcessing}
 				customClass="btn-danger"
 			/>
 		</div>
 	</div>
+
+	<!-- Модалка подтверждения сброса -->
+	<ModalBackdrop isOpen={showResetModal} maxWidth="420px">
+		{#snippet children()}
+			<div class="modal-reset">
+				<div class="modal-icon">🔥</div>
+				<h2>ПОДТВЕРЖДЕНИЕ СБРОСА</h2>
+				<p class="modal-warning">
+					Вы собираетесь <strong>полностью удалить ВСЕ данные</strong> приложения:
+				</p>
+				<ul class="modal-list">
+					<li>📦 Все заметки и напоминания (IndexedDB)</li>
+					<li>📊 Все Z-отчёты (IndexedDB)</li>
+					<li>⚙️ Все настройки (localStorage)</li>
+					<li>🔧 Конструкторы заметок и напоминаний</li>
+					<li>📝 Черновики</li>
+				</ul>
+				<p class="modal-danger">
+					⚠️ <strong>ЭТО ДЕЙСТВИЕ НЕОБРАТИМО!</strong><br />
+					Все данные будут удалены без возможности восстановления.
+				</p>
+				<div class="modal-actions">
+					<BtnText
+						buttonText="Отменить"
+						onclick={() => {
+							showResetModal = false;
+						}}
+						customClass="btn-cancel-modal"
+					/>
+					<BtnText
+						buttonText="Полный сброс"
+						onclick={confirmResetSettings}
+						disabled={isProcessing}
+						customClass="btn-confirm-reset"
+					/>
+				</div>
+			</div>
+		{/snippet}
+	</ModalBackdrop>
 
 	<!-- Блок 4: Показать кнопку удаления -->
 	<div class="block danger-block">
@@ -633,6 +684,82 @@
 	.badge-inactive {
 		background: var(--clr-bg-primary, #f0f0f0);
 		color: var(--clr-text-secondary, #888);
+	}
+
+	/* Стили для модалки */
+	.modal-reset {
+		background: var(--clr-bg-card, #ffffff);
+		border-radius: 16px;
+		padding: 32px 24px 24px;
+		text-align: center;
+		max-width: 420px;
+		width: 100%;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+	}
+
+	.modal-icon {
+		font-size: 48px;
+		margin-bottom: 12px;
+	}
+
+	.modal-reset h2 {
+		margin: 0 0 16px 0;
+		font-size: 20px;
+		color: var(--clr-text-primary, #1a1a1a);
+	}
+
+	.modal-warning {
+		margin: 0 0 12px 0;
+		font-size: 15px;
+		color: var(--clr-text-secondary, #555);
+		line-height: 1.5;
+	}
+
+	.modal-list {
+		text-align: left;
+		margin: 12px 0 16px 0;
+		padding-left: 20px;
+		font-size: 14px;
+		color: var(--clr-text-secondary, #555);
+		list-style: none;
+	}
+
+	.modal-list li {
+		padding: 4px 0;
+	}
+
+	.modal-danger {
+		margin: 0 0 24px 0;
+		font-size: 15px;
+		color: var(--clr-error, #e74c3c);
+		line-height: 1.6;
+		padding: 12px;
+		background: var(--clr-error-light, #fde8e8);
+		border-radius: 8px;
+	}
+
+	.modal-actions {
+		display: flex;
+		gap: 12px;
+		justify-content: center;
+	}
+
+	.modal-actions :global(.btn-cancel-modal) {
+		background: var(--clr-bg-primary, #f0f0f0) !important;
+		color: var(--clr-text-primary, #1a1a1a) !important;
+		padding: 10px 32px !important;
+		border-radius: 10px !important;
+	}
+
+	.modal-actions :global(.btn-confirm-reset) {
+		background: var(--clr-error, #e74c3c) !important;
+		color: white !important;
+		padding: 10px 32px !important;
+		border-radius: 10px !important;
+	}
+
+	.modal-actions :global(.btn-confirm-reset):hover:not(:disabled) {
+		background: var(--clr-error-dark, #c0392b) !important;
 	}
 
 	:global(.btn-warning) {
