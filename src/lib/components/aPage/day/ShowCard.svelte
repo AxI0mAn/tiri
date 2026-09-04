@@ -67,39 +67,27 @@
 		};
 	}
 
-	function handleEdit() {
-		if (!canEdit) return;
-		appState.editEntryId = entry.id;
-		appState.editEntryDate = entry.dateStr;
-		goto(`${base}/edit`);
+	// ✅ Обработчик клика по карточке (открывает редактирование)
+	function handleCardClick() {
+		if (canEdit) {
+			appState.editEntryId = entry.id;
+			appState.editEntryDate = entry.dateStr;
+			goto(`${base}/edit`);
+		}
+	}
+
+	// ✅ Кнопка редактирования (отдельно, чтобы не дублировать)
+	function handleEditClick(event) {
+		event.stopPropagation(); // ✅ Останавливаем всплытие, чтобы не вызвался handleCardClick дважды
+		if (canEdit) {
+			appState.editEntryId = entry.id;
+			appState.editEntryDate = entry.dateStr;
+			goto(`${base}/edit`);
+		}
 	}
 
 	const sum = entry.value?.percent?.sum || 0;
 	const perc = entry.value?.percent?.myPercent;
-
-	// === -📝=TODO=📝- === 3е сентября
-	import { deleteEntry } from '$lib/utils/db.js';
-	import { toastStore } from '$lib/store/toastStore.svelte.js';
-
-	async function handleDelete() {
-		if (confirm(`Удалить запись ${entry.id}?`)) {
-			try {
-				await deleteEntry(entry.id);
-				toastStore.show('Запись удалена', 'success');
-				// Обновить список
-				if (typeof window !== 'undefined') {
-					window.dispatchEvent(
-						new CustomEvent('db:entry_saved', {
-							detail: { ...entry, _deleted: true }
-						})
-					);
-				}
-			} catch (error) {
-				toastStore.show('Ошибка удаления', 'error');
-			}
-		}
-	}
-	// === -📝=TODO=📝- === 3е сентября
 </script>
 
 <div
@@ -107,6 +95,16 @@
 	class:is-note={isNote}
 	class:is-reminder={isReminder}
 	class:is-allMy={perc === 100}
+	role="button"
+	tabindex={canEdit ? 0 : -1}
+	onclick={handleCardClick}
+	onkeydown={(e) => {
+		if (canEdit && (e.key === 'Enter' || e.key === ' ')) {
+			e.preventDefault();
+			handleCardClick();
+		}
+	}}
+	style:cursor={canEdit ? 'pointer' : 'default'}
 >
 	<div class="cardInfo">
 		<span class="time">{getTime()}</span>
@@ -133,15 +131,13 @@
 		<span class="sum">{sum}</span>
 	</div>
 	{#if canEdit}
-		<button class="edit-btn" onclick={handleEdit} aria-label="Редактировать">
+		<button class="edit-btn" onclick={handleEditClick} aria-label="Редактировать">
 			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor">
 				<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2" />
 				<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2" />
 			</svg>
 		</button>
 	{/if}
-	<!-- TODO нужно ли ??????????? -->
-	<!-- <button class="delete-btn" onclick={handleDelete} aria-label="Удалить"> 🗑️ </button>  -->
 </div>
 
 <style lang="scss">

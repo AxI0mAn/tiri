@@ -46,8 +46,9 @@
 		.textarea-element {
 			width: 100%;
 			flex: 1; // <--- Заставляет textarea занять всё оставшееся место по высоте
-			min-height: 3rem; // Предотвращаем схлопывание
-			padding: 12px 14px;
+			min-height: 1rem; // Предотвращаем схлопывание
+			height: fit-content;
+			padding: 0.6rem 0.85rem;
 			border-radius: 12px;
 			border: 2px solid rgba(255, 255, 255, 0.2);
 			background: $clr-bg-card;

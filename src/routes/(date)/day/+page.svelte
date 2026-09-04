@@ -8,8 +8,6 @@
 	import imgAdd from '$lib/assets/iconPic/128/add.webp';
 	import imgDone from '$lib/assets/iconPic/128/done.webp';
 
-	import BtnCreateZReport from '$lib/components/Btn/BtnCreateZReport.svelte';
-
 	import HomeHeader from '$lib/components/aBlock/homeHeader/homeHeader.svelte';
 	import SwipeDay from '$lib/components/aPage/day/SwipeDay.svelte';
 
@@ -60,8 +58,6 @@
 				customClass="actionBtnImg {!canAddNoteToday ? 'opacity-50' : ''}"
 			/>
 		</a>
-
-		<BtnCreateZReport />
 	</footer>
 	<AdvertisementGor setBanners="1" />
 </div>

@@ -152,7 +152,7 @@
 	<!-- Список полей -->
 	<div class="fields-container">
 		{#each Object.entries(constructorStore.schema || {}) as [fieldKey, field]}
-			{#if field.choose !== false && fieldKey !== 'dateTime' && !(type === 'reminder' && fieldKey === 'pay') && !(type === 'reminder' && fieldKey === 'percent')}
+			{#if field.choose !== false && fieldKey !== 'dateTime' && !(type === 'reminder' && fieldKey === 'pay')}
 				<!-- Стилизация блока поля через field.fieldClass -->
 				<section class="field-block {field.fieldClass || ''}">
 					<!-- Отображаем label поля -->
@@ -164,7 +164,7 @@
 
 					<div class="options-grid">
 						{#each Object.entries(field.options || {}) as [optKey, option]}
-							{#if option.select === true}
+							{#if option.select === true && !(type === 'reminder' && fieldKey === 'percent' && optKey !== 'sum')}
 								{@const viewList = option.formView || ['BtnImg']}
 								{@const isSingleView = viewList.length === 1}
 								{@const isSelected = manager.draft.value[fieldKey] === optKey}
@@ -527,9 +527,13 @@
 
 		// === -📝=TODO=📝- ===
 		// нужно было выделить поле ввода суммы
-		// оно должно быть первым!!! вообще-то
+		// оно должно быть первым!!!
 		.field-block.percentField {
+			.option-row:nth-of-type(1) {
+				order: 1;
+			}
 			.option-row:nth-of-type(2) {
+				order: -1;
 				min-width: 100%;
 				.input-wrapper {
 					min-width: 60%;
@@ -537,6 +541,9 @@
 						min-width: 300px;
 					}
 				}
+			}
+			.option-row:nth-of-type(3) {
+				order: 0;
 			}
 		}
 

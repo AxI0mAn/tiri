@@ -59,9 +59,11 @@
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 
 	import imgDate from '$lib/assets/iconPic/128/date.webp';
-	import imgFlauer3d from '$lib/assets/iconPic/128/flauer3d.webp';
 	import imgAdd from '$lib/assets/iconPic/128/add.webp';
 	import imgDone from '$lib/assets/iconPic/128/done.webp';
+	import imgInstructionAll from '$lib/assets/iconPic/128/instructionAll.webp';
+	import imgSettings from '$lib/assets/iconPic/128/settings.webp';
+	import imgStickers from '$lib/assets/iconPic/128/stickers.webp';
 </script>
 
 <div class="app-wrapper">
@@ -90,7 +92,7 @@
 					<BtnImg
 						src={imgAdd}
 						alt="test btn img"
-						size={88}
+						size={144}
 						onclick="null"
 						customClass="actionBtnImg"
 					/>
@@ -100,7 +102,17 @@
 					<BtnImg
 						src={imgDate}
 						alt="test btn img"
-						size={88}
+						size={144}
+						onclick="null"
+						customClass="actionBtnImg"
+					/>
+				</a>
+				<a href="{base}/stickers" class="testLink">
+					<span>Блокнот</span>
+					<BtnImg
+						src={imgStickers}
+						alt="test btn img"
+						size={144}
 						onclick="null"
 						customClass="actionBtnImg"
 					/>
@@ -108,9 +120,19 @@
 				<a href="{base}/settings" class="testLink">
 					<span>Настройки</span>
 					<BtnImg
-						src={imgFlauer3d}
+						src={imgSettings}
 						alt="test btn img"
-						size={88}
+						size={144}
+						onclick="null"
+						customClass="actionBtnImg"
+					/>
+				</a>
+				<a href="{base}/instructionAll" class="testLink">
+					<span>Инструкции</span>
+					<BtnImg
+						src={imgInstructionAll}
+						alt="test btn img"
+						size={144}
 						onclick="null"
 						customClass="actionBtnImg"
 					/>
@@ -166,6 +188,7 @@
 		flex-flow: row wrap;
 		justify-content: space-around;
 		align-items: center;
+		gap: 0.5rem;
 	}
 	.testLink {
 		border: 2px solid $clr-white;

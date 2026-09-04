@@ -40,12 +40,13 @@
 		// 		// { label: 'old history', href: `${base}/history` }
 		// 	]
 		// },
-		{ label: 'settings', href: `${base}/settings` }
+		{ label: 'настройки', href: `${base}/settings` },
+		{ label: 'блокнот', href: `${base}/stickers` },
+		{ label: 'instruction', href: `${base}/instructionAll` }
 		/*
 		{ label: 'install', href: `${base}/install` },
 		{ label: 'about', href: `${base}/about` },
 		{ label: 'FAQ', href: `${base}/faq` },
-		{ label: 'instruction', href: `${base}/instructionAll` },
 		{ label: 'privacy policy', href: `${base}/privacyPolicy` },
 		{ label: 'disclaimer', href: `${base}/disclaimer` },
 		{ label: 'contact us', href: `${base}/contactUs` }
@@ -230,6 +231,7 @@
 </div>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	/* -------------------------------------- */
 	/* ОБЩИЕ СТИЛИ */
 	/* -------------------------------------- */
@@ -317,14 +319,10 @@
 		max-width: 90vw;
 		z-index: 999;
 		padding: 10px 0;
-
-		// Вместо #eee
 		border: 1px solid $clr-bg-dark;
 
-		// Вместо coral используем переменную (шапка меню)
-		background-color: $clr-pink;
+		background-color: $clr-teal-soft;
 
-		// Добавим тень, чтобы меню "всплывало" над калькулятором
 		box-shadow: $shadow-deep;
 	}
 
@@ -355,7 +353,6 @@
 		font-weight: 800;
 		text-transform: uppercase;
 		flex-grow: 1;
-		// Текст на коралловом фоне делаем темным, как в шапке
 		color: $clr-bg;
 	}
 
@@ -371,7 +368,7 @@
 		flex-grow: 1;
 		padding: 10px 15px;
 		text-decoration: none;
-		color: $clr-bg;
+		color: $clr-text-main;
 		transition: background-color 0.15s ease;
 		-webkit-tap-highlight-color: transparent;
 		touch-action: manipulation;
@@ -379,7 +376,7 @@
 		&:focus-visible {
 			outline: 2px solid $clr-teal;
 			outline-offset: -2px;
-			background-color: rgba(255, 255, 255, 0.1);
+			background-color: rgba($clr-teal-soft-rgb, 0.1);
 		}
 
 		&:active {

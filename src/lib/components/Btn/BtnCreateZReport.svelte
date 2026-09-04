@@ -12,7 +12,6 @@
 
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
-	import imgReport3d from '$lib/assets/iconPic/256/logo_report3d.webp';
 
 	let dateStr = $derived(appState.now_date || getTodayDate());
 
@@ -79,7 +78,7 @@
 			toastStore.show('Z-отчет успешно создан', 'success');
 			showConfirmModal = false;
 
-			// ✅ Обновляем статус
+			//  Обновляем статус
 			hasReportForDate = true;
 
 			appState.now_mode = 'z_report';
@@ -105,20 +104,12 @@
 </script>
 
 <!-- Кнопка — блокируется при наличии отчёта -->
-<button
-	class="iconLink"
-	class:disabled={hasReportForDate}
+<BtnText
+	buttonText="создать z-отчёт"
 	onclick={handleOpenConfirm}
-	type="button"
-	disabled={hasReportForDate}
->
-	<BtnImg
-		src={imgReport3d}
-		alt="Создать Z-отчёт"
-		size={64}
-		customClass="actionBtnImg {hasReportForDate ? 'opacity-50' : ''}"
-	/>
-</button>
+	disabled={isCreating || hasReportForDate}
+	customClass="btn-zreport {hasReportForDate ? 'disabled' : ''}"
+/>
 
 <!-- Модалка предупреждения (напоминания) -->
 <ModalBackdrop isOpen={showWarningModal} maxWidth="420px">
@@ -149,7 +140,7 @@
 			<div class="modal-actions">
 				<BtnText buttonText="Отменить" onclick={closeConfirmModal} customClass="btn-cancel-modal" />
 				<BtnText
-					buttonText="Z-отчёт"
+					buttonText="Создать"
 					onclick={handleCreateZReport}
 					disabled={isCreating}
 					customClass="btn-confirm-modal"

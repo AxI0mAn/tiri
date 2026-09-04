@@ -20,14 +20,14 @@
 				jpeg: src03jpeg
 			}
 		},
-		{
-			link: 'https://axi0man.github.io/axI0_Puzzle/',
-			alt: 'Puzzle banner',
-			src: {
-				webp: src02webp,
-				jpeg: src02jpeg
-			}
-		},
+		// {
+		// 	link: 'https://axi0man.github.io/axI0_Puzzle/',
+		// 	alt: 'Puzzle banner',
+		// 	src: {
+		// 		webp: src02webp,
+		// 		jpeg: src02jpeg
+		// 	}
+		// },
 		{
 			link: 'https://axi0man.github.io/axI0_Puzzle/',
 			alt: 'Puzzle banner',

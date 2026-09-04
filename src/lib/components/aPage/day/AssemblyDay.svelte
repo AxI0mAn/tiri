@@ -2,11 +2,14 @@
 <script>
 	// @ts-ignore
 	import { goto } from '$app/navigation';
+	// @ts-ignore
+	import { base } from '$app/paths';
 	import ShowCard from './ShowCard.svelte';
 
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import logo_job3dWebp from '$lib/assets/iconPic/64/logo_job3d.webp';
 	import imgReport3d from '$lib/assets/iconPic/64/logo_report3d.webp';
+	import { toastStore } from '$lib/store/toastStore.svelte';
 
 	import { getAllThisDayRecords, getReport_Z_date } from '$lib/utils/db.js';
 	import { formatDateISOLocal, getTodayDate } from '$lib/utils/dateHelpers.js';
@@ -70,6 +73,9 @@
 	}
 
 	// Обработчик клика по кнопке отчета
+	// src/lib/components/aPage/day/AssemblyDay.svelte
+
+	// Обработчик клика по кнопке отчета
 	async function handleReportClick() {
 		// 1. Будущие дни — игнорируем
 		if (isFuture) {
@@ -77,20 +83,42 @@
 			return;
 		}
 
-		// 2. Прошлые дни — переход на страницу Z-отчета
+		// 2. Прошлые дни
 		if (isPast) {
 			const report = await getReport_Z_date(dateStr);
 
 			if (!report) {
-				// ❌ Нет Z-отчета — ничего не делаем
-				console.log('[AssemblyDay] Нет Z-отчета за', dateStr);
-				return;
+				// ❌ Нет Z-отчета — создаём и переходим
+				console.log('[AssemblyDay] Создаём Z-отчет за', dateStr);
+
+				try {
+					// Получаем записи за день
+					const records = await getAllThisDayRecords(dateStr);
+					const { CalculationsDay } =
+						await import('$lib/components/services/calculationsOneDay.js');
+					const { saveReport } = await import('$lib/utils/db.js');
+
+					const calc = new CalculationsDay(records);
+					const newReport = calc.report_Z(dateStr);
+
+					// Сохраняем в IndexedDB
+					await saveReport('day', dateStr, {
+						...newReport,
+						yearMonth: dateStr.slice(0, 7)
+					});
+
+					console.log('[AssemblyDay] Z-отчет создан за', dateStr);
+				} catch (error) {
+					console.error('[AssemblyDay] Ошибка создания Z-отчета:', error);
+					toastStore.show('Ошибка при создании Z-отчета', 'error');
+					return;
+				}
 			}
 
-			// ✅ Есть Z-отчет — переход на страницу Z-отчета
+			// ✅ Есть Z-отчет (или только что создали) — переход на страницу Z-отчета
 			appState.now_mode = 'z_report';
 			appState.now_date = dateStr;
-			goto('/day_Zreport');
+			goto(`${base}/day_Zreport`);
 			return;
 		}
 
@@ -102,7 +130,7 @@
 				// Z-отчет есть → переход на страницу Z-отчета
 				appState.now_mode = 'z_report';
 				appState.now_date = dateStr;
-				goto('/day_Zreport');
+				goto(`${base}/day_Zreport`);
 			} else {
 				// Z-отчета нет → открываем модалку с X-отчетом
 				console.log('[AssemblyDay] Показать X-отчет за', dateStr);
