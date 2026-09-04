@@ -432,6 +432,53 @@ export async function deleteEntry(id) {
   }
 }
 
+
+/**
+ * Удаляет отчёт из хранилища report_day или report_month
+ * @param {'day' | 'month'} type - тип отчёта
+ * @param {string} key - ключ (dateStr для дня, yearMonth для месяца)
+ * @returns {Promise<boolean>} - true если удалён, false если не найден
+ */
+export async function deleteReport(type, key) {
+  try {
+    const db = await openDB();
+    const storeName = type === 'day' ? 'report_day' : 'report_month';
+
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
+
+      // Сначала проверяем, существует ли запись
+      const getReq = store.get(key);
+      getReq.onsuccess = () => {
+        if (!getReq.result) {
+          console.log(`[deleteReport] Отчёт ${type} по ключу ${key} не найден`);
+          resolve(false);
+          return;
+        }
+
+        // Удаляем
+        const deleteReq = store.delete(key);
+        deleteReq.onsuccess = () => {
+          console.log(`[deleteReport] Отчёт ${type} по ключу ${key} удалён`);
+          resolve(true);
+        };
+        deleteReq.onerror = () => {
+          console.error(`[deleteReport] Ошибка удаления ${key}:`, deleteReq.error);
+          reject(deleteReq.error);
+        };
+      };
+      getReq.onerror = () => {
+        console.error(`[deleteReport] Ошибка проверки ${key}:`, getReq.error);
+        reject(getReq.error);
+      };
+    });
+  } catch (error) {
+    console.error('[deleteReport] Критическая ошибка:', error);
+    throw error;
+  }
+}
+
 // === -📝=TODO=📝- ===
 // ВРЕМЕННО: для ручного тестирования (удалить после проверки)
 // if (typeof window !== 'undefined') {

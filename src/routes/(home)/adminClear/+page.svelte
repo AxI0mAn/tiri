@@ -61,7 +61,7 @@
 
 		isProcessing = true;
 		try {
-			const { getReport_Z_date, saveReport } = await import('$lib/utils/db.js');
+			const { getReport_Z_date, deleteReport } = await import('$lib/utils/db.js');
 
 			const report = await getReport_Z_date(dateZReport);
 			if (!report) {
@@ -69,34 +69,14 @@
 				return;
 			}
 
-			// Сохраняем пустой объект (удаляем)
-			await saveReport('day', dateZReport, {
-				dateStr: dateZReport,
-				yearMonth: dateZReport.slice(0, 7),
-				payments: {
-					gross: 0,
-					summary: 0,
-					allGive: 0,
-					nowGive: 0,
-					moreGive: 0,
-					changeGive: 0,
-					tips: 0,
-					my: 0,
-					allMy: 0
-				},
-				clients: {
-					heads: 0,
-					pass: 0,
-					male: 0,
-					male_bearded: 0,
-					female: 0,
-					colorist: 0,
-					child: 0
-				}
-			});
-
-			addLog(`✅ Z-отчёт за ${dateZReport} успешно удалён.`);
-			dateZReport = '';
+			// ✅ Удаляем Z-отчёт из report_day
+			const deleted = await deleteReport('day', dateZReport);
+			if (deleted) {
+				addLog(`✅ Z-отчёт за ${dateZReport} успешно удалён.`);
+				dateZReport = '';
+			} else {
+				addLog(`⚠️ Z-отчёт за ${dateZReport} не найден при удалении.`, true);
+			}
 		} catch (error) {
 			console.error('[admin/clear] Ошибка:', error);
 			addLog(`❌ Ошибка при удалении Z-отчёта: ${error.message}`, true);
@@ -118,14 +98,12 @@
 
 		isProcessing = true;
 		try {
-			const { getAllThisDayRecords, getReport_Z_date, saveEntry, saveReport } =
+			const { getAllThisDayRecords, getReport_Z_date, deleteEntry, deleteReport } =
 				await import('$lib/utils/db.js');
 
-			// 1. Проверяем, есть ли записи
 			const records = await getAllThisDayRecords(dateAllDay);
 			const hasRecords = records.length > 0;
 
-			// 2. Проверяем Z-отчёт
 			const report = await getReport_Z_date(dateAllDay);
 			const hasReport = !!report;
 
@@ -134,62 +112,28 @@
 				return;
 			}
 
-			// 3. Удаляем записи (заметки и напоминания)
+			// 1. Удаляем записи (заметки и напоминания)
 			let deletedCount = 0;
 			if (hasRecords) {
-				const db = await new Promise((resolve) => {
-					const req = indexedDB.open('LiveTiriDB', 3);
-					req.onsuccess = () => resolve(req.result);
-				});
-
-				const tx = db.transaction('entries', 'readwrite');
-				const store = tx.objectStore('entries');
-
 				for (const record of records) {
-					await new Promise((resolve, reject) => {
-						const req = store.delete(record.id);
-						req.onsuccess = () => {
-							deletedCount++;
-							resolve();
-						};
-						req.onerror = () => reject(req.error);
-					});
+					try {
+						await deleteEntry(record.id);
+						deletedCount++;
+					} catch (e) {
+						console.warn(`[deleteAllDay] Не удалось удалить ${record.id}:`, e);
+					}
 				}
 			}
 
-			// 4. Удаляем Z-отчёт
+			// 2. Удаляем Z-отчёт
 			if (hasReport) {
-				await saveReport('day', dateAllDay, {
-					dateStr: dateAllDay,
-					yearMonth: dateAllDay.slice(0, 7),
-					payments: {
-						gross: 0,
-						summary: 0,
-						allGive: 0,
-						nowGive: 0,
-						moreGive: 0,
-						changeGive: 0,
-						tips: 0,
-						my: 0,
-						allMy: 0
-					},
-					clients: {
-						heads: 0,
-						pass: 0,
-						male: 0,
-						male_bearded: 0,
-						female: 0,
-						colorist: 0,
-						child: 0
-					}
-				});
+				await deleteReport('day', dateAllDay);
 			}
 
-			// 5. Отчёт
+			// 3. Отчёт
 			let message = `✅ За ${dateAllDay} удалено:`;
 			if (deletedCount > 0) message += ` ${deletedCount} записей;`;
 			if (hasReport) message += ` Z-отчёт;`;
-			if (deletedCount === 0 && !hasReport) message = `⚠️ За ${dateAllDay} ничего не найдено.`;
 			addLog(message);
 			dateAllDay = '';
 		} catch (error) {
@@ -486,7 +430,8 @@
 		height: 100vh;
 		max-height: 100vh;
 		background: var(--clr-bg-primary, #f5f5f5);
-		overflow: hidden;
+		overflow: auto;
+		padding-bottom: 3rem;
 	}
 
 	.header {
@@ -599,11 +544,13 @@
 	/* Логи */
 	.log-block {
 		flex: 1;
-		min-height: 0;
+		min-height: 200px; /* ← увеличил */
+		max-height: 400px; /* ← ограничиваем, чтобы не занимал всё */
 		display: flex;
 		flex-direction: column;
 		border-left: 4px solid var(--clr-info, #3b82f6);
 		margin-bottom: 16px;
+		overflow: hidden;
 	}
 
 	.log-header {
@@ -625,6 +572,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
+		min-height: 100px; /* ← чтобы было видно */
+		max-height: 250px; /* ← скролл при превышении */
 	}
 
 	.log-container::-webkit-scrollbar {
@@ -650,6 +599,7 @@
 		border-radius: 6px;
 		background: var(--clr-bg-primary, #f5f5f5);
 		font-size: 14px;
+		flex-shrink: 0;
 	}
 
 	.log-item.log-error {
