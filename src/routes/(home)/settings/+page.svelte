@@ -1,6 +1,8 @@
 <script>
 	import BtnBack from '$lib/components/Btn/BtnBack.svelte';
 	import { appStore } from '$lib/store/appStore.svelte';
+
+	import CheckBox from '$lib/components/input/CheckBox.svelte';
 	import SettingsConstructor from '$lib/components/aPage/SettingsConstructor.svelte';
 	import InputText from '$lib/components/input/InputText.svelte';
 	import Select from '$lib/components/input/Select.svelte';
@@ -32,6 +34,13 @@
 	<section class="setting-group">
 		<span class="label">Язык приложения</span>
 		<Select bind:value={selectedLang} options={appStore.langOptions} label="" placeholder="" />
+	</section>
+
+	<section class="setting-group">
+		<CheckBox bind:checked={appStore.swipeDay} label=" " />
+		<span class="setting-hint">Включите для навигации свайпом,</span><span class="setting-hint"
+			>выключите, чтоб использовать только кнопки</span
+		>
 	</section>
 
 	<div class="settings-container">
@@ -73,8 +82,9 @@
 
 	.setting-group {
 		// margin: 0 auto;
-		max-width: 50vmin;
+		max-width: 60vmin;
 		margin-bottom: 25px;
+		padding: 1rem 2rem;
 		display: flex;
 		flex-flow: row wrap;
 		align-items: center;

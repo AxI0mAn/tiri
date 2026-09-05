@@ -1,8 +1,13 @@
 <script>
 	// src/lib/components/Day/SwipeDay.svelte
 	import { onMount, onDestroy } from 'svelte';
+	import { appStore } from '$lib/store/appStore.svelte';
 	import AssemblyDay from './AssemblyDay.svelte';
 	import { getTodayDate, getDateOffset } from '$lib/utils/dateHelpers.js';
+
+	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
+	import leftPink from '$lib/assets/iconPic/128/arrowPink.webp';
+	import rightGreen from '$lib/assets/iconPic/128/arrowGreen.webp';
 
 	// Состояние: массив дат для отображения
 	let visibleDates = $state([]);
@@ -79,10 +84,16 @@
 
 	// Обработка свайпов
 	function handleTouchStart(event) {
+		//  Если свайп выключен — игнорируем
+		if (!appStore.swipeDay) return;
+
 		touchStartX = event.changedTouches[0].screenX;
 	}
 
 	function handleTouchEnd(event) {
+		// Если свайп выключен — игнорируем
+		if (!appStore.swipeDay) return;
+
 		touchEndX = event.changedTouches[0].screenX;
 		const deltaX = touchStartX - touchEndX;
 
@@ -120,23 +131,44 @@
 	</div>
 
 	<!-- Кнопки навигации -->
-	<button
+	<!-- <button
 		class="nav-btn nav-left"
 		onclick={goLeft}
 		disabled={isTransitioning}
 		aria-label="Предыдущий день"
 	>
 		‹
-	</button>
+	</button> -->
 
-	<button
+	<!-- <button
 		class="nav-btn nav-right"
 		onclick={goRight}
 		disabled={isTransitioning}
 		aria-label="Следующий день"
 	>
 		›
-	</button>
+	</button> -->
+
+	<div class=" nav-btn nav-left">
+		<BtnImg
+			src={leftPink}
+			alt="Предыдущий день"
+			size={44}
+			onclick={goLeft}
+			disabled={isTransitioning}
+			customClass="actionBtnImg"
+		/>
+	</div>
+	<div class=" nav-btn nav-right">
+		<BtnImg
+			src={rightGreen}
+			alt="Следующий день"
+			size={44}
+			onclick={goRight}
+			disabled={isTransitioning}
+			customClass="actionBtnImg  "
+		/>
+	</div>
 </div>
 
 <style lang="scss">
@@ -177,7 +209,7 @@
 
 	.nav-btn {
 		position: absolute;
-		top: 50%;
+		bottom: 0rem;
 		transform: translateY(-50%);
 		z-index: 20;
 		width: 40px;
@@ -202,6 +234,7 @@
 	.nav-btn:disabled {
 		opacity: 0.3;
 		cursor: not-allowed;
+		pointer-events: none;
 	}
 
 	.nav-left {

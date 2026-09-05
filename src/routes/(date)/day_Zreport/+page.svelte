@@ -214,7 +214,7 @@
 				<!-- Блок 0: Аренда -->
 				{#if activeTab === 0}
 					<div class="block">
-						<h2>Аренда:</h2>
+						<h2>Аренда или %:</h2>
 						<div class="block-content">
 							<div class="row">
 								<span class="label">Уже оплачено</span>

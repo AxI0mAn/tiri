@@ -227,6 +227,12 @@ export class FormDraftManager {
 
       // Получаем данные из поля remind
       const remindData = this.draft.value.remind;
+      if (remindData?.date && remindData?.time) {
+        const newTimestamp = createLocalTimestamp(remindData.date, remindData.time);
+        if (newTimestamp <= Date.now()) {
+          errors.push('Дата и время напоминания должны быть в будущем');
+        }
+      }
 
       // Проверяем, что remind существует и это объект с полями date и time
       if (remindData && typeof remindData === 'object' && remindData.date && remindData.time) {

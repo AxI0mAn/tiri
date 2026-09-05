@@ -17,7 +17,14 @@
 	 * @property {string} [customClass=''] - Дополнительные CSS-классы (без класса - в одном круге, .gender - снизу овал, .icon - в двойном круге, .notAction для .gender И .action для .icon - вид как при :active)
 	 */
 
-	let { src = '', alt = '', size = 64, onclick = null, customClass = '' } = $props();
+	let {
+		src = '',
+		alt = '',
+		size = 64,
+		onclick = null,
+		disabled = false,
+		customClass = ''
+	} = $props();
 
 	let parsedSize = $derived.by(() => {
 		const num = typeof size === 'number' ? size : parseFloat(size);
@@ -51,6 +58,7 @@
 
 <button
 	type="button"
+	{disabled}
 	class="btn-img {customClass}"
 	style="--btn-size: {parsedSize}px;"
 	onclick={handleClick}
