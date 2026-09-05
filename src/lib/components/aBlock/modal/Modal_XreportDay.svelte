@@ -84,7 +84,8 @@
 				<BtnText buttonText="Закрыть" onclick={closeModal} customClass="close-btn" />
 			</div>
 			<AdvertisementGor />
-			<BtnCreateZReport />
+			<!-- Передаём колбэк для закрытия модалки -->
+			<BtnCreateZReport onSuccess={closeModal} />
 		</div>
 	{/snippet}
 </ModalBackdrop>

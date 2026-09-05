@@ -14,16 +14,25 @@
 	import { saveEntry, deleteEntry } from '$lib/utils/db.js';
 	import { createLocalTimestamp, formatDateISOLocal } from '$lib/utils/dateHelpers.js';
 
+	import { hasZReport } from '$lib/components/services/reportGuard.js';
+	import { getTodayDate } from '$lib/utils/dateHelpers.js';
+
 	// Состояние
 	let entry = $state(null);
 	let updatedEntry = $state(null);
+
 	let isLoading = $state(true);
+	let isSaving = $state(false);
+	let isRescheduling = $state(false);
+	let isCompleting = $state(false);
+
 	let error = $state(null);
 	let isReminder = $state(false);
 	let isNote = $state(false);
 	let constructorStore = $state(null);
 	let formRef = $state(null);
 	let showConfirmModal = $state(false);
+	let isCompleteDisabled = $state(false);
 
 	// Загрузка записи
 	async function loadEntry() {
@@ -98,7 +107,9 @@
 
 	// Сохранение (для заметок)
 	async function handleSave() {
-		if (!entry) return;
+		// Если уже идёт сохранение — выходим
+		if (isSaving || !entry) return;
+		isSaving = true;
 
 		try {
 			const entryValue = JSON.parse(JSON.stringify(entry.value || {}));
@@ -130,26 +141,42 @@
 		} catch (err) {
 			console.error('[edit] Ошибка сохранения:', err);
 			toastStore.show('Ошибка при сохранении', 'error');
+		} finally {
+			isSaving = false;
 		}
 	}
 
 	// Перенести (для напоминаний)
 	async function handleReschedule() {
-		if (!entry || !isReminder) return;
+		// ✅ Защита от двойного нажатия
+		if (isRescheduling || !entry || !isReminder) return;
 
+		// ✅ Проверка заполненности полей
 		if (!entry.value?.remind?.date || !entry.value?.remind?.time) {
 			toastStore.show('Заполните дату и время в поле "Напоминание"', 'error');
 			return;
 		}
 
+		isRescheduling = true;
+
 		try {
 			const entryValue = JSON.parse(JSON.stringify(entry.value || {}));
 			const { date, time } = entryValue.remind;
-			const [year, month, day] = date.split('-').map(Number);
-			const [hours, minutes] = time.split(':').map(Number);
 
-			//  Создаем timestamp в ЛОКАЛЬНОМ времени
+			//  Создаём timestamp из введённой даты и времени
 			const newTimestamp = createLocalTimestamp(date, time);
+
+			//  Проверка: новое время должно быть в будущем (относительно текущего момента)
+			const now = Date.now();
+			if (newTimestamp <= now) {
+				toastStore.show(
+					'Нельзя перенести напоминание в прошлое. Выберите будущую дату и время.',
+					'error'
+				);
+				return;
+			}
+
+			const [year, month, day] = date.split('-').map(Number);
 
 			const newEntry = {
 				...entry,
@@ -162,9 +189,13 @@
 				value: entryValue
 			};
 
-			//  Сначала сохраняем, потом удаляем
 			await saveEntry(newEntry);
 			await deleteEntry(entry.id);
+
+			// Принудительно очищаем черновик
+			if (typeof window !== 'undefined') {
+				localStorage.removeItem('draft_entry');
+			}
 
 			toastStore.show(`Напоминание перенесено на ${date} ${time}`, 'success');
 
@@ -180,12 +211,15 @@
 		} catch (err) {
 			console.error('[edit] Ошибка переноса:', err);
 			toastStore.show('Ошибка при переносе', 'error');
+		} finally {
+			isRescheduling = false;
 		}
 	}
 
 	// Выполнено (reminder → note)
 	async function handleComplete() {
-		if (!entry || !isReminder) return;
+		if (isCompleting || !entry || !isReminder) return;
+		isCompleting = true;
 
 		try {
 			const { saveEntry, deleteEntry } = await import('$lib/utils/db.js');
@@ -326,6 +360,25 @@
 	onMount(() => {
 		loadEntry();
 	});
+
+	// Блокируем кнопку "Выполнено", если z-отчёт за сегодня создан.
+	// Чтоб не добавлять выполненное в закрытую смену!!
+	// Проверяем, можно ли выполнить напоминание
+	async function checkCompletePermission() {
+		if (!isReminder) return;
+
+		const today = getTodayDate();
+		// Если запись за сегодня и есть Z-отчёт — блокируем
+		const reportExists = await hasZReport(today);
+		isCompleteDisabled = reportExists;
+	}
+
+	// Проверяем при загрузке записи
+	$effect(() => {
+		if (entry) {
+			checkCompletePermission();
+		}
+	});
 </script>
 
 <div class="edit-page">
@@ -350,11 +403,26 @@
 			<footer class="form-actions">
 				{#if isNote}
 					<BtnText buttonText="Удалить" onclick={openDeleteConfirm} customClass="btn-delete" />
-					<BtnText buttonText="Сохранить" onclick={handleSave} customClass="btn-save" />
+					<BtnText
+						buttonText="Сохранить"
+						onclick={handleSave}
+						disabled={isSaving}
+						customClass="btn-save {isSaving ? 'disabled' : ''}"
+					/>
 				{:else if isReminder}
 					<BtnText buttonText="Удалить" onclick={openDeleteConfirm} customClass="btn-delete" />
-					<BtnText buttonText="Выполнено" onclick={handleComplete} customClass="btn-complete" />
-					<BtnText buttonText="Перенести" onclick={handleReschedule} customClass="btn-reschedule" />
+					<BtnText
+						buttonText="Выполнено"
+						onclick={handleComplete}
+						disabled={isCompleteDisabled || isCompleting}
+						customClass="btn-complete {isCompleteDisabled || isCompleting ? 'disabled' : ''}"
+					/>
+					<BtnText
+						buttonText="Перенести"
+						onclick={handleReschedule}
+						disabled={isRescheduling}
+						customClass="btn-reschedule {isRescheduling ? 'disabled' : ''}"
+					/>
 				{/if}
 			</footer>
 		{/if}
@@ -452,6 +520,17 @@
 	.form-actions :global(.btn-complete) {
 		background: var(--clr-success, #22c55e) !important;
 		color: white !important;
+	}
+
+	.btn-save.disabled,
+	.btn-save:disabled,
+	.btn-reschedule.disabled,
+	.btn-reschedule:disabled,
+	.btn-complete.disabled,
+	.btn-complete:disabled {
+		opacity: 0.5 !important;
+		cursor: not-allowed !important;
+		pointer-events: none !important;
 	}
 
 	.form-actions :global(.btn-reschedule) {

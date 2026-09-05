@@ -30,6 +30,10 @@ class AppStore {
     getBrowserLanguage(this.langOptions, 'EN')
   );
 
+  /** использовать свайп на странице дней или только кнопки
+ * @type {boolean} */
+  swipeDay = $state(false);
+
   /** Дата первой заметки. false или строка с датой 'YYYY.MM.DD'
    * @type {string | boolean} */
   firstInput = $state(false);

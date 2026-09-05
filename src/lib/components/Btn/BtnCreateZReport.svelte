@@ -13,6 +13,9 @@
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 
+	// ✅ пропc для колбэка, чтоб закрыть модалку х-отчёта
+	let { onSuccess = () => {} } = $props();
+
 	let dateStr = $derived(appState.now_date || getTodayDate());
 
 	let isCreating = $state(false);
@@ -49,6 +52,9 @@
 
 			//  Обновляем статус
 			hasReportForDate = true;
+
+			// Вызываем колбэк для закрытия модалки х-отчёта перед переходом
+			onSuccess();
 
 			appState.now_mode = 'z_report';
 			appState.now_date = today;

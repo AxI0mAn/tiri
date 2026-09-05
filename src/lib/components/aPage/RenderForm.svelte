@@ -42,6 +42,9 @@
 		hideActions = false
 	} = $props();
 
+	// Добавляем флаг сохранения, чтоб отследить момент сохранения. Если сохранено, то кнопка "Сохранить" - не активна
+	let isSaving = $state(false);
+
 	// Создаем менеджер формы
 	const manager = untrack(() => {
 		const m = new FormDraftManager(type, constructorStore);
@@ -84,8 +87,18 @@
 	let formattedDate = $derived(formatDateFromTimestamp(manager.draft.timestamp));
 
 	async function handleSave() {
-		await manager.save();
-		onSave();
+		// Если уже идёт сохранение — выходим
+		if (isSaving) return;
+
+		isSaving = true;
+		try {
+			await manager.save();
+			onSave();
+		} catch (error) {
+			console.error('[RenderForm] Ошибка сохранения:', error);
+		} finally {
+			isSaving = false;
+		}
 	}
 
 	function handleCancel() {
@@ -388,7 +401,12 @@
 		<footer class="form-actions">
 			<!-- Кнопки действия -->
 			<BtnText buttonText="Отмена" onclick={handleCancel} />
-			<BtnText buttonText="Сохранить" disabled={!manager.isValid} onclick={handleSave} />
+			<BtnText
+				buttonText="Сохранить"
+				disabled={!manager.isValid || isSaving}
+				onclick={handleSave}
+				customClass="btn-save {!manager.isValid || isSaving ? 'disabled' : ''}"
+			/>
 		</footer>
 	{/if}
 </div>
@@ -587,6 +605,12 @@
 				&.btn-save {
 					background-color: $clr-teal;
 					color: #000;
+					&.btn-save.disabled,
+					.btn-save:disabled {
+						opacity: 0.5 !important;
+						cursor: not-allowed !important;
+						pointer-events: none !important;
+					}
 				}
 
 				&.btn-cancel {
