@@ -25,6 +25,7 @@
 		}
 
 		.date-input {
+			min-width: 200px;
 			width: 100%;
 			height: 44px;
 			padding: 0 14px;
