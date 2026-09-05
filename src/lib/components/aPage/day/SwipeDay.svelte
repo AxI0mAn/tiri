@@ -245,6 +245,36 @@
 		right: 8px;
 	}
 
+	/* ✅ Убираем эффект нажатия на мобильных */
+	.nav-btn {
+		-webkit-tap-highlight-color: transparent !important;
+		-webkit-touch-callout: none !important;
+		-webkit-user-select: none !important;
+		user-select: none !important;
+		outline: none !important;
+	}
+
+	/* ✅ Убираем активное состояние (нажатие) */
+	.nav-btn:active {
+		transform: translateY(-50%) scale(1) !important; /* или вообще без изменений */
+		opacity: 0.7 !important; /* или оставить как есть */
+	}
+
+	/* ✅ Для мобильных — убираем всё */
+	@media (max-width: 768px) {
+		.nav-btn:active {
+			transform: translateY(-50%) scale(1) !important;
+			opacity: 1 !important;
+			background: transparent !important;
+			box-shadow: none !important;
+		}
+
+		/* ✅ Если кнопка внутри div — убираем эффект у родителя */
+		.nav-btn-wrapper:active {
+			transform: scale(1) !important;
+		}
+	}
+
 	@media (max-width: 480px) {
 		.nav-btn {
 			width: 32px;
