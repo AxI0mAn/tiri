@@ -18,24 +18,33 @@
 	const DEFAULT_GENDER = 'male';
 	const DEFAULT_MY_PERCENT = 50;
 	const DEFAULT_PAY = 'cash';
-	const DEFAULT_YEAR = 2026;
 
-	// ===== Общая дата для всех блоков =====
-	let globalDate = $state('');
+	// ===== Общая дата (три поля) =====
+	let globalDay = $state('');
+	let globalMonth = $state('');
+	let globalYear = $state(new Date().getFullYear().toString());
+
+	// ===== Флаг, что сохранение выполнено =====
+	let isSaved = $state(false);
+	let lastSavedDate = $state('');
 
 	// ===== Состояние для автоматического ввода =====
-	let autoDate = $state('');
 	let autoTextarea = $state('');
-	let isAutoOpen = $state(false);
 
-	// ===== Добавить новый блок с автоматическим временем =====
+	// ===== Форматирование даты =====
+	function formatGlobalDate() {
+		if (!globalDay || !globalMonth || !globalYear) return '';
+		const day = String(globalDay).padStart(2, '0');
+		const month = String(globalMonth).padStart(2, '0');
+		return `${globalYear}-${month}-${day}`;
+	}
+
+	// ===== Добавить новый блок =====
 	function addBlock() {
 		const now = Date.now();
 
-		// Вычисляем время для нового блока
 		let newTime = '09:00';
 		if (blocks.length > 0) {
-			// Берём время последнего блока и добавляем 20 минут
 			const lastBlock = blocks[blocks.length - 1];
 			const [hours, minutes] = lastBlock.time.split(':').map(Number);
 			const totalMinutes = hours * 60 + minutes + 20;
@@ -48,7 +57,7 @@
 			...blocks,
 			{
 				id: `block_${now}`,
-				date: globalDate || '',
+				date: formatGlobalDate(),
 				time: newTime,
 				sum: 0,
 				gender: DEFAULT_GENDER,
@@ -67,21 +76,21 @@
 		blocks = blocks.filter((block) => block.id !== id);
 	}
 
-	// ===== Очистить все блоки (кроме одного) =====
+	// ===== Очистить все блоки =====
 	function clearAll() {
 		if (blocks.length === 0) {
 			addBlock();
 			return;
 		}
-
-		const firstBlock = blocks[0];
 		blocks = [
 			{
-				...firstBlock,
 				id: `block_${Date.now()}`,
-				date: globalDate || '',
+				date: formatGlobalDate(),
 				time: '09:00',
-				sum: 0
+				sum: 0,
+				gender: DEFAULT_GENDER,
+				myPercent: DEFAULT_MY_PERCENT,
+				pay: DEFAULT_PAY
 			}
 		];
 		toastStore.show('Все блоки очищены', 'info');
@@ -94,7 +103,13 @@
 			return;
 		}
 
-		// Проверяем заполненность даты во всех блоках
+		const formattedDate = formatGlobalDate();
+		if (!formattedDate) {
+			toastStore.show('Заполните дату (день, месяц, год)', 'error');
+			return;
+		}
+
+		// Проверяем заполненность
 		const invalidBlocks = blocks.filter(
 			(b) => !b.date || !b.time || b.sum === undefined || b.sum === null || b.sum <= 0
 		);
@@ -154,10 +169,17 @@
 				);
 			} else {
 				toastStore.show(`✅ Успешно сохранено ${savedCount} заметок`, 'success');
+				isSaved = true;
+				lastSavedDate = formattedDate;
 			}
 
-			// ✅ Возвращаем вид по умолчанию
-			resetToDefault();
+			// Оставляем блоки, но сбрасываем суммы и время на 9:00
+			blocks = blocks.map((block, index) => ({
+				...block,
+				id: `block_${Date.now()}_${index}`,
+				time: index === 0 ? '09:00' : addMinutesToTime('09:00', index * 20),
+				sum: 0
+			}));
 		} catch (err) {
 			console.error('[Import] Ошибка:', err);
 			toastStore.show('Ошибка при сохранении', 'error');
@@ -166,25 +188,20 @@
 		}
 	}
 
-	// ===== Сброс к виду по умолчанию =====
-	function resetToDefault() {
-		blocks = [
-			{
-				id: `block_${Date.now()}`,
-				date: globalDate || '',
-				time: '09:00',
-				sum: 0,
-				gender: DEFAULT_GENDER,
-				myPercent: DEFAULT_MY_PERCENT,
-				pay: DEFAULT_PAY
-			}
-		];
+	// ===== Добавить минуты к времени =====
+	function addMinutesToTime(timeStr, minutesToAdd) {
+		const [hours, minutes] = timeStr.split(':').map(Number);
+		const totalMinutes = hours * 60 + minutes + minutesToAdd;
+		const newHours = Math.floor(totalMinutes / 60) % 24;
+		const newMinutes = totalMinutes % 60;
+		return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
 	}
 
 	// ===== Генерация блоков из автоматического ввода =====
 	function generateFromAuto() {
-		if (!autoDate) {
-			toastStore.show('Введите дату в поле "Дата 2"', 'error');
+		const formattedDate = formatGlobalDate();
+		if (!formattedDate) {
+			toastStore.show('Заполните общую дату (день, месяц, год)', 'error');
 			return;
 		}
 
@@ -200,11 +217,9 @@
 			return;
 		}
 
-		// Удаляем все старые блоки
 		blocks = [];
 
-		// Создаём блоки для каждого числа
-		let timeMinutes = 9 * 60; // 9:00
+		let timeMinutes = 9 * 60;
 		for (const sum of numbers) {
 			const hours = Math.floor(timeMinutes / 60) % 24;
 			const minutes = timeMinutes % 60;
@@ -214,7 +229,7 @@
 				...blocks,
 				{
 					id: `block_${Date.now()}_${Math.random()}`,
-					date: autoDate,
+					date: formattedDate,
 					time: timeStr,
 					sum: sum,
 					gender: DEFAULT_GENDER,
@@ -223,14 +238,23 @@
 				}
 			];
 
-			timeMinutes += 20; // +20 минут
+			timeMinutes += 20;
 		}
 
 		toastStore.show(`Сгенерировано ${numbers.length} блоков`, 'success');
-
-		// Очищаем поля автоввода
 		autoTextarea = '';
-		autoDate = '';
+	}
+
+	// ===== Переход на страницу дня =====
+	function goToDay() {
+		if (!lastSavedDate) return;
+		goto(`${base}/day?date=${lastSavedDate}`);
+	}
+
+	// ===== Обработка ввода только цифр =====
+	function handleNumberInput(e) {
+		const input = e.currentTarget;
+		input.value = input.value.replace(/\D/g, '');
 	}
 
 	// ===== Инициализация — один блок =====
@@ -245,90 +269,60 @@
 		<h1>Импорт заметок</h1>
 	</header>
 
-	<!-- ===== Общая дата ===== -->
+	<!-- ===== Общая дата (три поля) ===== -->
 	<div class="global-date-row">
-		<label>Общая дата для всех блоков:</label>
-		<input type="date" bind:value={globalDate} />
-		<span class="hint">Если указана — подставится во все блоки</span>
+		<label>Общая дата:</label>
+		<div class="date-fields">
+			<input
+				type="number"
+				class="date-input-small"
+				placeholder="День"
+				bind:value={globalDay}
+				min="1"
+				max="31"
+				oninput={handleNumberInput}
+			/>
+			<span class="date-sep">/</span>
+			<input
+				type="number"
+				class="date-input-small"
+				placeholder="Месяц"
+				bind:value={globalMonth}
+				min="1"
+				max="12"
+				oninput={handleNumberInput}
+			/>
+			<span class="date-sep">/</span>
+			<input
+				type="number"
+				class="date-input-small"
+				placeholder="Год"
+				bind:value={globalYear}
+				min="2020"
+				max="2030"
+				oninput={handleNumberInput}
+			/>
+		</div>
+		<span class="hint">
+			{formatGlobalDate() || 'введите день, месяц, год'}
+		</span>
 	</div>
 
-	<div class="controls">
-		<button class="btn-add" onclick={addBlock}>➕ Добавить</button>
-		<button class="btn-clear" onclick={clearAll}>🗑️ Очистить</button>
-	</div>
-
-	<!-- ===== Блоки ===== -->
-	<div class="blocks">
-		{#each blocks as block, index}
-			<div class="block" class:even={index % 2 === 0}>
-				<div class="block-header">
-					<span class="block-number">#{index + 1}</span>
-					<button class="btn-remove" onclick={() => removeBlock(block.id)}>✕</button>
-				</div>
-
-				<div class="block-fields">
-					<div class="field-group">
-						<label>Дата</label>
-						<input type="date" bind:value={block.date} />
-					</div>
-
-					<div class="field-group">
-						<label>Время</label>
-						<input type="time" bind:value={block.time} step="900" />
-					</div>
-
-					<div class="field-group">
-						<label>Сумма (sum)</label>
-						<input
-							type="number"
-							bind:value={block.sum}
-							min="1"
-							step="100"
-							onfocus={(e) => {
-								const input = e.currentTarget;
-								if (input.value === '0') input.select();
-							}}
-						/>
-					</div>
-
-					<div class="field-group">
-						<label>Пол</label>
-						<select bind:value={block.gender}>
-							<option value="male">Мужской</option>
-							<option value="female">Женский</option>
-							<option value="male_bearded">Борода</option>
-							<option value="colorist">Колорист</option>
-							<option value="child">Детский</option>
-						</select>
-					</div>
-
-					<div class="field-group">
-						<label>% мастера</label>
-						<input type="number" bind:value={block.myPercent} min="0" max="100" step="5" />
-					</div>
-
-					<div class="field-group">
-						<label>Оплата</label>
-						<select bind:value={block.pay}>
-							<option value="cash">Наличные</option>
-							<option value="card1">Карта 1</option>
-							<option value="card2">Карта 2</option>
-							<option value="crypto">Крипта</option>
-						</select>
-					</div>
-				</div>
+	<!-- ===== Ручной ввод + Автоматический ввод (details) ===== -->
+	<details class="auto-details">
+		<summary class="auto-summary">📝 Ручной ввод</summary>
+		<div class="auto-content">
+			<div class="controls">
+				<button class="btn-add" onclick={addBlock}>➕ Добавить</button>
+				<button class="btn-clear" onclick={clearAll}>🗑️ Очистить</button>
 			</div>
-		{/each}
-	</div>
+		</div>
+	</details>
 
 	<!-- ===== Автоматический ввод (details) ===== -->
-	<details class="auto-details">
+	<details class="auto-details" open>
 		<summary class="auto-summary">⚡ Автоматический ввод</summary>
 		<div class="auto-content">
-			<div class="auto-row">
-				<label>Дата 2:</label>
-				<input type="date" bind:value={autoDate} />
-			</div>
 			<div class="auto-row">
 				<label>Числа (через запятую):</label>
 				<textarea
@@ -339,13 +333,86 @@
 				></textarea>
 			</div>
 			<button class="btn-generate" onclick={generateFromAuto}>🚀 Сгенерировать</button>
+			<p class="auto-hint">
+				Блоки создадутся с датой из поля "Общая дата", время с 9:00 с шагом 20 минут
+			</p>
 		</div>
 	</details>
 
+	<div class="blocks-container">
+		<div class="blocks">
+			{#each blocks as block, index}
+				<div class="block" class:even={index % 2 === 0}>
+					<div class="block-header">
+						<span class="block-number">#{index + 1}</span>
+						<button class="btn-remove" onclick={() => removeBlock(block.id)}>✕</button>
+					</div>
+
+					<div class="block-fields">
+						<div class="field-group">
+							<label>Дата</label>
+							<input type="date" bind:value={block.date} />
+						</div>
+
+						<div class="field-group">
+							<label>Время</label>
+							<input type="time" bind:value={block.time} step="900" />
+						</div>
+
+						<div class="field-group">
+							<label>Сумма (sum)</label>
+							<input
+								type="number"
+								bind:value={block.sum}
+								min="1"
+								step="100"
+								onfocus={(e) => {
+									const input = e.currentTarget;
+									if (input.value === '0') input.select();
+								}}
+							/>
+						</div>
+
+						<div class="field-group">
+							<label>Пол</label>
+							<select bind:value={block.gender}>
+								<option value="male">Мужской</option>
+								<option value="female">Женский</option>
+								<option value="male_bearded">Борода</option>
+								<option value="colorist">Колорист</option>
+								<option value="child">Детский</option>
+							</select>
+						</div>
+
+						<div class="field-group">
+							<label>% мастера</label>
+							<input type="number" bind:value={block.myPercent} min="0" max="100" step="5" />
+						</div>
+
+						<div class="field-group">
+							<label>Оплата</label>
+							<select bind:value={block.pay}>
+								<option value="cash">Наличные</option>
+								<option value="card1">Карта 1</option>
+								<option value="card2">Карта 2</option>
+								<option value="crypto">Крипта</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</div>
+
 	<footer class="footer">
-		<button class="btn-save" onclick={saveAll} disabled={isLoading}>
-			{isLoading ? 'Сохранение...' : '💾 Сохранить все'}
-		</button>
+		<div class="footer-buttons">
+			<!-- <button class="btn-view-day" onclick={goToDay} disabled={!isSaved}>
+				📅 Посмотреть день
+			</button> -->
+			<button class="btn-save" onclick={saveAll} disabled={isLoading}>
+				{isLoading ? 'Сохранение...' : '💾 Сохранить все'}
+			</button>
+		</div>
 	</footer>
 </div>
 
@@ -404,26 +471,66 @@
 		color: var(--clr-text-primary, #1a1a1a);
 	}
 
-	.global-date-row input {
-		padding: 6px 10px;
+	.date-fields {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.date-input-small {
+		width: 50px;
+		padding: 6px 6px;
 		border: 1px solid var(--clr-border, #ddd);
-		border-radius: 8px;
+		border-radius: 6px;
 		font-size: 14px;
+		text-align: center;
+	}
+
+	.date-input-small:focus {
+		outline: none;
+		border-color: var(--clr-teal, #0d9488);
+	}
+
+	.date-sep {
+		font-size: 16px;
+		font-weight: 600;
+		color: var(--clr-text-secondary, #666);
+		padding: 0 2px;
 	}
 
 	.global-date-row .hint {
-		font-size: 12px;
+		font-size: 13px;
 		color: var(--clr-text-secondary, #888);
 	}
 
-	/* ===== Кнопки управления ===== */
-	.controls {
+	/* ===== Details ===== */
+	.auto-details {
 		flex-shrink: 0;
+		background: var(--clr-bg-card, #ffffff);
+		border-top: 1px solid rgba(0, 0, 0, 0.06);
+		padding: 8px 16px;
+	}
+
+	.auto-summary {
+		font-weight: 600;
+		font-size: 14px;
+		cursor: pointer;
+		color: var(--clr-text-primary, #1a1a1a);
+		padding: 4px 0;
+	}
+
+	.auto-content {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 8px 0 12px 0;
+	}
+
+	/* ===== Управление ===== */
+	.controls {
 		display: flex;
 		gap: 8px;
-		padding: 8px 16px;
-		background: var(--clr-bg-card, #ffffff);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+		flex-shrink: 0;
 	}
 
 	.btn-add {
@@ -446,13 +553,16 @@
 	}
 
 	/* ===== Блоки ===== */
-	.blocks {
-		flex: 1;
+	.blocks-container {
+		max-height: 300px;
 		overflow-y: auto;
-		padding: 12px 16px;
+	}
+
+	.blocks {
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
+		padding: 8px 0;
 	}
 
 	.block {
@@ -460,6 +570,7 @@
 		border-radius: 12px;
 		padding: 12px 16px;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+		border: 1px solid var(--clr-border, #eee);
 	}
 
 	.block.even {
@@ -528,28 +639,6 @@
 	}
 
 	/* ===== Автоматический ввод ===== */
-	.auto-details {
-		flex-shrink: 0;
-		background: var(--clr-bg-card, #ffffff);
-		border-top: 1px solid rgba(0, 0, 0, 0.06);
-		padding: 8px 16px;
-	}
-
-	.auto-summary {
-		font-weight: 600;
-		font-size: 14px;
-		cursor: pointer;
-		color: var(--clr-text-primary, #1a1a1a);
-		padding: 4px 0;
-	}
-
-	.auto-content {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		padding: 8px 0 12px 0;
-	}
-
 	.auto-row {
 		display: flex;
 		align-items: center;
@@ -562,13 +651,6 @@
 		font-weight: 500;
 		color: var(--clr-text-primary, #1a1a1a);
 		min-width: 80px;
-	}
-
-	.auto-row input[type='date'] {
-		padding: 6px 10px;
-		border: 1px solid var(--clr-border, #ddd);
-		border-radius: 8px;
-		font-size: 14px;
 	}
 
 	.auto-textarea {
@@ -602,16 +684,28 @@
 		background: var(--clr-warning-dark, #d97706);
 	}
 
+	.auto-hint {
+		font-size: 12px;
+		color: var(--clr-text-secondary, #888);
+		margin: 0;
+	}
+
 	/* ===== Футер ===== */
 	.footer {
 		flex-shrink: 0;
 		padding: 12px 16px;
 		background: var(--clr-bg-card, #ffffff);
 		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		margin-top: auto;
+	}
+
+	.footer-buttons {
+		display: flex;
+		gap: 12px;
 	}
 
 	.btn-save {
-		width: 100%;
+		flex: 1;
 		padding: 12px;
 		border: none;
 		border-radius: 10px;
@@ -630,5 +724,47 @@
 	.btn-save:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
+	}
+
+	.btn-view-day {
+		padding: 12px 20px;
+		border: none;
+		border-radius: 10px;
+		background: var(--clr-info, #3b82f6);
+		color: white;
+		font-size: 16px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background 0.2s;
+		white-space: nowrap;
+	}
+
+	.btn-view-day:hover:not(:disabled) {
+		background: var(--clr-info-dark, #2563eb);
+	}
+
+	.btn-view-day:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	/* ===== Адаптив ===== */
+	@media (max-width: 600px) {
+		.date-input-small {
+			width: 40px;
+			font-size: 13px;
+		}
+
+		.footer-buttons {
+			flex-direction: column;
+		}
+
+		.btn-view-day {
+			width: 100%;
+		}
+
+		.block-fields {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 </style>
