@@ -9,6 +9,8 @@
 	import leftPink from '$lib/assets/iconPic/128/arrowPink.webp';
 	import rightGreen from '$lib/assets/iconPic/128/arrowGreen.webp';
 
+	let { initialDate = undefined } = $props(); // для календаря, чтоб перейти на страницу конкретного дня
+
 	// Состояние: массив дат для отображения
 	let visibleDates = $state([]);
 	let activeIndex = $state(0); // индекс текущего дня в массиве
@@ -18,11 +20,11 @@
 
 	// Инициализация: сегодня + вчера + завтра
 	function initDates() {
-		const today = getTodayDate();
+		const today = initialDate || getTodayDate();
 		const yesterday = getDateOffset(today, -1);
 		const tomorrow = getDateOffset(today, 1);
 		visibleDates = [yesterday, today, tomorrow];
-		activeIndex = 1; // сегодня по центру
+		activeIndex = 1;
 	}
 
 	// Добавить день слева (позавчера)
@@ -85,14 +87,14 @@
 	// Обработка свайпов
 	function handleTouchStart(event) {
 		//  Если свайп выключен — игнорируем
-		if (!appStore.swipeDay) return;
+		if (!appStore.swipeUse) return;
 
 		touchStartX = event.changedTouches[0].screenX;
 	}
 
 	function handleTouchEnd(event) {
 		// Если свайп выключен — игнорируем
-		if (!appStore.swipeDay) return;
+		if (!appStore.swipeUse) return;
 
 		touchEndX = event.changedTouches[0].screenX;
 		const deltaX = touchStartX - touchEndX;
@@ -129,25 +131,6 @@
 			</div>
 		{/each}
 	</div>
-
-	<!-- Кнопки навигации -->
-	<!-- <button
-		class="nav-btn nav-left"
-		onclick={goLeft}
-		disabled={isTransitioning}
-		aria-label="Предыдущий день"
-	>
-		‹
-	</button> -->
-
-	<!-- <button
-		class="nav-btn nav-right"
-		onclick={goRight}
-		disabled={isTransitioning}
-		aria-label="Следующий день"
-	>
-		›
-	</button> -->
 
 	<div class=" nav-btn nav-left">
 		<BtnImg

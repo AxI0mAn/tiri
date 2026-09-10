@@ -342,15 +342,15 @@
 													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
 													<InputDate
 														bind:value={manager.draft.value[fieldKey][optKey]}
-														min={option.min || ''}
-														max={option.max || ''}
+														minDate={option.min || ''}
+														maxDate={option.max || ''}
 														label={isSingleView ? option.label || '' : ''}
 													/>
 												{:else}
 													<InputDate
 														bind:value={manager.draft.value[fieldKey]}
-														min={option.min || ''}
-														max={option.max || ''}
+														minDate={option.min || ''}
+														maxDate={option.max || ''}
 														label={isSingleView ? option.label || '' : ''}
 													/>
 												{/if}

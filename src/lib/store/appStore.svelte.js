@@ -24,6 +24,7 @@ class AppStore {
     { value: 'PT', label: 'português' },
     { value: 'ES', label: 'español' }
   ];
+
   //  Статусная переменная с авто-выбором начального значения
   lang = $state(
     (typeof window !== 'undefined' && localStorage.getItem('user_lang')) ||
@@ -32,7 +33,13 @@ class AppStore {
 
   /** использовать свайп на странице дней или только кнопки
  * @type {boolean} */
-  swipeDay = $state(false);
+  swipeUse = $state(false);
+
+  /** Хранилище выбранных пользователем Рабочих дней по месяцам
+  * @type {Object.<string, number[]>}
+  * Пример: { "2026-07": [1, 2, 5, 8], "2026-08": [3, 4] }
+  */
+  workDays = $state({});
 
   /** Дата первой заметки. false или строка с датой 'YYYY.MM.DD'
    * @type {string | boolean} */
@@ -85,6 +92,8 @@ class AppStore {
       if (parsed.toFix) this.toFix = parsed.toFix;
       if (parsed.canInstall) this.canInstall = parsed.canInstall;
       if (parsed.iAgree) this.iAgree = parsed.iAgree;
+      if (parsed.swipeUse) this.swipeUse = parsed.swipeUse;
+      if (parsed.workDays) this.workDays = parsed.workDays;
 
       console.log('AppStore: Настройки успешно загружены из localStorage');
     } catch (err) {
@@ -101,6 +110,8 @@ class AppStore {
       toFix: this.toFix,
       canInstall: this.canInstall,
       iAgree: this.iAgree,
+      swipeUse: this.swipeUse,
+      workDays: this.workDays,
     };
   }
 

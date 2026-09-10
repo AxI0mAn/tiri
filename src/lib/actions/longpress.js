@@ -11,7 +11,7 @@
  */
 
 
-export function longpress(node, threshold = 2100) {
+export function longpress(node, threshold = 1000) {
   let timer;
 
   const handleStart = () => {
