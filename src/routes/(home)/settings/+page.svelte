@@ -37,7 +37,7 @@
 	</section>
 
 	<section class="setting-group">
-		<CheckBox bind:checked={appStore.swipeDay} label=" " />
+		<CheckBox bind:checked={appStore.swipeUse} label=" " />
 		<span class="setting-hint">Включите для навигации свайпом,</span><span class="setting-hint"
 			>выключите, чтоб использовать только кнопки</span
 		>

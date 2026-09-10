@@ -60,7 +60,7 @@
 
 	import imgDate from '$lib/assets/iconPic/128/date.webp';
 	import imgAdd from '$lib/assets/iconPic/128/add.webp';
-	import imgDone from '$lib/assets/iconPic/128/done.webp';
+	import imgCalendar from '$lib/assets/iconPic/128/calendar.webp';
 	import imgInstructionAll from '$lib/assets/iconPic/128/instructionAll.webp';
 	import imgSettings from '$lib/assets/iconPic/128/settings.webp';
 	import imgStickers from '$lib/assets/iconPic/128/stickers.webp';
@@ -101,6 +101,16 @@
 					<span>Сегодня</span>
 					<BtnImg
 						src={imgDate}
+						alt="test btn img"
+						size={144}
+						onclick="null"
+						customClass="actionBtnImg"
+					/>
+				</a>
+				<a href="{base}/calendar" class="testLink">
+					<span>Календарь</span>
+					<BtnImg
+						src={imgCalendar}
 						alt="test btn img"
 						size={144}
 						onclick="null"

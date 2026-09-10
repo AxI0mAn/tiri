@@ -27,6 +27,8 @@
 
 	import logo_job3dWebp from '$lib/assets/iconPic/64/logo_job3d.webp';
 	import imgReport3d from '$lib/assets/iconPic/64/logo_report3d.webp';
+	import imgCalendar from '$lib/assets/iconPic/128/calendar.webp';
+	import imgSchedule from '$lib/assets/iconPic/128/schedule.webp';
 
 	import favicon from '$lib/assets/iconPic/64/logo3d.webp';
 
@@ -262,6 +264,25 @@
 						<li>Всего - Сколько необходимо оплатить за аренду (%).</li>
 					</ul>
 				</li>
+			</ul>
+		</div>
+	</section>
+	<section id="instructionCalendar" class="section">
+		<div class="card">
+			<h2><strong>Календарь</strong></h2>
+			<ul class="rules">
+				<BtnImg size={44} src={imgCalendar} onclick="null" />
+				<li>Длительное нажатие на день - откроет страницу этого дня.</li>
+				<li>Цвета дней:</li>
+				<li>Розовый - в этот день есть напоминаня.</li>
+				<li>Зелёный - в этот день есть z-отчёт.</li>
+			</ul>
+			<ul class="rules">
+				<BtnImg size={44} src={imgSchedule} onclick="null" />
+				<li>Настройка расписания:</li>
+				<li>Когда кнопка нажата, можна отметить рабочие дни.</li>
+				<li>Просто кликни на день и он будет отмечен рабочим.</li>
+				<li>Просто кликни ещё раз и он будет выходной.</li>
 			</ul>
 		</div>
 	</section>

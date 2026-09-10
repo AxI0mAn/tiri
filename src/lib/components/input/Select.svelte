@@ -113,7 +113,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
-		min-width: 10rem;
+		min-width: fit-content; //  10rem;
 		width: max-content;
 
 		.select-label {

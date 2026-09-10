@@ -9,8 +9,12 @@
 	import { appStore } from '$lib/store/appStore.svelte';
 
 	import Picture from '$lib/components/Picture/Picture.svelte';
+	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
+	import imgCalendar from '$lib/assets/iconPic/128/calendar.webp';
 	import srcLogoText_webp from '$lib/assets/logo_text3d.webp';
 	import srcLogoText_png from '$lib/assets/logo_text3d.png';
+
+	let { showCalendar = false } = $props(); // если страница дня, то ссылка на календарь
 </script>
 
 <header class="home__header">
@@ -35,7 +39,13 @@
 		</div>
 	</div>
 	<div class="shareNow">
-		<BtnShare />
+		{#if showCalendar}
+			<a href="{base}/calendar" class="testLink">
+				<BtnImg src={imgCalendar} alt="Календарь" size={64} customClass="actionBtnImg" />
+			</a>
+		{:else}
+			<BtnShare />
+		{/if}
 	</div>
 </header>
 

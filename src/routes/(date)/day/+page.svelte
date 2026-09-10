@@ -22,15 +22,25 @@
 		const today = getTodayDate();
 		canAddNoteToday = await canAddNote(today);
 	});
+
+	// Вычисляем дату: из календаря или сегодня
+	let initialDate = $derived(appState.fromCalendar ? appState.now_date : undefined);
+
+	onMount(() => {
+		// Сбрасываем флаг после использования
+		if (appState.fromCalendar) {
+			appState.fromCalendar = false;
+		}
+	});
 </script>
 
 <div class="showDay">
 	<header class="headerWrapper" id="top-anchor">
-		<HomeHeader />
+		<HomeHeader showCalendar={true} />
 	</header>
 
 	<main class="field_main">
-		<SwipeDay />
+		<SwipeDay {initialDate} />
 	</main>
 
 	<footer>
