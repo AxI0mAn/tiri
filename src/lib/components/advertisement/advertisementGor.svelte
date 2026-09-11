@@ -1,7 +1,7 @@
 <script>
+	// src/lib/components/advertisement/advertisementGor.svelte
 	import Advertisement from './advertisement.svelte';
 
-	let { setBanners = '1' } = $props();
 	// -------------- рекламные горизонтальные банеры для не десктоп уже 1023
 
 	import src01jpeg from '$lib/assets/banerLineH72/pazGor1.jpeg';
@@ -10,16 +10,26 @@
 	import src02webp from '$lib/assets/banerLineH72/pazGor2.webp';
 	import src03jpeg from '$lib/assets/banerLineH72/pazGor3.jpeg';
 	import src03webp from '$lib/assets/banerLineH72/pazGor3.webp';
+	import srcTiriJpeg from '$lib/assets/banerLineH72/fotoGor.jpeg';
+	import srcTiriWebp from '$lib/assets/banerLineH72/fotoGor.webp';
 
 	const banersGor1 = [
 		{
-			link: 'https://axi0man.github.io/axI0_Puzzle/',
-			alt: 'Puzzle banner',
+			link: '#',
+			alt: 'Tiri banner',
 			src: {
-				webp: src03webp,
-				jpeg: src03jpeg
+				webp: srcTiriJpeg,
+				jpeg: srcTiriWebp
 			}
-		},
+		}
+		// {
+		// 	link: 'https://axi0man.github.io/axI0_Puzzle/',
+		// 	alt: 'Puzzle banner',
+		// 	src: {
+		// 		webp: src03webp,
+		// 		jpeg: src03jpeg
+		// 	}
+		// },
 		// {
 		// 	link: 'https://axi0man.github.io/axI0_Puzzle/',
 		// 	alt: 'Puzzle banner',
@@ -28,14 +38,14 @@
 		// 		jpeg: src02jpeg
 		// 	}
 		// },
-		{
-			link: 'https://axi0man.github.io/axI0_Puzzle/',
-			alt: 'Puzzle banner',
-			src: {
-				webp: src01webp,
-				jpeg: src01jpeg
-			}
-		}
+		// {
+		// 	link: 'https://axi0man.github.io/axI0_Puzzle/',
+		// 	alt: 'Puzzle banner',
+		// 	src: {
+		// 		webp: src01webp,
+		// 		jpeg: src01jpeg
+		// 	}
+		// }
 	];
 
 	import src04jpeg from '$lib/assets/banerLineH72/ascetxtGor.jpeg';
@@ -62,12 +72,10 @@
 		}
 	];
 
-	let bannerSet = $state();
-	if (setBanners === '1') {
-		bannerSet = banersGor1;
-	} else {
-		bannerSet = banersGor2;
-	}
+	let { setBanners = '1' } = $props();
+
+	// Реактивно вычисляем нужный массив баннеров при изменении пропса
+	let bannerSet = $derived(setBanners === '1' ? banersGor1 : banersGor2);
 </script>
 
 <Advertisement baners={bannerSet} customClass="gorBaner" effect="EffectOpacity" interval="7000" />

@@ -5,9 +5,11 @@
 	import { base } from '$app/paths';
 	// @ts-ignore
 	import { goto } from '$app/navigation';
-	import { appState } from '$lib/store/appState.svelte.js';
 
+	import { appState } from '$lib/store/appState.svelte.js';
 	import { appStore } from '$lib/store/appStore.svelte';
+
+	import AdvertisementVert from '$lib/components/advertisement/AdvertisementVert.svelte';
 
 	import { longpress } from '$lib/actions/longpress';
 	import { getTodayDate } from '$lib/utils/dateHelpers.js';
@@ -391,7 +393,11 @@
 {/if}
 
 <!-- ===== ВСПОМОГАТЕЛЬНЫЙ БЛОК ===== -->
-<div class="calendar-spacer"></div>
+<div class="calendar-spacer">
+	{#if mode === 'schedule'}
+		<AdvertisementVert setBanners="1" />
+	{/if}
+</div>
 
 <style lang="scss">
 	@use '../../../../styles/_variables.scss' as *;
@@ -606,6 +612,7 @@
 		/* ✅ Центр — два Select, сжимаются пропорционально */
 		.selects-center {
 			display: flex;
+			flex-wrap: wrap;
 			gap: 0.25rem;
 			justify-content: center;
 			align-items: center;
@@ -614,7 +621,7 @@
 
 			:global(.month-select),
 			:global(.year-select) {
-				min-width: 0; /* ✅ убираем жёсткий минимум */
+				min-width: fit-content;
 				flex: 0 1 auto; /* ✅ разрешаем сжиматься */
 			}
 

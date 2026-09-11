@@ -79,14 +79,18 @@
 	@use '../../../../styles/_variables.scss' as *;
 
 	.calendar-modal {
-		width: 100%;
-		max-width: 95vw;
-		max-height: 95vh;
-		overflow: auto;
+		margin: 0 auto;
+		max-width: 640px;
+		overflow: hidden;
 		background: $clr-bg-card;
 		border-radius: 16px;
 		padding: 0.5rem;
 		display: flex;
 		flex-direction: column;
+		@media screen and (min-width: 767px) {
+			max-width: 640px;
+			width: 100%;
+			max-height: fit-content;
+		}
 	}
 </style>
