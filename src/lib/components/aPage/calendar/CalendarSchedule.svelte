@@ -1,4 +1,4 @@
-<!-- src/lib/components/aPage/calendar/Calendar.svelte -->
+<!-- src/lib/components/aPage/calendar/CalendarSchedule.svelte -->
 <script>
 	import { onMount } from 'svelte';
 	// @ts-ignore

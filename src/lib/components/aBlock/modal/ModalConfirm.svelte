@@ -38,7 +38,8 @@
 	{/snippet}
 </ModalBackdrop>
 
-<style>
+<style lang="scss">
+	@use '../../../../styles/_variables.scss' as *;
 	.modal-confirm {
 		background: var(--clr-bg-card, #ffffff);
 		border-radius: 16px;

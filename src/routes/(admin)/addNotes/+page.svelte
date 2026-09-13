@@ -1,5 +1,7 @@
-<!-- src/routes/(home)/admin/+page.svelte -->
+<!-- src/routes/(admin)/addNotes/+page.svelte -->
 <script>
+	// создание заметок за предыдущие дни
+
 	import { onMount } from 'svelte';
 	// @ts-ignore
 	import { goto } from '$app/navigation';
@@ -416,7 +418,8 @@
 	</footer>
 </div>
 
-<style>
+<style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	.import-page {
 		display: flex;
 		flex-direction: column;

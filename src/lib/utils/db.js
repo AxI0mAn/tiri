@@ -214,6 +214,38 @@ export async function getReport_Z_month(yearMonth) {
 }
 
 /**
+ * Получить месячный отчёт по полному ключу (X или Z)
+ * @param {string} key - "2026-09_X" или "2026-09_Z"
+ * @returns {Promise<Object|null>} - объект отчета или null
+ */
+export async function getReport_month_byKey(key) {
+  if (typeof key !== 'string' || !/^\d{4}-\d{2}_[XZ]$/.test(key)) {
+    console.warn('[getReport_month_byKey] Невалидный ключ:', key);
+    return null;
+  }
+
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('report_month', 'readonly');
+      const store = tx.objectStore('report_month');
+      const req = store.get(key);
+
+      req.onsuccess = () => {
+        resolve(req.result || null);
+      };
+      req.onerror = () => {
+        console.error('[getReport_month_byKey] Ошибка:', req.error);
+        reject(req.error);
+      };
+    });
+  } catch (error) {
+    console.error('[getReport_month_byKey] Критическая ошибка:', error);
+    return null;
+  }
+}
+
+/**
  * Получить все Z-отчеты за конкретный год
  * @param {number|string} year - год (например, 2026)
  * @returns {Promise<Array>} - массив отчетов за год
@@ -476,6 +508,56 @@ export async function deleteReport(type, key) {
   } catch (error) {
     console.error('[deleteReport] Критическая ошибка:', error);
     throw error;
+  }
+}
+
+/**
+ * Получить все ключи дневных отчётов (dateStr)
+ * @returns {Promise<string[]>} - отсортированный массив ["2026-09-13", ...]
+ */
+export async function getAllReportKeysDay() {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('report_day', 'readonly');
+      const store = tx.objectStore('report_day');
+      const req = store.getAllKeys();
+
+      req.onsuccess = () => {
+        // Сортируем: новые сверху
+        const keys = req.result.sort().reverse();
+        resolve(keys);
+      };
+      req.onerror = () => reject(req.error);
+    });
+  } catch (error) {
+    console.error('[getAllReportKeysDay] Ошибка:', error);
+    return [];
+  }
+}
+
+/**
+ * Получить все ключи месячных отчётов (yearMonth)
+ * @returns {Promise<string[]>} - отсортированный массив ["2026-09_X", "2026-09_Z", ...]
+ */
+export async function getAllReportKeysMonth() {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('report_month', 'readonly');
+      const store = tx.objectStore('report_month');
+      const req = store.getAllKeys();
+
+      req.onsuccess = () => {
+        // Сортируем: новые сверху
+        const keys = req.result.sort().reverse();
+        resolve(keys);
+      };
+      req.onerror = () => reject(req.error);
+    });
+  } catch (error) {
+    console.error('[getAllReportKeysMonth] Ошибка:', error);
+    return [];
   }
 }
 

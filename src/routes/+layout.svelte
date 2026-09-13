@@ -173,7 +173,7 @@
 
 {@html pwaInfo?.webManifest.linkTag}
 
-<!-- для работы быстрого меню src/lib/config/mathMenuMaps.js
+<!-- для работы быстрого меню src/lib/config/quickMenuMaps.js
 
 {#key $page.url.pathname}
 	<div

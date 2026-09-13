@@ -1,5 +1,6 @@
-<!-- src/routes/admin/clear/+page.svelte -->
+<!-- src/routes/(admin)/adminClear/+page.svelte -->
 <script>
+	// набор утилит для удминистрирования записей в хранилище
 	import { onMount } from 'svelte';
 	// @ts-ignore
 	import { goto } from '$app/navigation';
@@ -9,7 +10,10 @@
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 	import { toastStore } from '$lib/store/toastStore.svelte.js';
 
+	import { createReportsInRange } from '$lib/components/services/reportGenerator';
+
 	import ModalBackdrop from '$lib/components/aBlock/modal/ModalBackdrop.svelte';
+	import Modal_ReportsProgress from '$lib/components/aBlock/modal/Modal_ReportsProgress.svelte';
 
 	// ===== СОСТОЯНИЕ =====
 	let password = $state('');
@@ -20,6 +24,27 @@
 	// Состояния для блоков
 	let dateZReport = $state('');
 	let dateAllDay = $state('');
+
+	// Состояния для массового создания отчётов
+	// ===== БЛОК 1.5: Создание всех Z-отчётов за период =====
+	let periodFromMonth = $state('');
+	let periodFromYear = $state(new Date().getFullYear().toString());
+	let periodToMonth = $state('');
+	let periodToYear = $state(new Date().getFullYear().toString());
+
+	// ===== Состояние прогресса =====
+	let showProgressModal = $state(false);
+	let progressPhase = $state('');
+	let progressCurrent = $state(0);
+	let progressTotal = $state(0);
+	let progressDate = $state('');
+	let abortRequested = $state(false);
+
+	// ✅ Обработка прерывания
+	function handleAbort() {
+		abortRequested = true;
+		addLog('🛑 Запрошено прерывание. Завершаем текущий день...', true);
+	}
 
 	// ===== ФУНКЦИИ =====
 	function checkPassword() {
@@ -82,6 +107,107 @@
 			addLog(`❌ Ошибка при удалении Z-отчёта: ${error.message}`, true);
 		} finally {
 			isProcessing = false;
+		}
+	}
+
+	// ===== БЛОК 1.5: Создать все Z-отчёты за период =====
+	async function createAllReports() {
+		if (!isAuthorized) {
+			addLog('❌ Введите пароль для выполнения действий.', true);
+			return;
+		}
+
+		// Валидация
+		if (!periodFromMonth || !periodFromYear || !periodToMonth || !periodToYear) {
+			addLog('❌ Заполните все поля периода (месяц и год).', true);
+			return;
+		}
+
+		const fromMonth = String(periodFromMonth).padStart(2, '0');
+		const toMonth = String(periodToMonth).padStart(2, '0');
+		const fromYear = parseInt(periodFromYear, 10);
+		const toYear = parseInt(periodToYear, 10);
+
+		// Формируем даты начала и конца периода
+		const startDate = `${fromYear}-${fromMonth}-01`;
+		const lastDayOfToMonth = new Date(toYear, parseInt(toMonth, 10), 0).getDate();
+		const endDate = `${toYear}-${toMonth}-${String(lastDayOfToMonth).padStart(2, '0')}`;
+
+		// ✅ Проверка: Дата1 > Дата2
+		if (startDate > endDate) {
+			addLog(`❌ Дата начала (${startDate}) больше даты окончания (${endDate}).`, true);
+			return;
+		}
+
+		// ✅ Инициализация
+		abortRequested = false;
+		progressPhase = 'Дневные Z-отчёты';
+		progressCurrent = 0;
+		progressTotal = 0;
+		progressDate = '';
+		showProgressModal = true;
+
+		addLog(`🚀 Начинаем создание отчётов с ${startDate} по ${endDate}...`);
+
+		try {
+			const stats = await createReportsInRange({
+				startDate,
+				endDate,
+				direction: 'forward',
+				onProgress: (current, total, dateStr, phase) => {
+					progressCurrent = current;
+					progressTotal = total;
+					progressDate = dateStr;
+					if (phase) progressPhase = phase;
+				},
+				onLog: (message, isError) => addLog(message, isError),
+				shouldStop: () => abortRequested,
+				createMonthly: true
+			});
+
+			showProgressModal = false;
+
+			// ===== ИТОГОВЫЕ ЛОГИ =====
+			addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━');
+			addLog(`🏁 Создание отчётов завершено!`);
+			addLog(`✅ Создано Z-отчётов: ${stats.created}`);
+
+			if (stats.skippedNoNotes > 0) {
+				addLog(`⚠️ Пропущено (нет заметок): ${stats.skippedNoNotes}`);
+			}
+			if (stats.skippedHasReminders > 0) {
+				addLog(`⚠️ Пропущено (есть напоминания): ${stats.skippedHasReminders}`, true);
+			}
+			if (stats.skippedExists > 0) {
+				addLog(`⚠️ Пропущено (уже существует): ${stats.skippedExists}`);
+			}
+			if (stats.errors > 0) {
+				addLog(`❌ Ошибок: ${stats.errors}`, true);
+			}
+
+			// ✅ Проблемные дни (с напоминаниями)
+			if (stats.problemDays.length > 0) {
+				addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━');
+				addLog('⚠️ ДНИ С НАПОМИНАНИЯМИ (Z-отчёт НЕ создан):', true);
+				for (const dateStr of stats.problemDays) {
+					addLog(`   ❌ ${dateStr} — есть не выполненное напоминание!`, true);
+				}
+			}
+
+			// ✅ Месяцы
+			if (stats.months.size > 0) {
+				addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━');
+				addLog(`📊 Созданы X- и Z-отчёты за месяцы:`);
+				for (const yearMonth of stats.months) {
+					addLog(`   ✅ ${yearMonth}`);
+				}
+			}
+
+			addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━');
+		} catch (error) {
+			console.error('[admin/clear] Ошибка:', error);
+			addLog(`❌ Критическая ошибка: ${error.message}`, true);
+			showProgressModal = false;
 		}
 	}
 
@@ -302,6 +428,66 @@
 		</div>
 	</div>
 
+	<!-- Блок 1.5: Создать все Z-отчёты за период -->
+	<div class="block">
+		<h2>📊 Блок 1.5: Создать все Z-отчёты за период</h2>
+		<p class="warning">
+			⚠️ Создаёт Z-отчёты за каждый день периода, где есть заметки и нет напоминаний. Затем создаёт
+			X- и Z-отчёты за каждый месяц периода.
+		</p>
+		<div class="row period-row">
+			<label>С:</label>
+			<input
+				type="number"
+				class="period-input-small"
+				placeholder="ММ"
+				bind:value={periodFromMonth}
+				min="1"
+				max="12"
+			/>
+			<input
+				type="number"
+				class="period-input-small"
+				placeholder="ГГГГ"
+				bind:value={periodFromYear}
+				min="2020"
+				max="2030"
+			/>
+			<label>По:</label>
+			<input
+				type="number"
+				class="period-input-small"
+				placeholder="ММ"
+				bind:value={periodToMonth}
+				min="1"
+				max="12"
+			/>
+			<input
+				type="number"
+				class="period-input-small"
+				placeholder="ГГГГ"
+				bind:value={periodToYear}
+				min="2020"
+				max="2030"
+			/>
+		</div>
+		<div class="row">
+			<BtnText
+				buttonText="Создать все Z-отчёты"
+				onclick={createAllReports}
+				disabled={!isAuthorized || isProcessing}
+				customClass="btn-primary"
+			/>
+		</div>
+	</div>
+
+	<!-- Блок 1.6: Ссылка на все Z-отчёты -->
+	<div class="block">
+		<h2>🔗 Блок 1.6: Все Z-отчёты</h2>
+		<p class="warning">Посмотреть все созданные Z-отчёты за всё время.</p>
+		<a href="{base}/allZreports" class="link-reports"> 📊 Посмотреть все Z-отчёты → </a>
+	</div>
+
 	<!-- Блок 2: Удалить всё за день -->
 	<div class="block danger-block">
 		<h2>💣 Блок 2: Удалить всё за день</h2>
@@ -421,9 +607,21 @@
 			{/if}
 		</div>
 	</div>
+
+	<!-- Модалка прогресса создания отчётов за выбранный период -->
+	<Modal_ReportsProgress
+		bind:isOpen={showProgressModal}
+		phase={progressPhase}
+		current={progressCurrent}
+		total={progressTotal}
+		currentDate={progressDate}
+		canAbort={!abortRequested}
+		onAbort={handleAbort}
+	/>
 </div>
 
-<style>
+<style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	.admin-clear-page {
 		display: flex;
 		flex-direction: column;
@@ -710,6 +908,51 @@
 
 	.modal-actions :global(.btn-confirm-reset):hover:not(:disabled) {
 		background: var(--clr-error-dark, #c0392b) !important;
+	}
+
+	/* ===== Период ===== */
+	.period-row {
+		gap: 0.5rem;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.period-row label {
+		font-weight: 600;
+		font-size: 14px;
+		color: var(--clr-text-main);
+	}
+
+	.period-input-small {
+		width: 60px;
+		padding: 8px 6px;
+		margin-bottom: 1rem;
+		border: 1px solid var(--clr-border, #ddd);
+		border-radius: 8px;
+		font-size: 14px;
+		text-align: center;
+		background: var(--clr-bg-primary, #f5f5f5);
+	}
+
+	.period-input-small:focus {
+		outline: none;
+		border-color: var(--clr-teal, #0d9488);
+	}
+
+	/* ===== Ссылка на все Z-отчёты ===== */
+	.link-reports {
+		display: inline-block;
+		padding: 10px 20px;
+		background: var(--clr-teal, #0d9488);
+		color: white;
+		text-decoration: none;
+		border-radius: 10px;
+		font-weight: 600;
+		transition: background 0.2s;
+	}
+
+	.link-reports:hover {
+		background: var(--clr-teal-dark, #0f766e);
 	}
 
 	:global(.btn-warning) {

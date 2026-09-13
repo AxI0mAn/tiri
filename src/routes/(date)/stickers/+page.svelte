@@ -114,7 +114,8 @@
 	{/if}
 </div>
 
-<style>
+<style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	.all-notes-page {
 		display: flex;
 		flex-direction: column;

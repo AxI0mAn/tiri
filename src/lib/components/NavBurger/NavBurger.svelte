@@ -43,8 +43,9 @@
 		{ label: 'настройки', href: `${base}/settings` },
 		{ label: 'блокнот', href: `${base}/stickers` },
 		{ label: 'инструкция', href: `${base}/instructionAll` },
-		{ label: 'добавить заметки', href: `${base}/admin` },
-		{ label: 'администрирование', href: `${base}/adminClear` }
+		{ label: 'добавить заметки', href: `${base}/addNotes` },
+		{ label: 'администрирование', href: `${base}/adminClear` },
+		{ label: 'z-отчёты', href: `${base}/allZreports` }
 
 		/*
 		{ label: 'install', href: `${base}/install` },
