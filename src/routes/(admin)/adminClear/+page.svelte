@@ -8,6 +8,7 @@
 	import { base } from '$app/paths';
 	import BtnBack from '$lib/components/Btn/BtnBack.svelte';
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
+	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import { toastStore } from '$lib/store/toastStore.svelte.js';
 
 	import { createReportsInRange } from '$lib/components/services/reportGenerator';
@@ -361,6 +362,91 @@
 		addLog(`✅ Кнопка удаления включена до ${deleteButtonExpiry}`);
 	}
 
+	// ===== БЛОК 6: Резервное копирование =====
+	let restoreFileInput = $state(null);
+	let isBackupProcessing = $state(false);
+
+	// Создать бэкап
+	async function createBackup() {
+		if (!isAuthorized) {
+			addLog('❌ Введите пароль для выполнения действий.', true);
+			return;
+		}
+
+		isBackupProcessing = true;
+		addLog('💾 Создаём резервную копию...');
+
+		try {
+			const { downloadBackup } = await import('$lib/utils/db.js');
+			const result = await downloadBackup();
+
+			if (result.success) {
+				addLog(`✅ ${result.message}`);
+				addLog('📁 Файл сохранён в папку "Загрузки"');
+				addLog(
+					'⚠️ Старые копии в папке "Загрузки" не удаляются автоматически — удалите их вручную'
+				);
+			} else {
+				addLog(`❌ ${result.message}`, true);
+			}
+		} catch (error) {
+			console.error('[admin/clear] Ошибка бэкапа:', error);
+			addLog(`❌ Критическая ошибка: ${error.message}`, true);
+		} finally {
+			isBackupProcessing = false;
+		}
+	}
+
+	// Восстановить из бэкапа
+	async function restoreBackup() {
+		if (!isAuthorized) {
+			addLog('❌ Введите пароль для выполнения действий.', true);
+			return;
+		}
+
+		const file = restoreFileInput?.files?.[0];
+		if (!file) {
+			addLog('❌ Файл бэкапа не выбран.', true);
+			return;
+		}
+
+		// Подтверждение
+		const confirmed = confirm(
+			'⚠️ ВНИМАНИЕ!\n\nВосстановление из бэкапа ПОЛНОСТЬЮ ЗАМЕНИТ все текущие данные в хранилище устройства!\n\nПродолжить?'
+		);
+		if (!confirmed) {
+			addLog('⚠️ Восстановление отменено пользователем.');
+			return;
+		}
+
+		isBackupProcessing = true;
+		addLog(`📂 Читаем файл: ${file.name}...`);
+
+		try {
+			const text = await file.text();
+			const backup = JSON.parse(text);
+
+			addLog(`📦 Бэкап от ${backup.createdAt || 'неизвестно'}, версия БД: ${backup.version}`);
+
+			const { restoreFromBackup } = await import('$lib/utils/db.js');
+			const result = await restoreFromBackup(backup);
+
+			if (result.success) {
+				addLog(`✅ ${result.message}`);
+				addLog('🔄 Рекомендуется перезагрузить страницу');
+			} else {
+				addLog(`❌ ${result.message}`, true);
+			}
+		} catch (error) {
+			console.error('[admin/clear] Ошибка восстановления:', error);
+			addLog(`❌ Ошибка чтения файла: ${error.message}`, true);
+		} finally {
+			isBackupProcessing = false;
+			// Сбрасываем input
+			if (restoreFileInput) restoreFileInput.value = '';
+		}
+	}
+
 	// Проверяем статус при монтировании
 	onMount(() => {
 		checkDeleteButtonStatus();
@@ -580,6 +666,42 @@
 			{:else}
 				<span class="badge badge-inactive">⏳ Неактивна</span>
 			{/if}
+		</div>
+	</div>
+
+	<!-- Блок 6: Резервное копирование -->
+	<div class="block backup-block">
+		<h2>💾 Блок 6: Резервное копирование</h2>
+		<p class="warning">
+			⚠️ Создать резервную копию всех данных (заметки, напоминания, отчёты) или восстановить из
+			ранее сохранённого файла. Восстановление <strong>ПОЛНОСТЬЮ ЗАМЕНИТ</strong> текущие данные!
+		</p>
+
+		<div class="backup-row">
+			<!-- Создать бэкап -->
+			<BtnText
+				buttonText="💾 Сделать резервную копию"
+				onclick={createBackup}
+				disabled={!isAuthorized || isBackupProcessing}
+				customClass="btn-backup"
+			/>
+		</div>
+
+		<div class="backup-row">
+			<!-- Восстановить -->
+			<input
+				type="file"
+				accept=".json,application/json"
+				bind:this={restoreFileInput}
+				class="file-input"
+				disabled={!isAuthorized || isBackupProcessing}
+			/>
+			<BtnText
+				buttonText="📂 Установить данные из резервной копии"
+				onclick={restoreBackup}
+				disabled={!isAuthorized || isBackupProcessing}
+				customClass="btn-restore"
+			/>
 		</div>
 	</div>
 
@@ -953,6 +1075,53 @@
 
 	.link-reports:hover {
 		background: var(--clr-teal-dark, #0f766e);
+	}
+
+	/* ===== Блок 6: Бэкап ===== */
+	.backup-block {
+		border-left: 4px solid var(--clr-info, #3b82f6);
+	}
+
+	.backup-row {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+		flex-wrap: wrap;
+		margin-bottom: 8px;
+	}
+
+	.backup-row:last-child {
+		margin-bottom: 0;
+	}
+
+	.file-input {
+		padding: 8px 12px;
+		border: 1px solid var(--clr-border, #ddd);
+		border-radius: 8px;
+		font-size: 14px;
+		background: var(--clr-bg-primary, #f5f5f5);
+		max-width: 250px;
+	}
+
+	.file-input:focus {
+		outline: none;
+		border-color: var(--clr-teal, #0d9488);
+	}
+
+	:global(.btn-backup) {
+		background: var(--clr-info, #3b82f6) !important;
+		color: white !important;
+		padding: 10px 20px !important;
+		border-radius: 10px !important;
+		font-weight: 600 !important;
+	}
+
+	:global(.btn-restore) {
+		background: var(--clr-warning, #f59e0b) !important;
+		color: white !important;
+		padding: 10px 20px !important;
+		border-radius: 10px !important;
+		font-weight: 600 !important;
 	}
 
 	:global(.btn-warning) {

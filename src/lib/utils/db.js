@@ -437,6 +437,157 @@ export async function getReportsByMonth(yearMonth) {
 }
 
 /**
+ * Экспортирует все данные из IndexedDB в объект
+ * @returns {Promise<Object>} - { entries: [...], report_day: [...], report_month: [...] }
+ */
+export async function exportAllData() {
+  const db = await openDB();
+  const result = {};
+
+  const storeNames = ['entries', 'report_day', 'report_month', 'services'];
+
+  for (const storeName of storeNames) {
+    if (!db.objectStoreNames.contains(storeName)) continue;
+
+    result[storeName] = await new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName, 'readonly');
+      const store = tx.objectStore(storeName);
+      const req = store.getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Создаёт и скачивает JSON-файл с бэкапом
+ * @returns {Promise<{ success: boolean, message: string, stats?: Object }>}
+ */
+export async function downloadBackup() {
+  try {
+    const data = await exportAllData();
+
+    // Статистика
+    const stats = {};
+    for (const [storeName, records] of Object.entries(data)) {
+      stats[storeName] = records.length;
+    }
+
+    // Формируем JSON
+    const backup = {
+      version: DB_VERSION,
+      createdAt: new Date().toISOString(),
+      stats,
+      data
+    };
+
+    const json = JSON.stringify(backup, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+
+    // Скачивание
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `tiri-backup_${dateStr}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    return {
+      success: true,
+      message: `Бэкап создан: ${Object.entries(stats).map(([k, v]) => `${k}: ${v}`).join(', ')}`,
+      stats
+    };
+  } catch (error) {
+    console.error('[downloadBackup] Ошибка:', error);
+    return {
+      success: false,
+      message: `Ошибка создания бэкапа: ${error.message}`
+    };
+  }
+}
+
+/**
+ * Восстанавливает данные из JSON-объекта бэкапа
+ * @param {Object} backup - объект бэкапа (с полями version, data)
+ * @returns {Promise<{ success: boolean, message: string, stats?: Object }>}
+ */
+export async function restoreFromBackup(backup) {
+  try {
+    // Валидация
+    if (!backup || typeof backup !== 'object') {
+      throw new Error('Невалидный формат бэкапа');
+    }
+    if (!backup.data || typeof backup.data !== 'object') {
+      throw new Error('В бэкапе нет данных (поле "data")');
+    }
+
+    const db = await openDB();
+    const stats = {};
+
+    const storeNames = ['entries', 'report_day', 'report_month', 'services'];
+
+    for (const storeName of storeNames) {
+      if (!backup.data[storeName]) continue;
+      if (!db.objectStoreNames.contains(storeName)) {
+        console.warn(`[restoreFromBackup] Хранилище ${storeName} отсутствует, пропускаем`);
+        continue;
+      }
+
+      const records = backup.data[storeName];
+
+      // Очищаем текущие данные
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+        const req = store.clear();
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+
+      // Загружаем из бэкапа
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+        let loaded = 0;
+
+        if (records.length === 0) {
+          resolve();
+          return;
+        }
+
+        for (const record of records) {
+          const req = store.put(record);
+          req.onsuccess = () => {
+            loaded++;
+            if (loaded === records.length) resolve();
+          };
+          req.onerror = () => reject(req.error);
+        }
+      });
+
+      stats[storeName] = records.length;
+    }
+
+    return {
+      success: true,
+      message: `Данные восстановлены: ${Object.entries(stats).map(([k, v]) => `${k}: ${v}`).join(', ')}`,
+      stats
+    };
+  } catch (error) {
+    console.error('[restoreFromBackup] Ошибка:', error);
+    return {
+      success: false,
+      message: `Ошибка восстановления: ${error.message}`
+    };
+  }
+}
+
+/**
  * Удаляет запись из IndexedDB по id
  * @param {string} id - идентификатор записи
  * @returns {Promise<void>}
