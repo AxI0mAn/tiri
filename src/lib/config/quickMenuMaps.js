@@ -1,6 +1,6 @@
 
 /**
- * src/lib/config/mathMenuMaps.js
+ * src/lib/config/quickMenuMaps.js
  * Это Реестр существующих вариантов страниц для группы математических страниц для переключения в <details> в правом верхнем углу - как быстрый переход к другому калькулятору внутри группы
  * инструкция в /home/daxio/Desktop/Link to Projects/svelte5doc/assets/CODING/Система динамических меню и анимаций.docx
 */

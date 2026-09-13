@@ -214,6 +214,38 @@ export async function getReport_Z_month(yearMonth) {
 }
 
 /**
+ * Получить месячный отчёт по полному ключу (X или Z)
+ * @param {string} key - "2026-09_X" или "2026-09_Z"
+ * @returns {Promise<Object|null>} - объект отчета или null
+ */
+export async function getReport_month_byKey(key) {
+  if (typeof key !== 'string' || !/^\d{4}-\d{2}_[XZ]$/.test(key)) {
+    console.warn('[getReport_month_byKey] Невалидный ключ:', key);
+    return null;
+  }
+
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('report_month', 'readonly');
+      const store = tx.objectStore('report_month');
+      const req = store.get(key);
+
+      req.onsuccess = () => {
+        resolve(req.result || null);
+      };
+      req.onerror = () => {
+        console.error('[getReport_month_byKey] Ошибка:', req.error);
+        reject(req.error);
+      };
+    });
+  } catch (error) {
+    console.error('[getReport_month_byKey] Критическая ошибка:', error);
+    return null;
+  }
+}
+
+/**
  * Получить все Z-отчеты за конкретный год
  * @param {number|string} year - год (например, 2026)
  * @returns {Promise<Array>} - массив отчетов за год
@@ -405,6 +437,157 @@ export async function getReportsByMonth(yearMonth) {
 }
 
 /**
+ * Экспортирует все данные из IndexedDB в объект
+ * @returns {Promise<Object>} - { entries: [...], report_day: [...], report_month: [...] }
+ */
+export async function exportAllData() {
+  const db = await openDB();
+  const result = {};
+
+  const storeNames = ['entries', 'report_day', 'report_month', 'services'];
+
+  for (const storeName of storeNames) {
+    if (!db.objectStoreNames.contains(storeName)) continue;
+
+    result[storeName] = await new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName, 'readonly');
+      const store = tx.objectStore(storeName);
+      const req = store.getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Создаёт и скачивает JSON-файл с бэкапом
+ * @returns {Promise<{ success: boolean, message: string, stats?: Object }>}
+ */
+export async function downloadBackup() {
+  try {
+    const data = await exportAllData();
+
+    // Статистика
+    const stats = {};
+    for (const [storeName, records] of Object.entries(data)) {
+      stats[storeName] = records.length;
+    }
+
+    // Формируем JSON
+    const backup = {
+      version: DB_VERSION,
+      createdAt: new Date().toISOString(),
+      stats,
+      data
+    };
+
+    const json = JSON.stringify(backup, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+
+    // Скачивание
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `tiri-backup_${dateStr}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    return {
+      success: true,
+      message: `Бэкап создан: ${Object.entries(stats).map(([k, v]) => `${k}: ${v}`).join(', ')}`,
+      stats
+    };
+  } catch (error) {
+    console.error('[downloadBackup] Ошибка:', error);
+    return {
+      success: false,
+      message: `Ошибка создания бэкапа: ${error.message}`
+    };
+  }
+}
+
+/**
+ * Восстанавливает данные из JSON-объекта бэкапа
+ * @param {Object} backup - объект бэкапа (с полями version, data)
+ * @returns {Promise<{ success: boolean, message: string, stats?: Object }>}
+ */
+export async function restoreFromBackup(backup) {
+  try {
+    // Валидация
+    if (!backup || typeof backup !== 'object') {
+      throw new Error('Невалидный формат бэкапа');
+    }
+    if (!backup.data || typeof backup.data !== 'object') {
+      throw new Error('В бэкапе нет данных (поле "data")');
+    }
+
+    const db = await openDB();
+    const stats = {};
+
+    const storeNames = ['entries', 'report_day', 'report_month', 'services'];
+
+    for (const storeName of storeNames) {
+      if (!backup.data[storeName]) continue;
+      if (!db.objectStoreNames.contains(storeName)) {
+        console.warn(`[restoreFromBackup] Хранилище ${storeName} отсутствует, пропускаем`);
+        continue;
+      }
+
+      const records = backup.data[storeName];
+
+      // Очищаем текущие данные
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+        const req = store.clear();
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+
+      // Загружаем из бэкапа
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+        let loaded = 0;
+
+        if (records.length === 0) {
+          resolve();
+          return;
+        }
+
+        for (const record of records) {
+          const req = store.put(record);
+          req.onsuccess = () => {
+            loaded++;
+            if (loaded === records.length) resolve();
+          };
+          req.onerror = () => reject(req.error);
+        }
+      });
+
+      stats[storeName] = records.length;
+    }
+
+    return {
+      success: true,
+      message: `Данные восстановлены: ${Object.entries(stats).map(([k, v]) => `${k}: ${v}`).join(', ')}`,
+      stats
+    };
+  } catch (error) {
+    console.error('[restoreFromBackup] Ошибка:', error);
+    return {
+      success: false,
+      message: `Ошибка восстановления: ${error.message}`
+    };
+  }
+}
+
+/**
  * Удаляет запись из IndexedDB по id
  * @param {string} id - идентификатор записи
  * @returns {Promise<void>}
@@ -476,6 +659,56 @@ export async function deleteReport(type, key) {
   } catch (error) {
     console.error('[deleteReport] Критическая ошибка:', error);
     throw error;
+  }
+}
+
+/**
+ * Получить все ключи дневных отчётов (dateStr)
+ * @returns {Promise<string[]>} - отсортированный массив ["2026-09-13", ...]
+ */
+export async function getAllReportKeysDay() {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('report_day', 'readonly');
+      const store = tx.objectStore('report_day');
+      const req = store.getAllKeys();
+
+      req.onsuccess = () => {
+        // Сортируем: новые сверху
+        const keys = req.result.sort().reverse();
+        resolve(keys);
+      };
+      req.onerror = () => reject(req.error);
+    });
+  } catch (error) {
+    console.error('[getAllReportKeysDay] Ошибка:', error);
+    return [];
+  }
+}
+
+/**
+ * Получить все ключи месячных отчётов (yearMonth)
+ * @returns {Promise<string[]>} - отсортированный массив ["2026-09_X", "2026-09_Z", ...]
+ */
+export async function getAllReportKeysMonth() {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('report_month', 'readonly');
+      const store = tx.objectStore('report_month');
+      const req = store.getAllKeys();
+
+      req.onsuccess = () => {
+        // Сортируем: новые сверху
+        const keys = req.result.sort().reverse();
+        resolve(keys);
+      };
+      req.onerror = () => reject(req.error);
+    });
+  } catch (error) {
+    console.error('[getAllReportKeysMonth] Ошибка:', error);
+    return [];
   }
 }
 

@@ -5,26 +5,34 @@
 	import srcWebp0 from '$lib/assets/banerVert916/ascetxtVert.webp';
 	import srcJpeg2 from '$lib/assets/banerVert916/pazVert3.jpeg';
 	import srcWebp2 from '$lib/assets/banerVert916/pazVert3.webp';
-
-	let { setBanners = '1' } = $props();
+	import srcJpegTiri from '$lib/assets/banerVert916/fotoVert.jpeg';
+	import srcWebpTiri from '$lib/assets/banerVert916/fotoVert.webp';
 
 	const banersPageLeft = [
 		{
-			link: 'https://axi0man.github.io/ascetxt/',
-			alt: 'txt note',
+			link: '#',
+			alt: 'tiri',
 			src: {
-				webp: srcWebp0,
-				jpeg: srcJpeg0
-			}
-		},
-		{
-			link: 'https://axi0man.github.io/axI0_Puzzle/',
-			alt: 'Puzzle banner',
-			src: {
-				webp: srcWebp2,
-				jpeg: srcJpeg2
+				webp: srcWebpTiri,
+				jpeg: srcJpegTiri
 			}
 		}
+		// {
+		// 	link: 'https://axi0man.github.io/ascetxt/',
+		// 	alt: 'txt note',
+		// 	src: {
+		// 		webp: srcWebp0,
+		// 		jpeg: srcJpeg0
+		// 	}
+		// },
+		// {
+		// 	link: 'https://axi0man.github.io/axI0_Puzzle/',
+		// 	alt: 'Puzzle banner',
+		// 	src: {
+		// 		webp: srcWebp2,
+		// 		jpeg: srcJpeg2
+		// 	}
+		// }
 	];
 
 	import srcJpegR1 from '$lib/assets/banerVert916/calcAllVert.jpeg';
@@ -71,12 +79,10 @@
 		}
 	];
 
-	let bannerSet = $state();
-	if (setBanners === '1') {
-		bannerSet = banersPageLeft;
-	} else {
-		bannerSet = banersPageRight;
-	}
+	let { setBanners = '1' } = $props();
+
+	// Реактивно вычисляем нужный массив баннеров при изменении пропса
+	let bannerSet = $derived(setBanners === '1' ? banersPageLeft : banersPageRight);
 </script>
 
 <Advertisement

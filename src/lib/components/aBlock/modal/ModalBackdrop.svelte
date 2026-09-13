@@ -2,16 +2,21 @@
 	// src/lib/components/aBlock/modal/ModalBackdrop.svelte
 	import { fade } from 'svelte/transition';
 
-	// Принимаем состояние открытия и кастомные классы/содержимое через пропсы Svelte 5
-	let {
-		isOpen = false,
-		children,
-		maxWidth = '500px' // Опционально для разной ширины окон
-	} = $props();
+	// Делаем isOpen реактивным через $bindable(), чтобы родитель мог менять его статус
+	let { isOpen = $bindable(false), children, maxWidth = '500px' } = $props();
+
+	// Функция закрытия по клику на бэкдроп
+	function handleBackdropClick(event) {
+		if (event.target === event.currentTarget) {
+			isOpen = false;
+		}
+	}
 </script>
 
 {#if isOpen}
-	<div class="modal-backdrop" transition:fade={{ duration: 150 }}>
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div class="modal-backdrop" onclick={handleBackdropClick} transition:fade={{ duration: 150 }}>
 		<div class="modal-content" style="max-width: {maxWidth};">
 			{@render children?.()}
 		</div>
@@ -44,7 +49,7 @@
 		border-radius: 1rem;
 		padding: 1.5rem;
 		max-width: 50vh;
-		width: 100%;
+		width: fit-content;
 
 		// Используем готовую глубокую тень
 		box-shadow: $shadow-deep;

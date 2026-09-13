@@ -45,12 +45,13 @@
 	import { cubicOut } from 'svelte/easing';
 
 	// В Svelte 5 принимаем два сниппета: summary и children
-	let { castomClass, name = 'my-accordion', summary, children } = $props();
+	let { castomClass, name = 'my-accordion', summary, children, onToggle = () => {} } = $props();
 
 	let isOpen = $state(false);
 
 	function handleToggle(e) {
 		isOpen = e.target.open;
+		onToggle(isOpen);
 	}
 </script>
 

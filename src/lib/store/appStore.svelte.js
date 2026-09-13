@@ -1,5 +1,4 @@
-// src/lib/store/appStore.svelte.js
-// данные, которые хранятся между сессиями
+// src/lib/store/appStore.svelte.js -  данные, которые хранятся между сессиями
 
 // Вместо import { browser } from '$app/environment';
 // Используем это:
@@ -44,6 +43,22 @@ class AppStore {
   /** Дата первой заметки. false или строка с датой 'YYYY.MM.DD'
    * @type {string | boolean} */
   firstInput = $state(false);
+
+  /** Флаг: идёт ли процесс создания отчётов
+   * @type {boolean} */
+  isProcessingReports = $state(false);
+
+  /** Последняя успешно обработанная дата в процессе
+   * @type {string} */
+  lastProcessedDate = $state('');
+
+  /** Начало периода обработки
+   * @type {string} */
+  processFrom = $state('');
+
+  /** Конец периода обработки
+   * @type {string} */
+  processTo = $state('');
 
   /** точность знаков после запятой
    *  @type {number} */
@@ -94,6 +109,10 @@ class AppStore {
       if (parsed.iAgree) this.iAgree = parsed.iAgree;
       if (parsed.swipeUse) this.swipeUse = parsed.swipeUse;
       if (parsed.workDays) this.workDays = parsed.workDays;
+      if (parsed.isProcessingReports) this.isProcessingReports = parsed.isProcessingReports;
+      if (parsed.lastProcessedDate) this.lastProcessedDate = parsed.lastProcessedDate;
+      if (parsed.processFrom) this.processFrom = parsed.processFrom;
+      if (parsed.processTo) this.processTo = parsed.processTo;
 
       console.log('AppStore: Настройки успешно загружены из localStorage');
     } catch (err) {
@@ -112,6 +131,10 @@ class AppStore {
       iAgree: this.iAgree,
       swipeUse: this.swipeUse,
       workDays: this.workDays,
+      isProcessingReports: this.isProcessingReports,
+      lastProcessedDate: this.lastProcessedDate,
+      processFrom: this.processFrom,
+      processTo: this.processTo,
     };
   }
 

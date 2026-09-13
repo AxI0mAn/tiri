@@ -98,7 +98,8 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
+	@use '../../../../styles/_variables.scss' as *;
 	.filter-bar {
 		display: flex;
 		flex-direction: column;

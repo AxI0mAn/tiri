@@ -5,6 +5,9 @@
 	import { base } from '$app/paths';
 	// @ts-ignore
 	import { goto } from '$app/navigation';
+
+	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
+
 	import BtnBack from '$lib/components/Btn/BtnBack.svelte';
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 
@@ -26,7 +29,7 @@
 	let dateStr = $state('');
 	// let isNewReport = $state(false); // ← флаг, что отчет только что создан
 
-	// Состояние активной вкладки (по умолчанию 2 — Клиенты)
+	// Состояние активной вкладки (по умолчанию — Клиенты)
 	let activeTab = $state(2);
 	let touchStartX = $state(0);
 	let touchEndX = $state(0);
@@ -336,6 +339,9 @@
 				{/if}
 			</div>
 		{/if}
+		<div>
+			<AdvertisementGor setBanners="1" />
+		</div>
 	</main>
 	<Modal_ZreportSaved onSend={handleSend} />
 </div>
@@ -480,17 +486,23 @@
 		flex: 1;
 		overflow: hidden;
 		position: relative;
-		max-width: max-content;
+		max-width: 100%;
+		width: max-content;
 		min-width: 60%;
 		margin: 0 auto;
+		margin-bottom: 0.5rem;
 		color: $clr-text-main;
 		border: 2px solid $clr-white;
 		border-radius: 1rem;
 		background-image: $grad-block;
+		@media screen and (max-width: 767px) {
+			min-width: 100%;
+		}
 	}
 
 	.block {
 		height: 100%;
+		width: 100%;
 		padding: 20px 20px 24px;
 		overflow-y: auto;
 		animation: fadeIn 0.25s ease;
@@ -499,7 +511,7 @@
 		background-position: right bottom;
 		background-size: 30vw 30vw;
 		@media screen and (min-width: 767px) {
-			background-size: 20vw 20vw;
+			background-size: 12vw 12vw;
 		}
 	}
 
@@ -515,7 +527,7 @@
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
-			transform: translateX(8px);
+			transform: translateX(-8px);
 		}
 		to {
 			opacity: 1;

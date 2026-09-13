@@ -24,7 +24,8 @@
 	{/if}
 </div>
 
-<style>
+<style lang="scss">
+	@use '../../../../styles/_variables.scss' as *;
 	.sticker-grid {
 		display: flex;
 		flex-wrap: wrap;
