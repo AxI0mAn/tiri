@@ -20,7 +20,7 @@ export default defineConfig({
 				clientsClaim: true,       // Сразу перехватывать управление
 				cleanupOutdatedCaches: true, // Удалять старые кэши
 				// Для GitHub Pages меняем на полный путь
-				navigateFallback: '/tiri/index.html',
+				navigateFallback: '/index.html', // было '/tiri/index.html',
 				navigateFallbackAllowlist: [/^(?!\/__).*/],
 
 			},
