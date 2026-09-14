@@ -4,16 +4,19 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
-import { SvelteKitPWA } from '@vite-pwa/sveltekit';
+// import { SvelteKitPWA } from '@vite-pwa/sveltekit';  - PWA не работает оффлайн
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
 	plugins: [
 		sveltekit(),
-		SvelteKitPWA({
+		VitePWA({
 			registerType: 'autoUpdate', // Автообновление при появлении новой версии
 			// injectRegister: null, // Мы регистрируем вручную в +layout.svelte, это надежнее
 			injectRegister: 'auto', // Автоматически регистрировать SW и следить за обновлениями
 			manifest: false, //  манифест из static
+			// outDir: 'build',              //  куда положить sw.js
+			// buildBase: '/tiri/',          // base для GitHub Pages
 			workbox: {
 				globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,json,jpg,jpeg}'],
 				skipWaiting: true,        // Не ждать закрытия вкладок
@@ -22,13 +25,21 @@ export default defineConfig({
 				// Для GitHub Pages меняем на полный путь
 				navigateFallback: '/index.html', // было '/tiri/index.html',
 				navigateFallbackAllowlist: [/^(?!\/__).*/],
-
 			},
 			devOptions: {
 				enabled: false, // Оставляем false для тестов Lighthouse!
 				type: 'module',
 				suppressWarnings: true
 			},
+			// ✅ ВАЖНО: указать правильные пути
+			// srcDir: 'src',
+			// filename: 'service-worker.js',
+			// strategies: 'generateSW',
+			// injectManifest: {},
+			// ✅ Для SvelteKit нужен интеграционный путь
+			// kit: {
+			// 	includeVersionFile: true,
+			// },
 		})
 	],
 
