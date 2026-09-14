@@ -28,7 +28,7 @@
 
 <header class="header" id="top-anchor">
 	<BtnBack />
-	<h1 class="headerSlogan">install the App</h1>
+	<h1 class="headerSlogan">install this App</h1>
 </header>
 
 <main class="homeTextPage installPage">

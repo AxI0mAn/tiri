@@ -13,6 +13,11 @@ class AppStore {
   * @type {string} */
   master = $state('Master');
 
+  /**  
+   * @type {string} 
+  */
+  ssap = $state('');  //   
+
   /** выбор языка для интерфейсов и текстов
    * @type {'RU' | 'EN' | 'UA' | 'PT' | 'ES'} */
   /** Доступные языки */
@@ -113,6 +118,7 @@ class AppStore {
       if (parsed.lastProcessedDate) this.lastProcessedDate = parsed.lastProcessedDate;
       if (parsed.processFrom) this.processFrom = parsed.processFrom;
       if (parsed.processTo) this.processTo = parsed.processTo;
+      if (parsed.ssap) this.ssap = parsed.ssap;
 
       console.log('AppStore: Настройки успешно загружены из localStorage');
     } catch (err) {
@@ -135,6 +141,7 @@ class AppStore {
       lastProcessedDate: this.lastProcessedDate,
       processFrom: this.processFrom,
       processTo: this.processTo,
+      ssap: this.ssap,
     };
   }
 

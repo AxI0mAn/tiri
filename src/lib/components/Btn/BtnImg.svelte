@@ -195,13 +195,13 @@
 		}
 
 		.bg-hover {
-			background: $clr-teal;
+			background: rgba($clr-teal-rgb, 0.4);
 		}
 
 		/* Hover */
 		&:hover {
 			.oval-inner {
-				border-color: $clr-teal;
+				border-color: rgba($clr-teal-rgb, 0.4);
 			}
 			.bg-hover {
 				opacity: 1;

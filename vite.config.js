@@ -10,15 +10,19 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		SvelteKitPWA({
-			registerType: 'autoUpdate',
-			injectRegister: null, // Мы регистрируем вручную в +layout.svelte, это надежнее
+			registerType: 'autoUpdate', // Автообновление при появлении новой версии
+			// injectRegister: null, // Мы регистрируем вручную в +layout.svelte, это надежнее
+			injectRegister: 'auto', // Автоматически регистрировать SW и следить за обновлениями
 			manifest: false, //  манифест из static
 			workbox: {
 				globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,json,jpg,jpeg}'],
-				cleanupOutdatedCaches: true,
+				skipWaiting: true,        // Не ждать закрытия вкладок
+				clientsClaim: true,       // Сразу перехватывать управление
+				cleanupOutdatedCaches: true, // Удалять старые кэши
 				// Для GitHub Pages меняем на полный путь
 				navigateFallback: '/tiri/index.html',
-				navigateFallbackAllowlist: [/^(?!\/__).*/]
+				navigateFallbackAllowlist: [/^(?!\/__).*/],
+
 			},
 			devOptions: {
 				enabled: false, // Оставляем false для тестов Lighthouse!
