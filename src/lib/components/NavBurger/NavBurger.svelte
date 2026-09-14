@@ -41,7 +41,15 @@
 		// 	]
 		// },
 		{ label: 'настройки', href: `${base}/settings` },
-		{ label: 'блокнот', href: `${base}/stickers` },
+		{
+			label: 'Записи',
+			href: '#',
+			open: false,
+			children: [
+				{ label: 'рецепты', href: `${base}/recipes` },
+				{ label: 'архив заметок', href: `${base}/stickers` }
+			]
+		},
 		{ label: 'инструкция', href: `${base}/instructionAll` },
 		{ label: 'добавить заметки', href: `${base}/addNotes` },
 		{ label: 'администрирование', href: `${base}/adminClear` },
@@ -353,11 +361,11 @@
 	}
 
 	.menu-label {
-		font-size: 1.25rem;
-		font-weight: 800;
+		font-size: 1.05rem;
+		font-weight: 777;
 		text-transform: uppercase;
 		flex-grow: 1;
-		color: $clr-bg;
+		color: $clr-text-accent;
 	}
 
 	/* Обертка для листовых элементов */

@@ -146,9 +146,7 @@
 			engineering functions.
 		</p>
 		<p>See the Scientific Calculator Guide for a complete list of features and examples.</p>
-		<a class="learnMore" href="{base}/engineer#instructionEngineer"
-			><strong>Scientific Calculator Guide</strong></a
-		>
+		<a class="learnMore" href="{base}/"><strong>Scientific Calculator Guide</strong></a>
 	</section>
 	<section class="card">
 		<h3>Can I evaluate long expressions?</h3>
@@ -156,9 +154,7 @@
 			Yes. The Scientific Calculator can evaluate long and complex expressions in a single line. Be
 			sure to use parentheses to ensure the correct order of operations.
 		</p>
-		<a class="learnMore" href="{base}/engineer#instructionEngineerExamples"
-			><strong>View calculation examples.</strong></a
-		>
+		<a class="learnMore" href="{base}/ "><strong>View calculation examples.</strong></a>
 	</section>
 	<section class="card">
 		<h3>Worked Examples.</h3>
@@ -170,55 +166,51 @@
 		<ul class="mainInstr">
 			<h2>More than 12 real-world calculation examples:</h2>
 			<li>
-				<a href="{base}/engineer/#instructionEngineerExamples"> Circumference of a Circle.</a>
+				<a href="{base}/ "> Circumference of a Circle.</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#AreaCircle"> Area of a Circle.</a>
+				<a href="{base}/ "> Area of a Circle.</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#ArcLengthCircle"> Arc Length of a Circle.</a>
+				<a href="{base}/ "> Arc Length of a Circle.</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer#AreaRectangle"> Area of a Rectangle (or Square).</a>
+				<a href="{base}/ "> Area of a Rectangle (or Square).</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#PerimeterRectangle"> Perimeter of a Rectangle (or Square).</a>
+				<a href="{base}/ "> Perimeter of a Rectangle (or Square).</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#AreaTriangle"> Area of a Triangle.</a>
+				<a href="{base}/ "> Area of a Triangle.</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#AreaTrapezoid"> Area of a Trapezoid.</a>
+				<a href="{base}/ "> Area of a Trapezoid.</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#VolumeRectPrism">
-					Volume of a Rectangular Prism (Room or Aquarium).</a
-				>
+				<a href="{base}/"> Volume of a Rectangular Prism (Room or Aquarium).</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#VolumeCylinder"> Volume of a Cylinder.</a>
+				<a href="{base}/ "> Volume of a Cylinder.</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#ArithmeticMean"> Arithmetic Mean (Average).</a>
+				<a href="{base}/ "> Arithmetic Mean (Average).</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#SurfAreaRectPrism">
-					Surface Area of a Rectangular Prism (Walls, Floor, and Ceiling).</a
-				>
+				<a href="{base}/ "> Surface Area of a Rectangular Prism (Walls, Floor, and Ceiling).</a>
 			</li>
 
 			<li>
-				<a href="{base}/engineer/#CalcWallRolls">Calculating the Number of Wallpaper Rolls.</a>
+				<a href="{base}/ ">Calculating the Number of Wallpaper Rolls.</a>
 			</li>
 		</ul>
 	</section>
@@ -232,9 +224,7 @@
 			calculator's keyboard.
 		</p>
 		<p>See calculation examples in the Fraction Calculator Guide.</p>
-		<a class="learnMore" href="{base}/fraction#instructionFraction"
-			><strong>Fraction Calculator Guide.</strong></a
-		>
+		<a class="learnMore" href="{base}/ "><strong>Fraction Calculator Guide.</strong></a>
 	</section>
 
 	<h2>Accuracy</h2>

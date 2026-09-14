@@ -3,7 +3,7 @@
 import { formatDateISOLocal } from '$lib/utils/dateHelpers.js';
 
 const DB_NAME = 'LiveTiriDB';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 function openDB() {
   return new Promise((resolve, reject) => {
@@ -11,23 +11,65 @@ function openDB() {
 
     request.onupgradeneeded = () => {
       const db = request.result;
+      const tx = request.transaction;
 
-      // Создаем entries
+      // ===== entries =====
       if (!db.objectStoreNames.contains('entries')) {
         const store = db.createObjectStore('entries', { keyPath: 'id' });
         store.createIndex('by_date', 'dateStr', { unique: false });
         store.createIndex('by_month', 'yearMonth', { unique: false });
+        store.createIndex('by_type', 'type', { unique: false });
+      } else {
+        // ✅ ДОБАВИТЬ by_type, если нет (для миграции с версии 3)
+        const store = tx.objectStore('entries');
+        if (!store.indexNames.contains('by_type')) {
+          store.createIndex('by_type', 'type', { unique: false });
+        }
       }
 
-      // Создаем report_day с индексом by_month
+      // ===== report_day =====
       if (!db.objectStoreNames.contains('report_day')) {
         const store = db.createObjectStore('report_day', { keyPath: 'dateStr' });
         store.createIndex('by_month', 'yearMonth', { unique: false });
       }
 
-      // Создаем report_month
+      // ===== report_month =====
       if (!db.objectStoreNames.contains('report_month')) {
         db.createObjectStore('report_month', { keyPath: 'yearMonth' });
+      }
+
+      // ===== services =====
+      if (!db.objectStoreNames.contains('services')) {
+        const store = db.createObjectStore('services', { keyPath: 'id' });
+        store.createIndex('by_date', 'dateStr', { unique: false });
+        store.createIndex('by_type', 'type', { unique: false });
+      }
+
+      // ===== owner_booker =====
+      if (!db.objectStoreNames.contains('owner_booker')) {
+        const store = db.createObjectStore('owner_booker', { keyPath: 'id' });
+        store.createIndex('by_date', 'dateStr', { unique: false });
+        store.createIndex('by_month', 'yearMonth', { unique: false });
+        store.createIndex('by_year', 'year', { unique: false });
+        store.createIndex('by_type', 'type', { unique: false });
+      }
+
+      // ===== owner_worker =====
+      if (!db.objectStoreNames.contains('owner_worker')) {
+        const store = db.createObjectStore('owner_worker', { keyPath: 'id' });
+        store.createIndex('by_date', 'dateStr', { unique: false });
+        store.createIndex('by_month', 'yearMonth', { unique: false });
+        store.createIndex('by_worker', 'master', { unique: false });
+        store.createIndex('by_type', 'type', { unique: false });
+      }
+
+      // ===== other =====
+      if (!db.objectStoreNames.contains('other')) {
+        const store = db.createObjectStore('other', { keyPath: 'id' });
+        store.createIndex('by_date', 'dateStr', { unique: false });
+        store.createIndex('by_type', 'type', { unique: false });
+        store.createIndex('by_parent', 'parentId', { unique: false });
+        store.createIndex('by_parent_type', 'parentType', { unique: false });
       }
     };
 
@@ -326,39 +368,6 @@ export async function getReport_Z_year(year) {
 }
 
 /**
- * Полностью очищает все данные приложения из IndexedDB
- * Удаляет: entries, report_day, report_month
- * @returns {Promise<boolean>} - true при успешном удалении
- */
-export async function crashData() {
-  try {
-    const db = await openDB();
-    const storeNames = ['entries', 'report_day', 'report_month'];
-
-    for (const storeName of storeNames) {
-      if (db.objectStoreNames.contains(storeName)) {
-        const tx = db.transaction(storeName, 'readwrite');
-        const store = tx.objectStore(storeName);
-
-        await new Promise((resolve, reject) => {
-          const req = store.clear();
-          req.onsuccess = () => resolve();
-          req.onerror = () => reject(req.error);
-        });
-
-        console.log(`[crashData] Хранилище ${storeName} очищено`);
-      }
-    }
-
-    console.log('[crashData] Все данные успешно удалены');
-    return true;
-  } catch (error) {
-    console.error('[crashData] Ошибка при сбросе данных:', error);
-    return false;
-  }
-}
-
-/**
  * Сохраняет отчет в IndexedDB
  * @param {'day' | 'month'} type - тип отчета (дневной или месячный)
  * @param {string} key - ключ (dateStr для дня, yearMonth с префиксом для месяца)
@@ -615,7 +624,6 @@ export async function deleteEntry(id) {
   }
 }
 
-
 /**
  * Удаляет отчёт из хранилища report_day или report_month
  * @param {'day' | 'month'} type - тип отчёта
@@ -712,6 +720,137 @@ export async function getAllReportKeysMonth() {
   }
 }
 
+// ===== SERVICES (рецепты, alarm, achievement) =====
+
+/**
+ * Сохранить запись в services
+ * @param {Object} entry - запись
+ * @returns {Promise<any>}
+ */
+export async function saveService(entry) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('services', 'readwrite');
+    const store = tx.objectStore('services');
+    const req = store.put(entry);
+
+    req.onsuccess = () => {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('db:service_saved', { detail: entry }));
+      }
+      resolve(req.result);
+    };
+    req.onerror = () => reject(req.error);
+  });
+}
+
+/**
+ * Получить все записи типа 'recipe'
+ * @returns {Promise<Array>}
+ */
+export async function getAllRecipes() {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('services', 'readonly');
+      const store = tx.objectStore('services');
+      const index = store.index('by_type');
+      const req = index.getAll(IDBKeyRange.only('recipe'));
+
+      req.onsuccess = () => {
+        // Сортировка: dateStr (новые сверху), при равенстве — timestamp (новые сверху)
+        const sorted = req.result.sort((a, b) => {
+          const dateCompare = (b.dateStr || '').localeCompare(a.dateStr || '');
+          if (dateCompare !== 0) return dateCompare;
+          return (b.timestamp || 0) - (a.timestamp || 0);
+        });
+        resolve(sorted);
+      };
+      req.onerror = () => reject(req.error);
+    });
+  } catch (error) {
+    console.error('[getAllRecipes] Ошибка:', error);
+    return [];
+  }
+}
+
+/**
+ * Получить запись из services по id
+ * @param {string} id
+ * @returns {Promise<Object|null>}
+ */
+export async function getServiceById(id) {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('services', 'readonly');
+      const store = tx.objectStore('services');
+      const req = store.get(id);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+  } catch (error) {
+    console.error('[getServiceById] Ошибка:', error);
+    return null;
+  }
+}
+
+/**
+ * Удалить запись из services по id
+ * @param {string} id
+ * @returns {Promise<void>}
+ */
+export async function deleteService(id) {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('services', 'readwrite');
+      const store = tx.objectStore('services');
+      const req = store.delete(id);
+      req.onsuccess = () => {
+        console.log(`[deleteService] Запись ${id} удалена`);
+        resolve();
+      };
+      req.onerror = () => reject(req.error);
+    });
+  } catch (error) {
+    console.error('[deleteService] Ошибка:', error);
+    throw error;
+  }
+}
+
+/**
+ * Полностью очищает все данные приложения из IndexedDB
+ * Удаляет: entries, report_day, report_month
+ * @returns {Promise<boolean>} - true при успешном удалении
+ */
+export async function crashData() {
+  try {
+    const db = await openDB();
+    const storeNames = ['entries', 'report_day', 'report_month'];
+
+    for (const storeName of storeNames) {
+      if (db.objectStoreNames.contains(storeName)) {
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+
+        await new Promise((resolve, reject) => {
+          const req = store.clear();
+          req.onsuccess = () => resolve();
+          req.onerror = () => reject(req.error);
+        });
+
+        console.log(`[crashData] Хранилище ${storeName} очищено`);
+      }
+    }
+
+    console.log('[crashData] Все данные успешно удалены');
+    return true;
+  } catch (error) {
+    console.error('[crashData] Ошибка при сбросе данных:', error);
+    return false;
+  }
+}
 // === -📝=TODO=📝- ===
 // ВРЕМЕННО: для ручного тестирования (удалить после проверки)
 // if (typeof window !== 'undefined') {

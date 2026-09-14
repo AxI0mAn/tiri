@@ -6,6 +6,8 @@
 	import { goto } from '$app/navigation';
 	// @ts-ignore
 	import { base } from '$app/paths';
+
+	import { appStore } from '$lib/store/appStore.svelte.js';
 	import BtnBack from '$lib/components/Btn/BtnBack.svelte';
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
@@ -49,11 +51,22 @@
 
 	// ===== ФУНКЦИИ =====
 	function checkPassword() {
-		const today = new Date();
-		const day = String(today.getDate()).padStart(2, '0');
-		const month = String(today.getMonth() + 1).padStart(2, '0');
-		const year = today.getFullYear();
-		const correctPassword = `${day}${month}${year}`; // "04092026"
+		// const today = new Date();
+		// const day = String(today.getDate()).padStart(2, '0');
+		// const month = String(today.getMonth() + 1).padStart(2, '0');
+		// const year = today.getFullYear();
+		// const correctPassword = `${day}${month}${year}`;
+
+		let correctPassword = '';
+
+		// ✅ Если ssap пустой — доступ сразу
+		if (!appStore.ssap || appStore.ssap === '') {
+			isAuthorized = true;
+			addLog('✅ Пароль не требуется (ssap пустой). Доступ разрешён.');
+			return;
+		} else {
+			correctPassword = appStore.ssap;
+		}
 
 		if (password === correctPassword) {
 			isAuthorized = true;
@@ -72,6 +85,109 @@
 
 	function clearLogs() {
 		logs = [];
+	}
+
+	// ===== БЛОК 0: Оффлайн-готовность =====
+	let offlineStatus = $state({
+		checking: true,
+		ready: false,
+		details: {
+			swActive: false,
+			cacheExists: false,
+			cacheFiles: 0,
+			indexCached: false,
+			indexedDBAvailable: false
+		}
+	});
+
+	// ===== БЛОК 0: Проверка оффлайн-готовности =====
+	async function checkOfflineReadiness() {
+		offlineStatus.checking = true;
+
+		const details = {
+			swActive: false,
+			cacheExists: false,
+			cacheFiles: 0,
+			indexCached: false,
+			indexedDBAvailable: false
+		};
+
+		try {
+			// 1. Service Worker активен
+			details.swActive = !!(
+				typeof navigator !== 'undefined' &&
+				navigator.serviceWorker &&
+				navigator.serviceWorker.controller
+			);
+
+			// 2. Кэш существует
+			if (typeof caches !== 'undefined') {
+				const cacheNames = await caches.keys();
+				details.cacheExists = cacheNames.length > 0;
+
+				// 3. Файлы закешированы
+				if (details.cacheExists) {
+					// Ищем workbox-кэш
+					const workboxCache = cacheNames.find((name) => name.startsWith('workbox-precache'));
+					const targetCache = workboxCache || cacheNames[0];
+
+					const cache = await caches.open(targetCache);
+					const keys = await cache.keys();
+					details.cacheFiles = keys.length;
+
+					// 4. index.html в кэше
+					const indexUrls = [
+						'/tiri/index.html',
+						'/index.html',
+						new URL('/tiri/index.html', location.origin).href,
+						new URL('/index.html', location.origin).href
+					];
+
+					for (const url of indexUrls) {
+						const response = await cache.match(url);
+						if (response) {
+							details.indexCached = true;
+							break;
+						}
+					}
+				}
+			}
+
+			// 5. IndexedDB доступен
+			try {
+				const db = await new Promise((resolve, reject) => {
+					const req = indexedDB.open('LiveTiriDB');
+					const timeout = setTimeout(() => reject(new Error('timeout')), 3000);
+					req.onsuccess = () => {
+						clearTimeout(timeout);
+						resolve(req.result);
+					};
+					req.onerror = () => {
+						clearTimeout(timeout);
+						reject(req.error);
+					};
+				});
+				details.indexedDBAvailable = !!db;
+			} catch {
+				details.indexedDBAvailable = false;
+			}
+
+			// ===== ИТОГ =====
+			offlineStatus.details = details;
+			offlineStatus.ready =
+				details.swActive &&
+				details.cacheExists &&
+				details.cacheFiles >= 10 &&
+				details.indexCached &&
+				details.indexedDBAvailable;
+
+			console.log('[checkOfflineReadiness] Результат:', details);
+		} catch (error) {
+			console.error('[checkOfflineReadiness] Ошибка:', error);
+			offlineStatus.ready = false;
+		} finally {
+			offlineStatus.checking = false;
+		}
 	}
 
 	// ===== БЛОК 1: Удалить Z-отчёт =====
@@ -449,6 +565,14 @@
 
 	// Проверяем статус при монтировании
 	onMount(() => {
+		// Авто-авторизация, если пароль не требуется
+		if (!appStore.ssap || appStore.ssap === '') {
+			isAuthorized = true;
+		}
+
+		// Проверка офлайн-готовности
+		checkOfflineReadiness();
+
 		checkDeleteButtonStatus();
 		// Проверяем каждые 10 секунд, не истекло ли время
 		const interval = setInterval(() => {
@@ -495,6 +619,63 @@
 		{#if isAuthorized}
 			<p class="success">✅ Доступ разрешён. Все кнопки активны.</p>
 		{/if}
+	</div>
+
+	<!-- Блок 0: Оффлайн-готовность -->
+	<div
+		class="block offline-block"
+		class:offline-ready={offlineStatus.ready && !offlineStatus.checking}
+		class:offline-not-ready={!offlineStatus.ready && !offlineStatus.checking}
+	>
+		<h2>📡 Оффлайн-режим</h2>
+
+		{#if offlineStatus.checking}
+			<div class="offline-indicator offline-checking">
+				<div class="spinner-small"></div>
+				<span class="offline-text">Проверка готовности...</span>
+			</div>
+		{:else if offlineStatus.ready}
+			<div class="offline-indicator offline-green">
+				<div class="dot dot-green"></div>
+				<span class="offline-text">Готов к оффлайн работе!</span>
+			</div>
+		{:else}
+			<div class="offline-indicator offline-red">
+				<div class="dot dot-red"></div>
+				<span class="offline-text">ТОЛЬКО ОНЛАЙН!</span>
+			</div>
+			<div class="offline-details">
+				<p>
+					Service Worker: <strong>{offlineStatus.details.swActive ? '✅' : '❌'}</strong>
+				</p>
+				<p>
+					Кэш существует: <strong>{offlineStatus.details.cacheExists ? '✅' : '❌'}</strong>
+				</p>
+				<p>
+					Файлов в кэше: <strong>{offlineStatus.details.cacheFiles}</strong>
+					{#if offlineStatus.details.cacheFiles < 10}
+						<span class="warn">(нужно ≥ 10)</span>
+					{/if}
+				</p>
+				<p>
+					index.html закеширован: <strong>{offlineStatus.details.indexCached ? '✅' : '❌'}</strong>
+				</p>
+				<p>
+					IndexedDB доступен: <strong
+						>{offlineStatus.details.indexedDBAvailable ? '✅' : '❌'}</strong
+					>
+				</p>
+			</div>
+		{/if}
+
+		<div class="row">
+			<BtnText
+				buttonText="🔄 Проверить снова"
+				onclick={checkOfflineReadiness}
+				disabled={offlineStatus.checking || isProcessing}
+				customClass="btn-check"
+			/>
+		</div>
 	</div>
 
 	<!-- Блок 1: Удалить Z-отчёт -->
@@ -1106,6 +1287,123 @@
 	.file-input:focus {
 		outline: none;
 		border-color: var(--clr-teal, #0d9488);
+	}
+
+	/* ===== Блок 0: Оффлайн ===== */
+	.offline-block {
+		border-left: 4px solid var(--clr-border, #ddd);
+		transition: border-color 0.3s ease;
+	}
+
+	.offline-block.offline-ready {
+		border-left-color: var(--clr-success, #22c55e);
+	}
+
+	.offline-block.offline-not-ready {
+		border-left-color: var(--clr-error, #e74c3c);
+	}
+
+	.offline-indicator {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 16px 20px;
+		border-radius: 12px;
+		margin-bottom: 12px;
+		font-size: 16px;
+		font-weight: 700;
+	}
+
+	.offline-indicator.offline-checking {
+		background: var(--clr-bg-primary, #f5f5f5);
+		color: var(--clr-text-secondary, #666);
+	}
+
+	.offline-indicator.offline-green {
+		background: rgba(34, 197, 94, 0.1);
+		color: var(--clr-success, #22c55e);
+	}
+
+	.offline-indicator.offline-red {
+		background: rgba(231, 76, 60, 0.1);
+		color: var(--clr-error, #e74c3c);
+	}
+
+	.offline-text {
+		flex: 1;
+	}
+
+	.dot {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		flex-shrink: 0;
+	}
+
+	.dot-green {
+		background: var(--clr-success, #22c55e);
+		box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+		animation: pulse-green 2s ease-in-out infinite;
+	}
+
+	.dot-red {
+		background: var(--clr-error, #e74c3c);
+		box-shadow: 0 0 12px rgba(231, 76, 60, 0.6);
+	}
+
+	@keyframes pulse-green {
+		0%,
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.6;
+			transform: scale(1.1);
+		}
+	}
+
+	.spinner-small {
+		width: 24px;
+		height: 24px;
+		border: 3px solid rgba(0, 0, 0, 0.1);
+		border-top-color: var(--clr-teal, #0d9488);
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+		flex-shrink: 0;
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.offline-details {
+		background: var(--clr-bg-primary, #f5f5f5);
+		border-radius: 8px;
+		padding: 12px 16px;
+		margin-bottom: 12px;
+		font-size: 13px;
+		color: var(--clr-text-secondary, #666);
+	}
+
+	.offline-details p {
+		margin: 4px 0;
+	}
+
+	.offline-details .warn {
+		color: var(--clr-error, #e74c3c);
+		font-size: 12px;
+		margin-left: 4px;
+	}
+
+	:global(.btn-check) {
+		background: var(--clr-info, #3b82f6) !important;
+		color: white !important;
+		padding: 8px 16px !important;
+		border-radius: 10px !important;
+		font-weight: 600 !important;
 	}
 
 	:global(.btn-backup) {

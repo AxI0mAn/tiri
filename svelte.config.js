@@ -16,7 +16,8 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: '404.html', // Обязательно для SPA на GitHub Pages
+			// fallback: '404.html', // ???Обязательно для SPA на GitHub Pages???
+			fallback: 'index.html', // отдаётся приложение, которое через JS роутинг отобразит нужную страницу.
 			precompress: false,
 			strict: true,
 		}),

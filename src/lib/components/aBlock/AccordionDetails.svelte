@@ -69,7 +69,7 @@
 </details>
 
 <style lang="scss">
-	.optionCalc {
+	details {
 		overflow: hidden;
 		summary {
 			list-style: none;
@@ -101,7 +101,7 @@
 		}
 	}
 
-	.optionCalc {
+	details {
 		min-width: 100%;
 		width: 100%;
 		background: $clr-bg-card;
