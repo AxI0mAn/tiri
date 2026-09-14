@@ -199,7 +199,7 @@
 		height: 40px;
 		border: none;
 		border-radius: 50%;
-		background: rgba(0, 0, 0, 0.4);
+		background: none;
 		color: white;
 		font-size: 24px;
 		cursor: pointer;
@@ -211,7 +211,7 @@
 	}
 
 	.nav-btn:hover {
-		background: rgba(0, 0, 0, 0.6);
+		background: none;
 	}
 
 	.nav-btn:disabled {

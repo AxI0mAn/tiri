@@ -64,6 +64,7 @@
 	import imgInstructionAll from '$lib/assets/iconPic/128/instructionAll.webp';
 	import imgSettings from '$lib/assets/iconPic/128/settings.webp';
 	import imgStickers from '$lib/assets/iconPic/128/stickers.webp';
+	import imgArchiveNotes from '$lib/assets/iconPic/128/archiveNotes.webp';
 </script>
 
 <div class="app-wrapper">
@@ -117,10 +118,21 @@
 						customClass="actionBtnImg"
 					/>
 				</a>
-				<a href="{base}/stickers" class="testLink">
-					<span>Блокнот</span>
+				<a href="{base}/recipes" class="testLink">
+					<span>Рецепты</span>
 					<BtnImg
 						src={imgStickers}
+						alt="test btn img"
+						size={144}
+						onclick="null"
+						customClass="actionBtnImg"
+					/>
+				</a>
+
+				<a href="{base}/stickers" class="testLink">
+					<span>Архив Заметок</span>
+					<BtnImg
+						src={imgArchiveNotes}
 						alt="test btn img"
 						size={144}
 						onclick="null"

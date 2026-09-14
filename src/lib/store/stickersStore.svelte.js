@@ -1,5 +1,6 @@
 // src/routes/(date)/stickers/stores/stickersStore.svelte.js 
 import { getTodayDate } from '$lib/utils/dateHelpers.js';
+import { openDB } from '$lib/utils/db';
 
 // Палитра цветов для стикеров (по датам)
 const COLOR_PALETTE = [
@@ -23,11 +24,7 @@ function getColorForDate(dateStr) {
  */
 export async function loadAllStickers() {
   try {
-    const db = await new Promise((resolve) => {
-      const req = indexedDB.open('LiveTiriDB', 3);
-      req.onsuccess = () => resolve(req.result);
-    });
-
+    const db = await openDB();  // ← всегда актуальная версия
     const tx = db.transaction('entries', 'readonly');
     const store = tx.objectStore('entries');
 

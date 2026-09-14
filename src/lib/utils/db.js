@@ -5,7 +5,7 @@ import { formatDateISOLocal } from '$lib/utils/dateHelpers.js';
 const DB_NAME = 'LiveTiriDB';
 const DB_VERSION = 4;
 
-function openDB() {
+export function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
@@ -453,7 +453,15 @@ export async function exportAllData() {
   const db = await openDB();
   const result = {};
 
-  const storeNames = ['entries', 'report_day', 'report_month', 'services'];
+  const storeNames = [
+    'entries',
+    'report_day',
+    'report_month',
+    'services',
+    'owner_booker',
+    'owner_worker',
+    'other'
+  ];
 
   for (const storeName of storeNames) {
     if (!db.objectStoreNames.contains(storeName)) continue;
@@ -538,7 +546,15 @@ export async function restoreFromBackup(backup) {
     const db = await openDB();
     const stats = {};
 
-    const storeNames = ['entries', 'report_day', 'report_month', 'services'];
+    const storeNames = [
+      'entries',
+      'report_day',
+      'report_month',
+      'services',
+      'owner_booker',
+      'owner_worker',
+      'other'
+    ];
 
     for (const storeName of storeNames) {
       if (!backup.data[storeName]) continue;
@@ -821,13 +837,21 @@ export async function deleteService(id) {
 
 /**
  * Полностью очищает все данные приложения из IndexedDB
- * Удаляет: entries, report_day, report_month
- * @returns {Promise<boolean>} - true при успешном удалении
+ * Удаляет: entries, report_day, report_month, services, owner_booker, owner_worker, other
+ * @returns {Promise<boolean>}
  */
 export async function crashData() {
   try {
     const db = await openDB();
-    const storeNames = ['entries', 'report_day', 'report_month'];
+    const storeNames = [
+      'entries',
+      'report_day',
+      'report_month',
+      'services',
+      'owner_booker',
+      'owner_worker',
+      'other'
+    ];
 
     for (const storeName of storeNames) {
       if (db.objectStoreNames.contains(storeName)) {
@@ -851,6 +875,7 @@ export async function crashData() {
     return false;
   }
 }
+
 // === -📝=TODO=📝- ===
 // ВРЕМЕННО: для ручного тестирования (удалить после проверки)
 // if (typeof window !== 'undefined') {
