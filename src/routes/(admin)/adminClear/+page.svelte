@@ -180,7 +180,6 @@
 				details.swActive &&
 				details.cacheExists &&
 				details.cacheFiles >= 10 &&
-				details.indexCached &&
 				details.indexedDBAvailable;
 
 			console.log('[checkOfflineReadiness] Результат:', details);
@@ -709,9 +708,6 @@
 					{#if offlineStatus.details.cacheFiles < 10}
 						<span class="warn">(нужно ≥ 10)</span>
 					{/if}
-				</p>
-				<p>
-					index.html закеширован: <strong>{offlineStatus.details.indexCached ? '✅' : '❌'}</strong>
 				</p>
 				<p>
 					IndexedDB доступен: <strong

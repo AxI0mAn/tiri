@@ -1,12 +1,46 @@
 <script>
 	// src/lib/components/input/InputTime.svelte
+	import Modal_TimePicker from '$lib/components/aBlock/modal/Modal_TimePicker.svelte';
+
 	let { value = $bindable('09:30'), label = '' } = $props();
+
+	let showTimePicker = $state(false);
+
+	// ✅ Отображаемая строка (HH:MM или заглушка)
+	let displayValue = $derived(value && /^\d{2}:\d{2}$/.test(value) ? value : 'Выберите время');
+
+	// ✅ Обработка выбора времени из модалки
+	function handleSelectTime(timeStr) {
+		value = timeStr;
+		showTimePicker = false;
+	}
 </script>
 
 <div class="time-field">
-	{#if label}<label class="label" for="time-inp">{label}</label>{/if}
-	<input id="time-inp" type="time" class="time-input" bind:value />
+	{#if label}<label class="label">{label}</label>{/if}
+
+	<!-- ✅ Кастомная копия (видимая) -->
+	<button type="button" class="time-input-custom" onclick={() => (showTimePicker = true)}>
+		{displayValue}
+	</button>
+
+	<!-- ✅ Скрытый оригинальный инпут (для совместимости) -->
+	<input
+		id="time-inp"
+		type="time"
+		class="time-input-hidden"
+		bind:value
+		aria-hidden="true"
+		tabindex="-1"
+	/>
 </div>
+
+<Modal_TimePicker
+	isOpen={showTimePicker}
+	{value}
+	onSelectTime={handleSelectTime}
+	onClose={() => (showTimePicker = false)}
+/>
 
 <style lang="scss">
 	@use '../../../styles/_variables.scss' as *;
@@ -15,6 +49,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
+		width: 100%;
 
 		.label {
 			font-size: 0.85rem;
@@ -22,7 +57,8 @@
 			opacity: 0.8;
 		}
 
-		.time-input {
+		/* ✅ Кастомная кнопка-копия */
+		.time-input-custom {
 			min-width: 200px;
 			width: 100%;
 			height: 44px;
@@ -32,33 +68,26 @@
 			background: $clr-bg-card;
 			color: $clr-text-main;
 			font-family: inherit;
-			outline: none;
-			color-scheme: dark;
+			font-size: 1rem;
+			text-align: left;
+			cursor: pointer;
 			box-sizing: border-box;
 			transition: border-color 0.2s ease;
 
 			&:hover,
 			&:focus {
 				border-color: $clr-teal;
+				outline: none;
 			}
 		}
-	}
-	.time-input::-webkit-calendar-picker-indicator {
-		cursor: pointer;
-		// Белый цвет
-		filter: invert(1);
 
-		// Или бирюзовый акцент ($clr-teal):
-		// filter: invert(74%) sepia(51%) saturate(2834%) hue-rotate(130deg) brightness(101%) contrast(101%);
-
-		opacity: 0.7;
-		transition: opacity 0.2s ease;
-
-		&:hover {
-			opacity: 1;
+		/* ✅ Скрытый оригинальный инпут */
+		.time-input-hidden {
+			position: absolute;
+			opacity: 0;
+			pointer-events: none;
+			width: 0;
+			height: 0;
 		}
-	}
-	.time-input {
-		accent-color: $clr-teal; /* Цвет активного дня, чекбоксов и выделений в пикере */
 	}
 </style>

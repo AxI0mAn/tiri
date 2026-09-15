@@ -37,12 +37,11 @@
 	});
 
 	//
-	import HomeHeader from '$lib/components/aBlock/homeHeader/homeHeader.svelte';
+	import HomeHeader from '$lib/components/aBlock/header/homeHeader.svelte';
 
 	// ------------- логотипы для ссылок на страницы калькуляторов
 
 	import Picture from '$lib/components/Picture/Picture.svelte';
-
 	// ----------------
 
 	// -------------- рекламные вертикальные банеры для десктоп шире 1023
@@ -54,6 +53,7 @@
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
 
 	//-------------------
+	import ModalTimePicker from '$lib/components/aBlock/modal/Modal_TimePicker.svelte';
 	// кнопки
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
@@ -75,6 +75,7 @@
 		<div class="headerWrapper" id="top-anchor"><HomeHeader /></div>
 
 		<h1 class="slogan font-digits">Привет, я Tiri</h1>
+		<ModalTimePicker />
 		<div class="testText">
 			<h2>Приложение, которое помагает Мастерам работающим на проценте.</h2>
 			<h2>Со мной проще вести запись и учёт клиентов, сохранять и рассчитывать доход.</h2>

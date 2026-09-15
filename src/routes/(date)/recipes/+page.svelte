@@ -4,7 +4,7 @@
 	// @ts-ignore
 	import { base } from '$app/paths';
 
-	import HomeHeader from '$lib/components/aBlock/homeHeader/homeHeader.svelte';
+	import HomeHeader from '$lib/components/aBlock/header/homeHeader.svelte';
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import AccordionDetails from '$lib/components/aBlock/AccordionDetails.svelte';

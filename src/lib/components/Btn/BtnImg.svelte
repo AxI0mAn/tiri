@@ -160,6 +160,14 @@
 		}
 	}
 
+	.actionBtnImg.faqLink {
+		&:hover {
+			background-color: none;
+			scale: 0.5;
+			transition: all 0.5sec;
+		}
+	}
+
 	/* ==========================================================================
      1. DEFAULT РЕЖИМ (По умолчанию, когда нет .gender и .icon)
      Одно кольцо $clr-white, :hover -> $clr-teal, :active/.action -> неоморфизм
