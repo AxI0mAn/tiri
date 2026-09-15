@@ -43,7 +43,12 @@ class AppState {
   /** Открыть клавиатуру для инпута */
   openKeyboard(inputEl) {
     this.keyboardTarget = inputEl;
-    this.keyboardOpen = true;
+
+    openModalWithBack(
+      () => { this.keyboardOpen = true; },
+      () => { this.keyboardOpen = false; },
+      'keyboardModal'
+    );
   }
 
   /** Закрыть клавиатуру */

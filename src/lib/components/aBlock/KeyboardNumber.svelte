@@ -116,7 +116,12 @@
 		}
 
 		appState.closeKeyboard();
+
+		if (typeof window !== 'undefined' && window.history.state?.keyboardModal) {
+			window.history.back();
+		}
 	}
+
 	// ===== NEXT — циклический =====
 	function handleNext() {
 		if (!targetInput) return;
@@ -159,6 +164,11 @@
 	function handleClose() {
 		targetInput?.blur();
 		appState.closeKeyboard();
+
+		// ✅ Откатываем запись из истории
+		if (typeof window !== 'undefined' && window.history.state?.keyboardModal) {
+			window.history.back();
+		}
 	}
 
 	// ===== КНОПКИ =====
