@@ -23,6 +23,9 @@
 		disabled = false
 	} = $props();
 
+	// ===== MOBILE =====
+	let isMobile = $state(false);
+
 	// ===== LOCALIZATION =====
 	const ruLangs = ['RU', 'UA', 'UK'];
 	let decimalSeparator = $derived(ruLangs.includes(appStore.lang) ? ',' : '.');
@@ -124,6 +127,9 @@
 	}
 
 	onMount(() => {
+		// ✅ Определяем мобильное устройство
+		isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
 		displayValue = toDisplay(value);
 	});
 </script>
@@ -140,6 +146,7 @@
 		class="number-input"
 		class:disabled
 		{disabled}
+		readonly={isMobile}
 		value={displayValue}
 		oninput={handleInput}
 		onfocus={handleFocus}
