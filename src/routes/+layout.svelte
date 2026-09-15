@@ -91,6 +91,11 @@
 
 	// ===================================
 
+	// ================ глобальная числовая клавиатура
+	import KeyboardNumber from '$lib/components/aBlock/KeyboardNumber.svelte';
+
+	// =================================
+
 	// ============ плавные переходы для работы QuickMenu.svelte
 	// import { menuMaps } from '$lib/config/mathMenuMaps';
 	// АВТОМАТИЧЕСКАЯ ЛОГИКА: подробности применения в 	$lib/config/mathMenuMaps';
@@ -230,6 +235,9 @@ onMount → reg.update() → нет нового sw.js
 {/key} -->
 
 {@render children()}
+
+<!-- ✅ Одна числовая клавиатура для всего приложения -->
+<KeyboardNumber />
 
 <!-- Модалка согласие с PrivatePolise i disclaimer -->
 

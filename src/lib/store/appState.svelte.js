@@ -31,6 +31,30 @@ class AppState {
   /** @type {boolean} */
   modal_zReportSaved = $state(false);  // флаг для модалки сохранения z-отчёта
 
+  // -------- для работы числовой клавиатуры
+  /** Целевой инпут для клавиатуры
+   * @type {HTMLInputElement|null} */
+  keyboardTarget = $state(null);
+
+  /** Открыта ли клавиатура
+   * @type {boolean} */
+  keyboardOpen = $state(false);
+
+  /** Открыть клавиатуру для инпута */
+  openKeyboard(inputEl) {
+    this.keyboardTarget = inputEl;
+    this.keyboardOpen = true;
+  }
+
+  /** Закрыть клавиатуру */
+  closeKeyboard() {
+    this.keyboardOpen = false;
+    this.keyboardTarget = null;
+  }
+
+  // ------------------------
+
+
   /** @type {Function} */
   onSendZReport = $state(() => {
     console.log('[appState] onSendZReport не переопределен');

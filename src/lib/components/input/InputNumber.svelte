@@ -1,12 +1,14 @@
+<!-- src/lib/components/input/InputNumber.svelte -->
 <script>
-	//src/lib/components/input/InputNumber.svelte
+	import { onMount, onDestroy } from 'svelte';
+	import { appStore } from '$lib/store/appStore.svelte.js';
+	import { appState } from '$lib/store/appState.svelte';
 
 	/**
 	 * @typedef {Object} Props
 	 * @property {number} [value=0]
 	 * @property {number} [min=0]
 	 * @property {number} [max=Infinity]
-	 * @property {number} [step=1]
 	 * @property {string} [label='']
 	 * @property {string} [customClass='']
 	 * @property {boolean} [disabled=false]
@@ -16,45 +18,114 @@
 		value = $bindable(0),
 		min = 0,
 		max = Infinity,
-		step = 1,
 		label = '',
 		customClass = '',
 		disabled = false
 	} = $props();
 
-	function sanitizeNumber(val) {
-		const num = typeof val === 'number' ? val : parseFloat(val);
-		if (isNaN(num)) return typeof min === 'number' && isFinite(min) ? min : 0;
+	// ===== LOCALIZATION =====
+	const ruLangs = ['RU', 'UA', 'UK'];
+	let decimalSeparator = $derived(ruLangs.includes(appStore.lang) ? ',' : '.');
+
+	// ===== СОСТОЯНИЕ =====
+	let inputEl = $state(null);
+	let isKeyboardOpen = $state(false);
+	let displayValue = $state('');
+
+	// ✅ Отображение: точка → запятая для RU/UA
+	function toDisplay(num) {
+		if (num === '' || num === null || num === undefined) return '';
+		const str = String(num);
+		return decimalSeparator === ',' ? str.replace('.', ',') : str;
+	}
+
+	// ✅ Парсинг: запятая → точка, валидация
+	function parseInput(str) {
+		if (!str) return 0;
+
+		// Нормализация: запятая → точка
+		const normalized = str.replace(',', '.');
+
+		// Убираем всё, кроме цифр и точки
+		const cleaned = normalized.replace(/[^\d.]/g, '');
+
+		// Убираем вторую точку
+		const parts = cleaned.split('.');
+		const result = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : cleaned;
+
+		const num = parseFloat(result);
+		if (isNaN(num)) return min;
+
 		return Math.min(Math.max(num, min), max);
 	}
 
-	// 1. Фильтр: пропускаем только цифры, точку и запятую
-	function handleBeforeInput(e) {
-		if (e.data && !/^[0-9.,]$/.test(e.data)) {
-			e.preventDefault();
-		}
+	// ✅ Синхронизация отображения с value
+	$effect(() => {
+		displayValue = toDisplay(value);
+	});
+
+	// ✅ При клике — открыть клавиатуру
+	function handleFocus() {
+		if (disabled) return;
+		appState.openKeyboard(inputEl);
+		setTimeout(() => {
+			inputEl?.select();
+		}, 50);
 	}
 
-	// 2. Ввод: заменяем запятую на точку и обновляем значение
+	// ✅ При вводе с физической клавиатуры
 	function handleInput(e) {
 		const input = e.currentTarget;
+		let val = input.value;
 
-		// Автозамена запятой на точку
-		if (input.value.includes(',')) {
-			input.value = input.value.replace(',', '.');
+		// Нормализация
+		val = val.replace(',', '.');
+
+		// Разрешаем промежуточные состояния: "5.", "15."
+		const cleaned = val.replace(/[^\d.]/g, '');
+		const parts = cleaned.split('.');
+		const result = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : cleaned;
+
+		displayValue = result;
+
+		// Если результат — полное число, обновляем value
+		if (result && !result.endsWith('.')) {
+			value = parseInput(result);
 		}
-
-		if (input.value === '' || input.value === '.') return;
-		value = sanitizeNumber(input.value);
 	}
 
-	function increment() {
-		value = sanitizeNumber(Number((value + step).toFixed(10)));
+	// ✅ По blur — финализация
+	function handleBlur() {
+		if (displayValue.endsWith('.')) {
+			displayValue = displayValue.slice(0, -1);
+		}
+		value = parseInput(displayValue);
+		displayValue = toDisplay(value);
 	}
 
-	function decrement() {
-		value = sanitizeNumber(Number((value - step).toFixed(10)));
+	// ✅ Физическая клавиатура: Enter, Tab, Escape
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			handleBlur();
+			isKeyboardOpen = false;
+			inputEl?.blur();
+		} else if (e.key === 'Escape') {
+			e.preventDefault();
+			isKeyboardOpen = false;
+			inputEl?.blur();
+		}
 	}
+
+	// ✅ Закрытие клавиатуры извне
+	function closeKeyboard() {
+		isKeyboardOpen = false;
+		handleBlur();
+	}
+
+	onMount(() => {
+		displayValue = toDisplay(value);
+	});
 </script>
 
 <div class="input-number-field {customClass}">
@@ -62,23 +133,19 @@
 		<span class="input-label">{label}</span>
 	{/if}
 
-	<div class="control-group">
-		<button type="button" class="btn-step" onclick={decrement} aria-label="Decrease"> − </button>
-
-		<input
-			type="text"
-			inputmode="decimal"
-			class="number-input"
-			{disabled}
-			{value}
-			onbeforeinput={handleBeforeInput}
-			oninput={handleInput}
-			onblur={() => (value = sanitizeNumber(value))}
-			onfocus={(e) => e.currentTarget.select()}
-		/>
-
-		<button type="button" class="btn-step" onclick={increment} aria-label="Increase"> + </button>
-	</div>
+	<input
+		bind:this={inputEl}
+		type="text"
+		inputmode="decimal"
+		class="number-input"
+		class:disabled
+		{disabled}
+		value={displayValue}
+		oninput={handleInput}
+		onfocus={handleFocus}
+		onblur={handleBlur}
+		onkeydown={handleKeyDown}
+	/>
 </div>
 
 <style lang="scss">
@@ -88,6 +155,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
+		width: 100%;
 
 		.input-label {
 			font-size: 0.85rem;
@@ -95,65 +163,36 @@
 			opacity: 0.8;
 		}
 
-		.control-group {
-			display: inline-flex;
-			justify-content: space-around;
-			align-items: center;
-
-			padding: 4px;
+		.number-input {
+			width: 100%;
 			height: 44px;
+			padding: 0 14px;
 			border-radius: 12px;
 			border: 2px solid rgba(255, 255, 255, 0.2);
 			background: $clr-bg-card;
-			overflow: hidden;
+			color: $clr-text-main;
+			font-family: inherit;
+			font-size: 1rem;
+			font-weight: 600;
+			outline: none;
+			box-sizing: border-box;
 			transition: border-color 0.2s ease;
 
-			&:hover {
+			&:hover,
+			&:focus {
 				border-color: $clr-teal;
 			}
 
-			&:focus-within {
-				border-color: $clr-teal;
+			&:focus {
 				box-shadow:
 					inset 2px 2px 5px rgba(0, 0, 0, 0.5),
 					inset -2px -2px 5px rgba(255, 255, 255, 0.05);
 			}
-		}
 
-		.btn-step {
-			width: 1rem;
-			height: 100%;
-			background: transparent;
-			border: none;
-			color: $clr-text-main;
-			font-size: 1.2rem;
-			cursor: pointer;
-			user-select: none;
-			transition:
-				background 0.15s ease,
-				color 0.15s ease;
-
-			&:hover {
-				background: $clr-teal;
-				color: $clr-bg-dark;
+			&.disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
 			}
-
-			&:active {
-				background: $clr-pink;
-				color: $clr-white;
-			}
-		}
-
-		.number-input {
-			width: 3rem;
-			height: 100%;
-			border: none;
-			background: transparent;
-			text-align: center;
-			color: $clr-text-main;
-			font-size: 0.95rem;
-			font-weight: 600;
-			outline: none;
 		}
 	}
 </style>

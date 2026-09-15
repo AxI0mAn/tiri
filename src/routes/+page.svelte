@@ -54,6 +54,8 @@
 
 	//-------------------
 	import ModalTimePicker from '$lib/components/aBlock/modal/Modal_TimePicker.svelte';
+	import KeyboardNumber from '$lib/components/aBlock/KeyboardNumber.svelte';
+
 	// кнопки
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
@@ -75,7 +77,8 @@
 		<div class="headerWrapper" id="top-anchor"><HomeHeader /></div>
 
 		<h1 class="slogan font-digits">Привет, я Tiri</h1>
-		<ModalTimePicker />
+		<!-- <ModalTimePicker /> -->
+		<KeyboardNumber />
 		<div class="testText">
 			<h2>Приложение, которое помагает Мастерам работающим на проценте.</h2>
 			<h2>Со мной проще вести запись и учёт клиентов, сохранять и рассчитывать доход.</h2>
