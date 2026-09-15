@@ -16,6 +16,12 @@
 	// Флаг: сейчас идёт Next, не открывать клавиатуру повторно
 	let isNexting = false;
 
+	// Высота клавиатуры в px
+	let keyboardHeight = $state(300);
+
+	// DOM-элемент клавиатуры
+	let keyboardEl = $state(null);
+
 	let currentValue = $state('');
 	let cursorPos = $state(0);
 
@@ -35,6 +41,40 @@
 			targetInput.setSelectionRange(cursorPos, cursorPos);
 		}
 	});
+
+	// ✅ Измеряем реальную высоту клавиатуры при каждом открытии/изменении
+	$effect(() => {
+		if (isOpen && keyboardEl) {
+			const height = keyboardEl.getBoundingClientRect().height;
+			keyboardHeight = height;
+		}
+	});
+
+	/**
+	 * Прокручивает страницу так, чтобы инпут был виден над клавиатурой
+	 * @param {HTMLInputElement} input
+	 */
+	function scrollInputAboveKeyboard(input) {
+		if (!input) return;
+
+		const viewportHeight = window.innerHeight;
+		const availableHeight = viewportHeight - keyboardHeight;
+
+		const rect = input.getBoundingClientRect();
+
+		// ✅ Если инпут уже виден над клавиатурой — ничего не делаем
+		if (rect.bottom < availableHeight && rect.top > 0) return;
+
+		// ✅ Вычисляем целевую позицию: инпут должен быть в верхней части
+		// доступной области (не в центре, а с отступом от клавиатуры)
+		const offset = 40; // отступ сверху от инпута
+		const targetScrollY = window.scrollY + rect.top - offset;
+
+		window.scrollTo({
+			top: targetScrollY,
+			behavior: 'smooth'
+		});
+	}
 
 	// ===== ВАЛИДАЦИЯ =====
 	function canInsert(char, value, position) {
@@ -164,6 +204,9 @@
 			nextInput.focus();
 			nextInput.select();
 
+			// ✅ Прокручиваем с учётом высоты клавиатуры, чтоб инпут был над клавиатурой
+			scrollInputAboveKeyboard(nextInput);
+
 			// ✅ Сбрасываем флаг после того, как фокус установлен
 			setTimeout(() => {
 				isNexting = false;
@@ -220,7 +263,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 	<div class="keyboard-backdrop" role="presentation" onclick={handleClose}></div>
 
-	<div class="keyboard-container" class:left-handed={appStore.left_handed}>
+	<div class="keyboard-container" bind:this={keyboardEl} class:left-handed={appStore.left_handed}>
 		<div class="keyboard">
 			<div class="key-grid">
 				{#each keys as k}
