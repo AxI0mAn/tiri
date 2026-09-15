@@ -109,6 +109,42 @@
 		}
 	});
 
+	// ========== controllerchange - автоматическое полное обновление при появлении новой версии приложения ========
+	/**
+	 *алгоритм
+При первом заходе (новая версия на сервере)
+Страница загружается
+onMount → reg.update() → проверка нового sw.js
+controllerchange → новый SW активирован
+window.location.reload() → страница перезагружена с новой версией
+Пользователь видит обновлённое приложение
+
+При следующих заходах
+Страница загружается из кэша
+onMount → reg.update() → нет нового sw.js
+Пользователь видит актуальную версию
+	 */
+
+	onMount(() => {
+		if (!('serviceWorker' in navigator)) return;
+
+		// ✅ Слушаем смену контроллера (новый SW активирован)
+		let refreshing = false;
+		navigator.serviceWorker.addEventListener('controllerchange', () => {
+			if (refreshing) return;
+			refreshing = true;
+			console.log('[PWA] Новый SW активирован, перезагружаем страницу...');
+			window.location.reload();
+		});
+
+		// ✅ Проверяем обновления при каждом заходе
+		navigator.serviceWorker.getRegistrations().then((registrations) => {
+			registrations.forEach((reg) => {
+				reg.update(); // Принудительно проверить обновления
+			});
+		});
+	});
+
 	// =========== настраиваем глобальный «слушатель» для мобильных устройств. Применяется для работы historyStore - сохранение истории в localStorage при выходе из приложения
 	/**
 	 * Настраиваем отслеживание состояния видимости страницы.
