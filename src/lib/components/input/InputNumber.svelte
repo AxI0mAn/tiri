@@ -70,7 +70,14 @@
 	// ✅ При клике — открыть клавиатуру
 	function handleFocus() {
 		if (disabled) return;
-		appState.openKeyboard(inputEl);
+
+		// Если клавиатура уже открыта (Next в процессе) — не пушим историю
+		if (appState.keyboardOpen) {
+			appState.keyboardTarget = inputEl;
+		} else {
+			appState.openKeyboard(inputEl);
+		}
+
 		setTimeout(() => {
 			inputEl?.select();
 		}, 50);

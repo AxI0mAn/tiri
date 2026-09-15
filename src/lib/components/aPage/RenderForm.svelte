@@ -288,7 +288,6 @@
 														bind:value={manager.draft.value[fieldKey][optKey]}
 														min={option.min ?? 0}
 														max={option.max ?? Infinity}
-														step={option.step ?? 1}
 														label={isSingleView ? option.label || '' : ''}
 														customClass={option.customClass || ''}
 													/>
@@ -299,7 +298,6 @@
 														bind:value={manager.draft.value[fieldKey]}
 														min={option.min ?? 0}
 														max={option.max ?? Infinity}
-														step={option.step ?? 1}
 														label={isSingleView ? option.label || '' : ''}
 														customClass={option.customClass || ''}
 													/>

@@ -13,6 +13,9 @@
 	let isOpen = $derived(appState.keyboardOpen);
 	let targetInput = $derived(appState.keyboardTarget);
 
+	// Флаг: сейчас идёт Next, не открывать клавиатуру повторно
+	let isNexting = false;
+
 	let currentValue = $state('');
 	let cursorPos = $state(0);
 
@@ -150,13 +153,21 @@
 			targetInput.dispatchEvent(new Event('input', { bubbles: true }));
 		}
 
-		// ✅ Переключить targetInput в appState (БЕЗ закрытия клавиатуры)
+		// ✅ Устанавливаем флаг ДО смены фокуса
+		isNexting = true;
+
+		// ✅ Переключаем targetInput в appState (БЕЗ вызова openKeyboard)
 		appState.keyboardTarget = nextInput;
 
-		// Фокус на новый инпут
+		// ✅ Фокус на новый инпут
 		setTimeout(() => {
 			nextInput.focus();
 			nextInput.select();
+
+			// ✅ Сбрасываем флаг после того, как фокус установлен
+			setTimeout(() => {
+				isNexting = false;
+			}, 100);
 		}, 0);
 	}
 
