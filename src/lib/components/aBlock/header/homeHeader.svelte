@@ -1,5 +1,5 @@
 <script>
-	// src/lib/components/aBlock/homeHeader/homeHeader.svelte
+	// src/lib/components/aBlock/header/homeHeader.svelte
 
 	// @ts-ignore
 	import { base } from '$app/paths';

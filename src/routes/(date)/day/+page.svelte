@@ -8,7 +8,7 @@
 	import imgAdd from '$lib/assets/iconPic/128/add.webp';
 	import imgDone from '$lib/assets/iconPic/128/done.webp';
 
-	import HomeHeader from '$lib/components/aBlock/homeHeader/homeHeader.svelte';
+	import HomeHeader from '$lib/components/aBlock/header/homeHeader.svelte';
 	import SwipeDay from '$lib/components/aPage/day/SwipeDay.svelte';
 
 	import { canAddNote } from '$lib/components/services/reportGuard';

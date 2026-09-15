@@ -13,6 +13,10 @@ class AppStore {
   * @type {string} */
   master = $state('Master');
 
+  /** если левша, то другое располажение кнопок на цифровой клавиатуре
+* @type {boolean} */
+  left_handed = $state(false);
+
   /**  
    * @type {string} 
   */
@@ -119,6 +123,7 @@ class AppStore {
       if (parsed.processFrom) this.processFrom = parsed.processFrom;
       if (parsed.processTo) this.processTo = parsed.processTo;
       if (parsed.ssap) this.ssap = parsed.ssap;
+      if (parsed.left_handed) this.left_handed = parsed.left_handed;
 
       console.log('AppStore: Настройки успешно загружены из localStorage');
     } catch (err) {
@@ -142,6 +147,7 @@ class AppStore {
       processFrom: this.processFrom,
       processTo: this.processTo,
       ssap: this.ssap,
+      left_handed: this.left_handed,
     };
   }
 
