@@ -38,15 +38,12 @@
 	});
 
 	let webpSrc = $derived(basePath ? `${basePath}.webp` : '');
-	let pngSrc = $derived(basePath ? `${basePath}.png` : '');
 	let hasImage = $derived(basePath.length > 0);
 
 	$effect(() => {
 		if (!hasImage) return;
 		const imgWebp = new Image();
 		imgWebp.src = webpSrc;
-		const imgPng = new Image();
-		imgPng.src = pngSrc;
 	});
 
 	function handleClick(event) {
@@ -81,9 +78,8 @@
 	{#if hasImage}
 		<picture class="picture-wrapper">
 			<source srcset={webpSrc} type="image/webp" />
-			<source srcset={pngSrc} type="image/png" />
 			<img
-				src={pngSrc}
+				src={webpSrc}
 				{alt}
 				class="img-content"
 				loading="eager"

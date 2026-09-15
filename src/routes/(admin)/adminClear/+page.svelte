@@ -91,6 +91,7 @@
 	let offlineStatus = $state({
 		checking: true,
 		ready: false,
+		updating: false,
 		details: {
 			swActive: false,
 			cacheExists: false,
@@ -125,30 +126,31 @@
 				const cacheNames = await caches.keys();
 				details.cacheExists = cacheNames.length > 0;
 
-				// 3. Файлы закешированы
+				// 3. Ищем кэш с максимальным числом файлов
 				if (details.cacheExists) {
-					// Ищем workbox-кэш
-					const workboxCache = cacheNames.find((name) => name.startsWith('workbox-precache'));
-					const targetCache = workboxCache || cacheNames[0];
+					let bestCacheKeys = [];
 
-					const cache = await caches.open(targetCache);
-					const keys = await cache.keys();
-					details.cacheFiles = keys.length;
-
-					// 4. index.html в кэше
-					const indexUrls = [
-						'/tiri/index.html',
-						'/index.html',
-						new URL('/tiri/index.html', location.origin).href,
-						new URL('/index.html', location.origin).href
-					];
-
-					for (const url of indexUrls) {
-						const response = await cache.match(url);
-						if (response) {
-							details.indexCached = true;
-							break;
+					for (const name of cacheNames) {
+						const cache = await caches.open(name);
+						const keys = await cache.keys();
+						if (keys.length > bestCacheKeys.length) {
+							bestCacheKeys = [...keys];
 						}
+					}
+
+					details.cacheFiles = bestCacheKeys.length;
+
+					// 4. index.html или корень в кэше
+					if (bestCacheKeys.length > 0) {
+						details.indexCached = bestCacheKeys.some((req) => {
+							const url = req.url;
+							return (
+								url.endsWith('/tiri/index.html') ||
+								url === location.origin + '/tiri/' ||
+								url.endsWith('/tiri/') ||
+								url.includes('index.html')
+							);
+						});
 					}
 				}
 			}
@@ -563,22 +565,62 @@
 		}
 	}
 
-	// Проверяем статус при монтировании
 	onMount(() => {
-		// Авто-авторизация, если пароль не требуется
+		// ✅ Авто-авторизация
 		if (!appStore.ssap || appStore.ssap === '') {
 			isAuthorized = true;
 		}
 
-		// Проверка офлайн-готовности
+		// ✅ Проверка офлайн-готовности
 		checkOfflineReadiness();
 
+		// ✅ Проверка кнопки удаления
 		checkDeleteButtonStatus();
-		// Проверяем каждые 10 секунд, не истекло ли время
-		const interval = setInterval(() => {
-			checkDeleteButtonStatus();
-		}, 10000);
-		return () => clearInterval(interval);
+
+		// ✅ Слушаем обновление SW
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.addEventListener('controllerchange', () => {
+				console.log('[adminClear] Новый SW активирован, перезагружаем...');
+				offlineStatus.updating = true;
+				offlineStatus.ready = false;
+				offlineStatus.checking = false;
+
+				setTimeout(() => {
+					window.location.reload();
+				}, 1500);
+			});
+
+			// ✅ Проверяем обновления сразу при монтировании
+			navigator.serviceWorker.getRegistrations().then((regs) => {
+				regs.forEach((reg) => reg.update());
+			});
+		}
+
+		// ✅ Проверка обновлений каждые 300 минут
+		const updateInterval = setInterval(
+			() => {
+				if ('serviceWorker' in navigator) {
+					navigator.serviceWorker.getRegistrations().then((regs) => {
+						regs.forEach((reg) => reg.update());
+					});
+				}
+			},
+			300 * 60 * 1000
+		);
+
+		// ✅ Проверка кнопки удаления каждые 10 минут
+		const deleteBtnInterval = setInterval(
+			() => {
+				checkDeleteButtonStatus();
+			},
+			10 * 60 * 1000
+		);
+
+		// ✅ Очистка при размонтировании
+		return () => {
+			clearInterval(updateInterval);
+			clearInterval(deleteBtnInterval);
+		};
 	});
 
 	// ===== ОБРАБОТКА ENTER =====
@@ -624,33 +666,44 @@
 	<!-- Блок 0: Оффлайн-готовность -->
 	<div
 		class="block offline-block"
-		class:offline-ready={offlineStatus.ready && !offlineStatus.checking}
-		class:offline-not-ready={!offlineStatus.ready && !offlineStatus.checking}
+		class:offline-ready={offlineStatus.ready && !offlineStatus.checking && !offlineStatus.updating}
+		class:offline-not-ready={!offlineStatus.ready &&
+			!offlineStatus.checking &&
+			!offlineStatus.updating}
+		class:offline-updating={offlineStatus.updating}
 	>
 		<h2>📡 Оффлайн-режим</h2>
 
-		{#if offlineStatus.checking}
+		{#if offlineStatus.updating}
+			<!-- ✅ СОСТОЯНИЕ: Обновление -->
+			<div class="offline-indicator offline-blue">
+				<div class="spinner-small spinner-blue"></div>
+				<span class="offline-text">🔄 Загружается новая версия...</span>
+			</div>
+			<p class="offline-hint">
+				Обновление уже готово. Страница перезагрузится автоматически через мгновение.
+			</p>
+		{:else if offlineStatus.checking}
+			<!-- СОСТОЯНИЕ: Проверка -->
 			<div class="offline-indicator offline-checking">
 				<div class="spinner-small"></div>
 				<span class="offline-text">Проверка готовности...</span>
 			</div>
 		{:else if offlineStatus.ready}
+			<!-- СОСТОЯНИЕ: Готов к оффлайн -->
 			<div class="offline-indicator offline-green">
 				<div class="dot dot-green"></div>
 				<span class="offline-text">Готов к оффлайн работе!</span>
 			</div>
 		{:else}
+			<!-- СОСТОЯНИЕ: Только онлайн -->
 			<div class="offline-indicator offline-red">
 				<div class="dot dot-red"></div>
 				<span class="offline-text">ТОЛЬКО ОНЛАЙН!</span>
 			</div>
 			<div class="offline-details">
-				<p>
-					Service Worker: <strong>{offlineStatus.details.swActive ? '✅' : '❌'}</strong>
-				</p>
-				<p>
-					Кэш существует: <strong>{offlineStatus.details.cacheExists ? '✅' : '❌'}</strong>
-				</p>
+				<p>Service Worker: <strong>{offlineStatus.details.swActive ? '✅' : '❌'}</strong></p>
+				<p>Кэш существует: <strong>{offlineStatus.details.cacheExists ? '✅' : '❌'}</strong></p>
 				<p>
 					Файлов в кэше: <strong>{offlineStatus.details.cacheFiles}</strong>
 					{#if offlineStatus.details.cacheFiles < 10}
@@ -672,7 +725,7 @@
 			<BtnText
 				buttonText="🔄 Проверить снова"
 				onclick={checkOfflineReadiness}
-				disabled={offlineStatus.checking || isProcessing}
+				disabled={offlineStatus.checking || offlineStatus.updating || isProcessing}
 				customClass="btn-check"
 			/>
 		</div>
@@ -1396,6 +1449,28 @@
 		color: var(--clr-error, #e74c3c);
 		font-size: 12px;
 		margin-left: 4px;
+	}
+
+	/* Синее состояние — обновление */
+	.offline-block.offline-updating {
+		border-left-color: var(--clr-info, #3b82f6);
+	}
+
+	.offline-indicator.offline-blue {
+		background: rgba(59, 130, 246, 0.1);
+		color: var(--clr-info, #3b82f6);
+	}
+
+	.spinner-blue {
+		border-color: rgba(59, 130, 246, 0.2);
+		border-top-color: var(--clr-info, #3b82f6);
+	}
+
+	.offline-hint {
+		font-size: 13px;
+		color: var(--clr-text-secondary, #666);
+		margin: 0 0 12px 0;
+		text-align: center;
 	}
 
 	:global(.btn-check) {
