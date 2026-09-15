@@ -14,6 +14,8 @@
 	import { toastStore } from '$lib/store/toastStore.svelte.js';
 
 	import { createReportsInRange } from '$lib/components/services/reportGenerator';
+	import { CalculationsPeriod } from '$lib/components/services/calculationsPeriod.js';
+	import { getReportsByMonth } from '$lib/utils/db.js';
 
 	import ModalBackdrop from '$lib/components/aBlock/modal/ModalBackdrop.svelte';
 	import Modal_ReportsProgress from '$lib/components/aBlock/modal/Modal_ReportsProgress.svelte';
@@ -228,7 +230,8 @@
 		}
 	}
 
-	// ===== БЛОК 1.5: Создать все Z-отчёты за период =====
+	// ===== БЛОК 1.5: Создать Z-отчёты =====
+	// Создать все отчёты за период от Дата1 до Дата2
 	async function createAllReports() {
 		if (!isAuthorized) {
 			addLog('❌ Введите пароль для выполнения действий.', true);
@@ -325,6 +328,81 @@
 		} catch (error) {
 			console.error('[admin/clear] Ошибка:', error);
 			addLog(`❌ Критическая ошибка: ${error.message}`, true);
+			showProgressModal = false;
+		}
+	}
+
+	// ===== БЛОК 1.5: Обновить X- и Z-отчёт этого месяца =====
+	async function updateAllReportsThisMonth() {
+		if (!isAuthorized) {
+			addLog('❌ Введите пароль для выполнения действий.', true);
+			return;
+		}
+
+		// ✅ Текущий календарный месяц
+		const now = new Date();
+		const year = now.getFullYear();
+		const month = String(now.getMonth() + 1).padStart(2, '0');
+		const yearMonth = `${year}-${month}`;
+
+		await updateMonthReports(yearMonth);
+	}
+
+	// ===== БЛОК 1.5: Обновить X- и Z-отчёт предыдущего месяца =====
+	async function updateAllReportsPrewMonth() {
+		if (!isAuthorized) {
+			addLog('❌ Введите пароль для выполнения действий.', true);
+			return;
+		}
+
+		// ✅ Предыдущий календарный месяц
+		const now = new Date();
+		now.setMonth(now.getMonth() - 1);
+		const year = now.getFullYear();
+		const month = String(now.getMonth() + 1).padStart(2, '0');
+		const yearMonth = `${year}-${month}`;
+
+		await updateMonthReports(yearMonth);
+	}
+
+	// ===== Общая логика обновления отчётов за месяц =====
+	async function updateMonthReports(yearMonth) {
+		// Показываем модалку прогресса
+		abortRequested = false;
+		progressPhase = `Обновление отчётов за ${yearMonth}`;
+		progressCurrent = 0;
+		progressTotal = 1;
+		progressDate = yearMonth;
+		showProgressModal = true;
+
+		addLog(`🔄 Обновляем отчёты за ${yearMonth}...`);
+
+		try {
+			// 1. Загружаем дневные Z-отчёты за месяц
+			const dayReports = await getReportsByMonth(yearMonth);
+
+			if (dayReports.length === 0) {
+				addLog(`⚠️ За ${yearMonth} нет дневных отчётов, пропускаем.`, true);
+				showProgressModal = false;
+				return;
+			}
+
+			// 2. Создаём X- и Z-отчёты
+			const period = new CalculationsPeriod(yearMonth);
+			const xReport = period.report_X_month(dayReports);
+			const zReport = period.report_Z_month(dayReports);
+
+			// 3. Сохраняем (перезаписываем)
+			await period.save_X_month(xReport);
+			await period.save_Z_month(zReport);
+
+			// 4. Итог
+			progressCurrent = 1;
+			addLog(`✅ X- и Z-отчёты за ${yearMonth} обновлены (${dayReports.length} дней).`);
+		} catch (error) {
+			console.error('[admin/clear] Ошибка обновления:', error);
+			addLog(`❌ Ошибка обновления за ${yearMonth}: ${error.message}`, true);
+		} finally {
 			showProgressModal = false;
 		}
 	}
@@ -789,10 +867,54 @@
 		</div>
 		<div class="row">
 			<BtnText
-				buttonText="Создать все Z-отчёты"
+				buttonText="Создать все Z-отчёты за выбранный период"
 				onclick={createAllReports}
 				disabled={!isAuthorized || isProcessing}
 				customClass="btn-primary"
+			/>
+		</div>
+
+		<!-- ✅  обновить текущий месяц -->
+		<div class="annotation-spacer"></div>
+
+		<!-- ✅ Аннотация -->
+
+		<p class="warning">
+			⚠️ Обновляет X- и Z-отчёты за текущий календарный месяц. Использует все имеющиеся дневные
+			Z-отчёты за этот месяц.
+		</p>
+
+		<div class="annotation-spacer-small"></div>
+
+		<!-- ✅ Кнопка: обновить текущий месяц -->
+		<div class="row">
+			<BtnText
+				buttonText="🔄 Обновить отчёты этого месяца"
+				onclick={updateAllReportsThisMonth}
+				disabled={!isAuthorized || isProcessing}
+				customClass="btn-warning"
+			/>
+		</div>
+
+		<!-- ✅  обновить предыдущий месяц -->
+
+		<div class="annotation-spacer"></div>
+
+		<!-- ✅ Аннотация -->
+		<p class="warning">
+			⚠️ Обновляет X- и Z-отчёты за предыдущий календарный месяц. Использует все имеющиеся дневные
+			Z-отчёты за этот месяц.
+		</p>
+
+		<div class="annotation-spacer-small"></div>
+
+		<!-- ✅ Кнопка: обновить предыдущий месяц -->
+		<div class="row">
+			<BtnText
+				buttonText="🔄 Обновить отчёты предыдущего месяца"
+				onclick={updateAllReportsPrewMonth}
+				disabled={!isAuthorized || isProcessing}
+				customClass="btn-warning"
 			/>
 		</div>
 	</div>
@@ -801,7 +923,7 @@
 	<div class="block">
 		<h2>🔗 Блок 1.6: Все Z-отчёты</h2>
 		<p class="warning">Посмотреть все созданные Z-отчёты за всё время.</p>
-		<a href="{base}/allZreports" class="link-reports"> 📊 Посмотреть все Z-отчёты → </a>
+		<a href="{base}/allZreports" class="link-reports"> 📊 Посмотреть все отчёты → </a>
 	</div>
 
 	<!-- Блок 2: Удалить всё за день -->
@@ -1015,7 +1137,7 @@
 
 	.block h2 {
 		margin: 0 0 8px 0;
-		font-size: 16px;
+		font-size: 1.5rem;
 		font-weight: 600;
 		color: var(--clr-text-primary, #1a1a1a);
 	}
@@ -1204,7 +1326,7 @@
 
 	.modal-reset h2 {
 		margin: 0 0 16px 0;
-		font-size: 20px;
+		font-size: 1rem;
 		color: var(--clr-text-primary, #1a1a1a);
 	}
 
@@ -1289,6 +1411,33 @@
 	.period-input-small:focus {
 		outline: none;
 		border-color: var(--clr-teal, #0d9488);
+	}
+
+	/* ✅ Отступы для аннотаций */
+	.annotation-spacer {
+		height: 1.5rem;
+	}
+
+	.annotation-spacer-small {
+		height: 1rem;
+	}
+
+	/* ✅ Стиль для кнопки "Обновить" */
+	:global(.btn-warning) {
+		background: var(--clr-warning, #f59e0b) !important;
+		color: white !important;
+		padding: 10px 20px !important;
+		border-radius: 10px !important;
+		font-weight: 600 !important;
+	}
+
+	:global(.btn-warning:hover:not(:disabled)) {
+		background: var(--clr-warning-dark, #d97706) !important;
+	}
+
+	:global(.btn-warning:disabled) {
+		opacity: 0.5 !important;
+		cursor: not-allowed !important;
 	}
 
 	/* ===== Ссылка на все Z-отчёты ===== */
