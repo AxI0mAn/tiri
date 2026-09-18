@@ -17,6 +17,14 @@ class AppStore {
 * @type {boolean} */
   left_handed = $state(false);
 
+  /** цветовая тема приложения
+   * @type {'light' | 'dark'} */
+  theme = $state('light');
+
+  /** разрешить анимации в приложении
+  * @type {boolean} */
+  animat = $state(false);
+
   /**  
    * @type {string} 
   */
@@ -111,6 +119,7 @@ class AppStore {
       const parsed = JSON.parse(saved);
       // Прямое присвоение в публичные свойства
       if (parsed.master) this.master = parsed.master;
+      if (parsed.theme) this.theme = parsed.theme;
       if (parsed.lang) this.lang = parsed.lang;
       if (parsed.firstInput) this.firstInput = parsed.firstInput;
       if (parsed.toFix) this.toFix = parsed.toFix;
@@ -124,6 +133,8 @@ class AppStore {
       if (parsed.processTo) this.processTo = parsed.processTo;
       if (parsed.ssap) this.ssap = parsed.ssap;
       if (parsed.left_handed) this.left_handed = parsed.left_handed;
+      if (parsed.animat) this.animat = parsed.animat;
+
 
       console.log('AppStore: Настройки успешно загружены из localStorage');
     } catch (err) {
@@ -135,6 +146,7 @@ class AppStore {
   serialize() {
     return {
       master: this.master,
+      theme: this.theme,
       lang: this.lang,
       firstInput: this.firstInput,
       toFix: this.toFix,
@@ -148,6 +160,7 @@ class AppStore {
       processTo: this.processTo,
       ssap: this.ssap,
       left_handed: this.left_handed,
+      animat: this.animat,
     };
   }
 

@@ -27,79 +27,131 @@ $grad-btn-main: linear-gradient(215deg, $clr-bg-dark 0%, $clr-bg 50%, $clr-bg-da
 */
 
 
-:root {
-	// планируется только одна цветовая тема, поэтому дублируем цвета в обе темы
+// src/styles/_variables.scss
 
-	// --- DARK THEME (Default) ---
+// =============================================================================
+// 1. ДИНАМИЧЕСКИЕ ЦВЕТА (Меняются в зависимости от темы)
+// =============================================================================
+
+
+@use "sass:color";
+
+:root {
+
+	// --- DARK THEME ---
 	&,
 	&[data-theme='dark'] {
-		--clr-bg: rgb(246, 250, 252);
-		--clr-bg-rgb: 246, 250, 252;
+		// ===== ФОНЫ =====
+		--clr-bg: rgb(26, 31, 46); // Тёмно-синий (основной фон)
+		--clr-bg-rgb: 26, 31, 46;
 
-		--clr-bg-dark: rgb(126, 231, 229);
-		--clr-bg-dark-rgb: 126, 231, 229;
+		--clr-bg-dark: rgb(58, 74, 90); // Тёмно-бирюзовый (акцентные блоки)
+		--clr-bg-dark-rgb: 58, 74, 90;
 
-		--clr-bg-card: rgb(255, 230, 238);
-		--clr-bg-card-rgb: 255, 230, 238;
+		--clr-bg-card: rgb(42, 49, 66); // Тёмно-серо-синий (карточки)
+		--clr-bg-card-rgb: 42, 49, 66;
 
-		--clr-text-main: rgb(61, 30, 8);
-		--clr-text-main-rgb: 61, 30, 8;
+		// ===== ТЕКСТ =====
+		--clr-text-main: rgb(232, 238, 245); // Светло-серый (основной текст)
+		--clr-text-main-rgb: 232, 238, 245;
 
-		--clr-text-accent: rgb(86, 43, 12);
-		--clr-text-accent-rgb: 86, 43, 12;
+		--clr-text-accent: rgb(168, 184, 200); // Серо-голубой (вторичный текст)
+		--clr-text-accent-rgb: 168, 184, 200;
 
-		--clr-teal: rgb(46, 196, 199);
-		--clr-teal-rgb: 46, 196, 199;
+		// ===== АКЦЕНТЫ =====
+		--clr-teal: rgb(77, 217, 220); // Яркий мятный (акцент)
+		--clr-teal-rgb: 77, 217, 220;
 
-		--clr-pink: rgb(255, 143, 179);
-		--clr-pink-rgb: 255, 143, 179;
+		--clr-pink: rgb(255, 158, 191); // Яркий розовый (акцент)
+		--clr-pink-rgb: 255, 158, 191;
 
-		--clr-teal-soft: rgb(134, 237, 242);
-		--clr-teal-soft-rgb: 134, 237, 242;
+		--clr-teal-soft: rgb(52, 88, 100); // Приглушённый мятный (карточки)
+		--clr-teal-soft-rgb: 52, 88, 100;
+
+		// ===== СЕМАНТИЧЕСКИЕ ЦВЕТА =====
+		--clr-error: rgb(231, 76, 60); // Мягкий красный
+		--clr-error-rgb: 231, 76, 60;
+
+		--clr-warning: rgb(245, 158, 11); // Янтарный (alarm)
+		--clr-warning-rgb: 245, 158, 11;
+
+		--clr-success: rgb(34, 197, 94); // Зелёный
+		--clr-success-rgb: 34, 197, 94;
+
+		--clr-info: rgb(59, 130, 246); // Синий
+		--clr-info-rgb: 59, 130, 246;
+
+		// ===== ТЕНИ И ГЛУБИНА =====
+		--shadow-inset-light: rgba(255, 255, 255, 0.05);
+		--shadow-inset-dark: rgba(0, 0, 0, 0.5);
+		--shadow-soft-val: 0 1px 3px rgba(0, 0, 0, 0.3);
+		--shadow-card-val: 0 4px 12px rgba(0, 0, 0, 0.4);
+		--shadow-deep-val: 0 20px 60px rgba(0, 0, 0, 0.6);
 	}
 
-
+	//     LIGHT THEME (Default) 
 	&[data-theme='light'] {
-		--clr-bg: rgb(246, 250, 252);
+		// ===== ФОНЫ =====
+		--clr-bg: rgb(246, 250, 252); // Светло-серо-голубой
 		--clr-bg-rgb: 246, 250, 252;
 
-		--clr-bg-dark: rgb(126, 231, 229);
+		--clr-bg-dark: rgb(126, 231, 229); // Мятный
 		--clr-bg-dark-rgb: 126, 231, 229;
 
-		--clr-bg-card: rgb(255, 230, 238);
+		--clr-bg-card: rgb(255, 230, 238); // Нежно-розовый
 		--clr-bg-card-rgb: 255, 230, 238;
 
-		--clr-text-main: rgb(61, 30, 8);
+		// ===== ТЕКСТ =====
+		--clr-text-main: rgb(61, 30, 8); // Тёмно-коричневый
 		--clr-text-main-rgb: 61, 30, 8;
 
-		--clr-text-accent: rgb(86, 43, 12);
+		--clr-text-accent: rgb(86, 43, 12); // Коричневый
 		--clr-text-accent-rgb: 86, 43, 12;
 
-		--clr-teal: rgb(46, 196, 199);
+		// ===== АКЦЕНТЫ =====
+		--clr-teal: rgb(46, 196, 199); // Мятный акцент
 		--clr-teal-rgb: 46, 196, 199;
 
-		--clr-pink: rgb(255, 143, 179);
+		--clr-pink: rgb(255, 143, 179); // Розовый акцент
 		--clr-pink-rgb: 255, 143, 179;
 
-		--clr-teal-soft: #86edf2;
+		--clr-teal-soft: rgb(134, 237, 242); // Светло-мятный (карточки)
 		--clr-teal-soft-rgb: 134, 237, 242;
+
+		// ===== СЕМАНТИЧЕСКИЕ ЦВЕТА =====
+		--clr-error: rgb(231, 76, 60);
+		--clr-error-rgb: 231, 76, 60;
+
+		--clr-warning: rgb(245, 158, 11);
+		--clr-warning-rgb: 245, 158, 11;
+
+		--clr-success: rgb(34, 197, 94);
+		--clr-success-rgb: 34, 197, 94;
+
+		--clr-info: rgb(59, 130, 246);
+		--clr-info-rgb: 59, 130, 246;
+
+		// ===== ТЕНИ И ГЛУБИНА (мягче для светлой) =====
+		--shadow-inset-light: rgba(255, 255, 255, 0.8);
+		--shadow-inset-dark: rgba(0, 0, 0, 0.1);
+		--shadow-soft-val: 0 1px 3px rgba(0, 0, 0, 0.06);
+		--shadow-card-val: 0 4px 12px rgba(0, 0, 0, 0.08);
+		--shadow-deep-val: 0 20px 60px rgba(0, 0, 0, 0.3);
 	}
 }
 
 // =============================================================================
-// 2. СТАТИЧЕСКИЕ ЦВЕТА (Не меняются никогда) 
+// 2. СТАТИЧЕСКИЕ ЦВЕТА (Не меняются никогда)
 // =============================================================================
-$clr-black: #000000;
-// вместо $clr-black-rgb в стилях используем 0,0,0 
+$clr-black: #000000; // Резерв (использовать: rgba(0,0,0,...))
+$clr-white: #ffffff; // Резерв (использовать: rgba(255,255,255,...))
+$clr-transparent: transparent;
 
-$clr-white: #ffffff;
-// вместо $clr-white-rgb в стилях используем 255, 255, 255
-
-$clr-error: red;
 // =============================================================================
 // 3. SASS-ПЕРЕМЕННЫЕ (Связки с CSS-переменными)
 // =============================================================================
 
+// --- ФОНЫ ---
 $clr-bg: var(--clr-bg);
 $clr-bg-rgb: var(--clr-bg-rgb);
 
@@ -109,12 +161,14 @@ $clr-bg-dark-rgb: var(--clr-bg-dark-rgb);
 $clr-bg-card: var(--clr-bg-card);
 $clr-bg-card-rgb: var(--clr-bg-card-rgb);
 
+// --- ТЕКСТ ---
 $clr-text-main: var(--clr-text-main);
 $clr-text-main-rgb: var(--clr-text-main-rgb);
 
 $clr-text-accent: var(--clr-text-accent);
 $clr-text-accent-rgb: var(--clr-text-accent-rgb);
 
+// --- АКЦЕНТЫ ---
 $clr-teal: var(--clr-teal);
 $clr-teal-rgb: var(--clr-teal-rgb);
 
@@ -124,41 +178,99 @@ $clr-pink-rgb: var(--clr-pink-rgb);
 $clr-teal-soft: var(--clr-teal-soft);
 $clr-teal-soft-rgb: var(--clr-teal-soft-rgb);
 
-$shd-mint-glow: green;
-$shd-coral-glow: red;
-$shd-blue-glow: blue;
-$shadow-card-val: rgb(0, 255, 204);
-$shadow-inset: coral;
+// --- СЕМАНТИЧЕСКИЕ ---
+$clr-error: var(--clr-error);
+$clr-error-rgb: var(--clr-error-rgb);
+
+$clr-warning: var(--clr-warning);
+$clr-warning-rgb: var(--clr-warning-rgb);
+
+$clr-success: var(--clr-success);
+$clr-success-rgb: var(--clr-success-rgb);
+
+$clr-info: var(--clr-info);
+$clr-info-rgb: var(--clr-info-rgb);
 
 // =============================================================================
-// 4. КОМПЛЕКСНЫЕ СТИЛИ (Градиенты и Тени)
-// Используем интерполяцию #{}, чтобы Sass корректно передал var() в CSS
+// 4. ТЕНИ (Три уровня + инсеты)
 // =============================================================================
 
-// Градиенты 
-$grad-body: linear-gradient(300deg, $clr-bg-rgb 0%, $clr-bg 50%, $clr-bg-rgb 100%);
-$grad-block: linear-gradient(to top, $clr-bg , #97ebef, #afeef6, #c6f1fb, #dcf5fd, #e4f5ff, #ecf5fe, #f2f6fd, #f3f3fd, #f6eefb, #faeaf6, $clr-bg-card);
+// ✅ Мягкая тень — для карточек, инпутов
+$shadow-soft: var(--shadow-soft-val);
 
-
-
-//================
-//================ STOP TUT
-//================
-//================
-
-$grad-btn-main: linear-gradient(215deg, $clr-bg 0%, $clr-bg 50%, $clr-teal 100%);
-$grad-btn-main-inv: linear-gradient(215deg, $clr-teal 0%, $clr-bg 50%, $clr-bg 100%);
-$grad-op: linear-gradient(45deg, $clr-bg 0%, #252c35 50%, #4b5768 100%);
-$grad-memo: linear-gradient(45deg, $clr-teal-soft 0%, $clr-teal 50%, #4b5768 100%);
-
-// Тени и Неон
-$shadow-neon-mint: 0 0 8px var(--shd-mint-glow);
-$shadow-neon-coral: 0 0 8px var(--shd-coral-glow);
-$shadow-neon-blue: 0 0 8px var(--shd-blue-glow);
-$shd-blue-glow: 0 0 8px var(--shd-blue-glow);
-
+// ✅ Тень карточки — для крупных блоков
 $shadow-card: var(--shadow-card-val);
-$shadow-deep: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
-// Внутреннее неоновое свечение   
-$shadow-inset: var(--shadow-inset);
+// ✅ Глубокая тень — для модалок
+$shadow-deep: var(--shadow-deep-val);
+
+// ✅ Внутренний неоморфизм — для активных элементов
+$shadow-inset: inset 2px 2px 5px var(--shadow-inset-dark), inset -2px -2px 5px var(--shadow-inset-light);
+
+// ✅ Внутренний неоморфизм (глубокий) — для активных кнопок
+$shadow-inset-deep: inset 3px 3px 6px var(--shadow-inset-dark), inset -3px -3px 6px var(--shadow-inset-light);
+
+// ✅ Неоновое свечение — для акцентов
+$shadow-neon-mint: 0 0 8px rgba($clr-teal-rgb, 0.6);
+$shadow-neon-coral: 0 0 8px rgba($clr-pink-rgb, 0.6);
+$shadow-neon-blue: 0 0 8px rgba($clr-info-rgb, 0.6);
+$shadow-neon-error: 0 0 8px rgba($clr-error-rgb, 0.6);
+$shadow-neon-success: 0 0 8px rgba($clr-success-rgb, 0.6);
+$shadow-neon-warning: 0 0 8px rgba($clr-warning-rgb, 0.6);
+
+// =============================================================================
+// 5. ГРАДИЕНТЫ (Спокойные, для длинной работы)
+// =============================================================================
+
+// ✅ Основной градиент страницы — мягкий переход от фона к фону-карточке
+$grad-body: linear-gradient(160deg, $clr-bg 0%, $clr-bg-dark 100%);
+
+// ✅ Градиент блока — плавный переход
+$grad-block: linear-gradient(180deg, $clr-bg 0%, $clr-bg-card 100%);
+
+// ✅ Градиент кнопки (основной) — от фона к teal
+$grad-btn-main: linear-gradient(215deg, $clr-bg 0%, $clr-bg-dark 50%, $clr-teal 100%);
+
+// ✅ Градиент кнопки (инверсный) — от teal к фону
+$grad-btn-main-inv: linear-gradient(215deg, $clr-teal 0%, $clr-bg-dark 50%, $clr-bg 100%);
+
+// ✅ Градиент для операционных блоков — спокойный
+$grad-op: linear-gradient(45deg, $clr-bg 0%, $clr-bg-dark 100%);
+
+// ✅ Градиент для мемо-блоков — мягкий
+$grad-memo: linear-gradient(45deg, $clr-teal-soft 0%, $clr-teal 100%);
+
+/*
+@mixin gradient_bg-card($color, $rgb_color)
+
+// градиент карточки напоминания 
+// градиент карточки заметки 
+// градиент карточки заметки 100% мои
+// градиент карточки платежа
+
+@include gradient-bg($clr-pink, rgb(255, 143, 179));
+*/
+// Основной градиент body
+$grad-body: radial-gradient(ellipse 800px 600px at 30% 20%,
+		rgba($clr-pink-rgb, 0.15) 0%,
+		transparent 60%),
+	radial-gradient(ellipse 700px 500px at 80% 80%,
+		rgba($clr-teal-rgb, 0.12) 0%,
+		transparent 60%),
+	linear-gradient(160deg,
+		rgba($clr-bg-rgb, 1) 0%,
+		rgba($clr-bg-card-rgb, 0.4) 100%);
+$grad-body2: // Слой 1: мягкое радиальное свечение в правом верхнем углу
+	radial-gradient(ellipse 800px 600px at 85% 15%,
+		rgba($clr-teal-rgb, 0.15) 0%,
+		transparent 60%),
+	// Слой 2: мягкое радиальное свечение в левом нижнем углу
+	radial-gradient(ellipse 700px 500px at 15% 85%,
+		rgba($clr-pink-rgb, 0.12) 0%,
+		transparent 60%),
+	// Слой 3: диагональный переход с прозрачностью
+	linear-gradient(135deg,
+		rgba($clr-bg-rgb, 1) 0%,
+		rgba($clr-bg-rgb, 0.85) 40%,
+		rgba($clr-bg-dark-rgb, 0.5) 70%,
+		rgba($clr-bg-rgb, 1) 100%);

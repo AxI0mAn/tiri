@@ -67,7 +67,7 @@
 
 		// ✅ Вычисляем целевую позицию: инпут должен быть в верхней части
 		// доступной области (не в центре, а с отступом от клавиатуры)
-		const offset = 40; // отступ сверху от инпута
+		const offset = 64; // отступ сверху от инпута
 		const targetScrollY = window.scrollY + rect.top - offset;
 
 		window.scrollTo({
@@ -281,21 +281,21 @@
 			<div class="action-column">
 				<button
 					type="button"
-					class="action-btn action-next"
-					onmousedown={preventFocusLoss}
-					onclick={handleNext}
-				>
-					<span>next</span>
-					<span class="arrow">↓</span>
-				</button>
-				<button
-					type="button"
 					class="action-btn action-enter"
 					onmousedown={preventFocusLoss}
 					onclick={handleEnter}
 				>
 					<span>Enter</span>
 					<span class="arrow">↵</span>
+				</button>
+				<button
+					type="button"
+					class="action-btn action-next"
+					onmousedown={preventFocusLoss}
+					onclick={handleNext}
+				>
+					<span>next</span>
+					<span class="arrow">↓</span>
 				</button>
 			</div>
 		</div>
@@ -333,12 +333,14 @@
 		display: grid;
 		grid-template-columns: 3fr 1fr;
 		gap: 8px;
+		height: fit-content;
 		width: 100%;
-		max-width: 360px;
+		max-width: 400px;
 		background: $clr-bg-card;
-		border-radius: 16px 16px 0 0;
-		padding: 12px;
-		box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+		border-radius: 1rem;
+		padding: 0.75rem;
+		padding-bottom: 1.5rem;
+		box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
 		pointer-events: auto;
 	}
 
@@ -425,36 +427,42 @@
 		-webkit-tap-highlight-color: transparent;
 
 		.arrow {
-			font-size: 1.2rem;
+			font-size: 2rem;
 			opacity: 0.7;
 		}
 	}
 
 	.action-next {
-		background: rgba($clr-teal-rgb, 0.15);
-		color: $clr-teal;
+		background: rgba($clr-warning-rgb, 0.25);
+		color: $clr-text-accent;
+		text-transform: uppercase;
+		font-weight: 800;
 
 		&:hover {
-			background: rgba($clr-teal-rgb, 0.3);
+			background: rgba(255, 255, 255, 0.85);
+			// color: white;
 		}
 
 		&:active {
-			background: $clr-teal;
-			color: white;
 			transform: scale(0.95);
+			// color: white;
 		}
 	}
 
 	.action-enter {
-		background: $clr-teal;
-		color: white;
+		background: rgba($clr-success-rgb, 0.3);
+		color: $clr-text-accent;
+		text-transform: uppercase;
+		font-weight: 800;
 
 		&:hover {
-			background: rgba($clr-teal-rgb, 0.85);
+			background: rgba(255, 255, 255, 0.85);
+			// color: white;
 		}
 
 		&:active {
 			transform: scale(0.95);
+			// color: white;
 		}
 	}
 
@@ -476,7 +484,9 @@
 		}
 
 		.keyboard {
-			max-width: 100%;
+			max-width: 400px;
+			width: 100%;
+
 			border-radius: 16px 16px 0 0;
 		}
 	}

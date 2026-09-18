@@ -27,6 +27,29 @@ export class CalculationsDay {
     console.log(`[CalculationsDay] Инициализирован: ${this.allThisDayNotes_dateStr.length} заметок из ${allThisDayRecords.length} записей`);
   }
 
+  /**
+ * Проверяет, все ли заметки за день имеют myPercent: 100
+ * @returns {boolean} - true, если ВСЕ заметки имеют myPercent: 100
+ */
+  isAllMyPercent100() {
+    // Если заметок нет — возвращаем false (не применяем правило)
+    if (this.allThisDayNotes_dateStr.length === 0) {
+      return false;
+    }
+
+    // Проверяем каждую заметку
+    for (const entry of this.allThisDayNotes_dateStr) {
+      const myPercent = entry?.value?.percent?.myPercent;
+      // Если хотя бы одна заметка НЕ имеет myPercent: 100 — возвращаем false
+      if (myPercent !== 100) {
+        return false;
+      }
+    }
+
+    // Все заметки имеют myPercent: 100
+    return true;
+  }
+
   /** sum - оплата за услугу без чаевых
    *  cardSum(entry) - Возвращает сумму (percent.sum) из заметки
    * @param {Object} entry - запись заметки
@@ -182,12 +205,30 @@ export class CalculationsDay {
     return Math.round(summary);
   }
 
+
+  /**
+   * calcul_myParts() - Рассчитывает мою долю за день (sumMyParts) = сумма всех myPart за день
+   */
+  calcul_myParts() {
+    let myParts = 0;
+    for (const entry of this.allThisDayNotes_dateStr) {
+      myParts += this.cardMyPart(entry);
+    }
+    return Math.round(myParts);
+  }
+
+
   /**
    * calcul_allGive() - Рассчитывает общую аренду (allGive) = сумма всех give (= sum - my) для каждого note
    * give = sum - my
    * @returns {number} - общая аренда
    */
   calcul_allGive() {
+    // Если все заметки с myPercent: 100 — аренда не рассчитывается
+    if (this.isAllMyPercent100()) {
+      return 0;
+    }
+
     let allGive = 0;
     for (const entry of this.allThisDayNotes_dateStr) {
       allGive += (this.cardSum(entry) - this.cardMyPart(entry));
@@ -267,6 +308,11 @@ export class CalculationsDay {
    * @returns {number} - доход за день
    */
   calcul_my(summary, allGive, changeGive) {
+    // Если все заметки с myPercent: 100, то my = summary (без вычета аренды)
+    if (this.isAllMyPercent100()) {
+      return Math.round(summary);
+    }
+
     const my = (summary - allGive + changeGive);
     return Math.round(my);
   }
@@ -274,11 +320,11 @@ export class CalculationsDay {
   /**
    * calcul_allMy() - Рассчитывает доход с чаевыми (allMy) = tips + my = tips + (summary - allGive + changeGive)
    * @param {number} tips - чаевые за день
-   * @param {number} my - доход за день
+   * @param {number} myPartsAll - моя доля за весь день
    * @returns {number} - доход с чаевыми
    */
-  calcul_allMy(tips, my) {
-    const allMy = tips + my;
+  calcul_allMy(tips, myPartsAll) {
+    const allMy = tips + myPartsAll;
     return Math.round(allMy);
   }
 
@@ -345,8 +391,9 @@ export class CalculationsDay {
       const moreGive = this.calcul_moreGive(allGive, nowGive, dateStr); // Остаток аренды
       const changeGive = this.calcul_changeGive(allGive, nowGive, moreGive);  // Переплата аренды (если moreGive < 0)
       const tips = this.calcul_tips();           // Чаевые за день
-      const my = this.calcul_my(summary, allGive, changeGive); // Доход за весь день (summary - allGive + changeGive)
-      const allMy = this.calcul_allMy(tips, my); // Доход с чаевыми ( tips + (summary - allGive + changeGive) )
+      const myPartsAll = this.calcul_myParts();   // Мой доход без чаевых
+      // const my = this.calcul_my(summary, allGive, changeGive); // Доход за весь день (summary - allGive + changeGive)
+      const allMy = this.calcul_allMy(tips, myPartsAll); // Доход с чаевыми ( tips + (summary - allGive + changeGive) )
 
       // ===== КЛИЕНТСКАЯ СТАТИСТИКА =====
       const heads = this.allThisDayNotes_dateStr.length; // Всего клиентов (заметок)
@@ -384,8 +431,9 @@ export class CalculationsDay {
           moreGive,   // Остаток аренды (allGive - nowGive)
           changeGive, // Сдача (если moreGive < 0) (nowGive - allGive)
           tips,       // Чаевые за день
-          my,         // Доход за день (summary - allGive + changeGive)
-          allMy       // Доход с чаевыми (tips + my)
+          myPartsAll, // Сумма всех моих доходов с каждой заметки
+          // my,         // Доход за день (summary - allGive + changeGive)
+          allMy       // Мой доход с чаевыми (tips + myParts)
         },
         clients: {
           heads,           // Всего клиентов (заметок)

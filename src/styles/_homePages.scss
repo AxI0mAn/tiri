@@ -18,6 +18,10 @@
 
   background-image: $grad-block;
   box-shadow: 0px 0px 8px 4px rgba($clr-teal-rgb, 0.75);
+
+  p {
+    color: $clr-text-main;
+  }
 }
 
 
@@ -78,7 +82,7 @@
 .installPage h2,
 .card h2 {
   font-size: 1.5rem;
-  color: $clr-pink;
+  color: $clr-text-accent;
 
   margin-bottom: 0.75rem;
 }

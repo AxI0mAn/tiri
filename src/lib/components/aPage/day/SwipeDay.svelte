@@ -250,6 +250,7 @@
 			opacity: 1 !important;
 			background: transparent !important;
 			box-shadow: none !important;
+			outline: none;
 		}
 
 		/* ✅ Если кнопка внутри div — убираем эффект у родителя */

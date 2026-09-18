@@ -48,7 +48,7 @@
       box-shadow: 0px 0px 8px 4px rgba($clr-teal-rgb, 0.75);
       top: 0;
       grid-area: main;
-      // width: 50vh;
+      max-width: 100%;
       width: max-content;
       position: relative;
     }

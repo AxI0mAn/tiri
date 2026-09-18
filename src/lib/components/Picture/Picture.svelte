@@ -59,6 +59,7 @@
 
 	// Вычисляем, активна ли светлая тема прямо сейчас
 	let isLightTheme = $derived(appStore.theme === 'light');
+	// если нужнв инверсия картинок, то в <img добавь строку  	class:inverted={isLightTheme}
 
 	function handleLoad() {
 		isLoaded = true;
@@ -85,7 +86,6 @@
 			{...props.rest}
 			onload={handleLoad}
 			class="fade-img"
-			class:inverted={isLightTheme}
 		/>
 	</picture>
 

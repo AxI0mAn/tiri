@@ -3,6 +3,7 @@
 	import { appStore } from '$lib/store/appStore.svelte';
 
 	import CheckBox from '$lib/components/input/CheckBox.svelte';
+	import Radio from '$lib/components/input/Radio.svelte';
 	import SettingsConstructor from '$lib/components/aPage/SettingsConstructor.svelte';
 	import InputText from '$lib/components/input/InputText.svelte';
 	import Select from '$lib/components/input/Select.svelte';
@@ -34,6 +35,14 @@
 	<section class="setting-group">
 		<span class="label">Язык приложения</span>
 		<Select bind:value={selectedLang} options={appStore.langOptions} label="" placeholder="" />
+	</section>
+
+	<section class="setting-group">
+		<span class="label">Color theme</span>
+		<div class="radio-group">
+			<Radio bind:group={appStore.theme} value="light" label="Light" />
+			<Radio bind:group={appStore.theme} value="dark" label="Dark" />
+		</div>
 	</section>
 
 	<section class="setting-group">

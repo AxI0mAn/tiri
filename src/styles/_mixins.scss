@@ -1,0 +1,13 @@
+@use "sass:color";
+
+// фон карточек @include gradient-bg($clr-pink, rgb(255, 143, 179));
+@mixin gradient_bg-card($color, $rgb_color) {
+  background: linear-gradient(0deg,
+      color.adjust($rgb_color, $lightness: -50%) 0%,
+      color.adjust($rgb_color, $lightness: -10%) 5%,
+      $color 50%,
+      color.adjust($rgb_color, $lightness: 10%) 95%,
+      color.adjust($rgb_color, $lightness: 75%) 100%)
+}
+
+;
