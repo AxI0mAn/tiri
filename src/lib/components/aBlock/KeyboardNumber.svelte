@@ -312,7 +312,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background: rgba(0, 0, 0, 0.3);
+		background: none; // rgba($clr-teal-soft-rgb, 0.01);
 		z-index: 9998;
 	}
 

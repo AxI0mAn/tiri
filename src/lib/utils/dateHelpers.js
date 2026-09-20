@@ -130,3 +130,50 @@ export function getCurrentISODate(date) {
   const d = date || new Date();
   return d.toISOString();
 }
+
+/**
+ * Локализировать дату перед показом
+ * получает "YYYY-MM-DD"
+ * возвращает:
+ * ДД.ММ.ГГГГ для RU UA
+ * DD/MM/YYYY для PT ES EN
+ * MM/DD/YYYY для USA
+ * 
+ * Форматирует дату из "YYYY-MM-DD" в соответствии с региональным флагом
+ * @param {string} dateStr - Дата в формате "YYYY-MM-DD" (например, "2026-06-07")
+ * @param {string} flag - Код флага ("RU", "UA", "PT", "ES", "EN", "USA")
+ * @returns {string} Отформатированная дата
+ * 
+ * 
+// Примеры использования:
+// formatDate("2026-06-07", "RU")  -> "07.06.2026"
+// formatDate("2026-06-07", "PT")  -> "07/06/2026"
+// formatDate("2026-06-07", "USA") -> "06/07/2026"
+ */
+export function localFormatDate(dateStr, flag) {
+  if (!dateStr) return '';
+
+  // Разбираем строку на составляющие, чтобы избежать проблем с часовыми поясами Date()
+  const [year, month, day] = dateStr.split('-');
+  if (!year || !month || !day) return dateStr;
+
+  const upperFlag = flag?.toUpperCase();
+
+  switch (upperFlag) {
+    case 'RU':
+    case 'UA':
+      return `${day}.${month}.${year}`;
+
+    case 'PT':
+    case 'ES':
+    case 'EN':
+      return `${day}/${month}/${year}`;
+
+    case 'USA':
+      return `${month}/${day}/${year}`;
+
+    default:
+      // Возвращаем исходный формат, если флаг не распознан
+      return dateStr;
+  }
+}

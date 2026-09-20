@@ -226,15 +226,22 @@
 		@include gradient_bg-card($clr-pink, rgb(255, 143, 179));
 	}
 	.show-card.is-note {
-		@include gradient_bg-card($clr-teal-soft, rgb(134, 237, 242));
+		@include gradient_bg-card(
+			$clr-teal-soft,
+			rgb(134, 237, 242)
+		); // $clr-teal-soft and $clr-teal-soft
 	}
 
 	.show-card.is-allMy {
-		@include gradient_bg-card($clr-white, rgb(134, 237, 242));
+		@include gradient_bg-card($clr-white, rgb(134, 237, 242)); //  $clr-white and $clr-teal-soft
 	}
 
 	.show-card.is-pay {
-		@include gradient_bg-card($clr-error, rgb(245, 158, 11));
+		@include gradient_bg-card($clr-error, rgb(245, 158, 11)); //
+	}
+
+	.show-card.is-profit {
+		@include gradient_bg-card($clr-success, rgb(34, 197, 94)); // $clr-success and $clr-success
 	}
 
 	.cardInfo {

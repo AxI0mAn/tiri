@@ -1,4 +1,6 @@
 <script>
+	import { onMount } from 'svelte';
+
 	import RenderForm from '$lib/components/aPage/RenderForm.svelte';
 
 	import { constructorStore } from '$lib/store/ConstructorStore.svelte';
@@ -8,6 +10,13 @@
 			window.history.back();
 		}
 	}
+
+	onMount(() => {
+		// ✅ Очищаем черновик при загрузке страницы
+		if (typeof window !== 'undefined') {
+			localStorage.removeItem('draft_entry');
+		}
+	});
 </script>
 
 <RenderForm type="note" {constructorStore} onSave={handleBack} onCancel={handleBack} />
