@@ -414,4 +414,66 @@
 		outline: 2px solid $clr-teal;
 		outline-offset: 4px;
 	}
+
+	/* ✅ Убираем эффект нажатия на мобильных */
+	.btn-img {
+		-webkit-tap-highlight-color: transparent !important;
+		-webkit-touch-callout: none !important;
+		-webkit-user-select: none !important;
+		user-select: none !important;
+		outline: none !important;
+	}
+
+	/* ✅ Убираем активное состояние (нажатие) */
+	.btn-img:active {
+		transform: translateY(-5%) scale(1) !important; /* подпрыгивает прыжок при клике */
+		opacity: 0.7 !important; /* или оставить как есть */
+	}
+
+	/* ✅ Для мобильных — убираем hover и active фон/тень, но оставляем подпрыгивание и .action */
+	@media (max-width: 768px) {
+		/* ❌ Убираем hover-эффекты (кроме .action) */
+		.btn-img:not(.action):hover {
+			/* Подпрыгивание при hover не нужно — оставляем только базовую позицию */
+			transform: none !important;
+
+			/* Убираем фон/тень/бордеры */
+			box-shadow: none !important;
+			background-color: transparent !important;
+			opacity: 1 !important;
+
+			/* Сбрасываем вложенные hover-эффекты */
+			.oval-inner,
+			.oval-outer {
+				border-color: rgba(255, 255, 255, 0.01) !important;
+			}
+
+			.bg-hover {
+				opacity: 0 !important;
+			}
+		}
+
+		/* ✅ Убираем active-эффекты фон/тень, но ОСТАВЛЯЕМ подпрыгивание (кроме .action) */
+		.btn-img:not(.action):active {
+			/* ✅ Подпрыгивание — оставляем! */
+			transform: translateY(-5%) scale(1) !important;
+
+			/* ❌ Убираем фон/тень/бордеры */
+			box-shadow: none !important;
+			background-color: transparent !important;
+			opacity: 1 !important;
+
+			.oval-inner,
+			.oval-outer {
+				border-color: rgba(255, 255, 255, 0.01) !important;
+			}
+
+			.bg-hover,
+			.bg-active {
+				opacity: 0 !important;
+			}
+		}
+
+		/* ✅ .action — БЕЗ изменений (все эффекты сохраняются) */
+	}
 </style>

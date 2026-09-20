@@ -427,7 +427,7 @@
 	.triangle {
 		width: 10px;
 		height: 10px;
-		fill: $clr-bg;
+		fill: $clr-text-accent;
 		transition: transform 0.2s ease-in-out;
 		transform-origin: 50% 50%;
 

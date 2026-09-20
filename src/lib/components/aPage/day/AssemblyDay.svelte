@@ -11,9 +11,12 @@
 	import imgReport3d from '$lib/assets/iconPic/64/logo_report3d.webp';
 	import { toastStore } from '$lib/store/toastStore.svelte';
 
+	import { localFormatDate } from '$lib/utils/dateHelpers.js';
+
 	import { getAllThisDayRecords, getReport_Z_date } from '$lib/utils/db.js';
 	import { formatDateISOLocal, getTodayDate } from '$lib/utils/dateHelpers.js';
 	import { appState } from '$lib/store/appState.svelte.js';
+	import { appStore } from '$lib/store/appStore.svelte';
 
 	// Props
 	let { dateStr, isActive = false } = $props();
@@ -177,7 +180,7 @@
 <div class="assemblyDay">
 	<!-- Шапка -->
 	<header class="header_assemblyDay">
-		<span class="date">{dateStr}</span>
+		<span class="date">{localFormatDate(dateStr, appStore.lang)}</span>
 		<span class="weekDay">{getWeekDay(dateStr)}</span>
 		<div class="report">
 			<!-- Показываем кнопку только для сегодня и прошлых дней -->

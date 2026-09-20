@@ -225,11 +225,19 @@
 							</div>
 							<div class="hint">Суммы, которые уже оплачены на карту аренды и счёт аренды.</div>
 
-							<div class="row">
-								<span class="label">Доплатить</span>
-								<span class="value font-digits">{reportData.payments.moreGive}</span>
-							</div>
-							<div class="hint">Остаток, которые необходимо оплатить в счёт аренды.</div>
+							{#if reportData.payments.moreGive < 0}
+								<div class="row warnerror">
+									<span class="label">Переплата</span>
+									<span class="value font-digits">{Math.abs(reportData.payments.moreGive)}</span>
+								</div>
+								<div class="hint">Излишек оплаты в счёт аренды, который необходимо вернуть.</div>
+							{:else}
+								<div class="row">
+									<span class="label">Доплатить</span>
+									<span class="value font-digits">{reportData.payments.moreGive}</span>
+								</div>
+								<div class="hint">Остаток, которые необходимо оплатить в счёт аренды.</div>
+							{/if}
 
 							<div class="row total">
 								<span class="label">Всего</span>
@@ -255,7 +263,7 @@
 
 							<div class="row">
 								<span class="label">Работа</span>
-								<span class="value font-digits">{reportData.payments.my}</span>
+								<span class="value font-digits">{reportData.payments.myPartsAll}</span>
 							</div>
 							<div class="hint">Заработано после оплаты аренды. (без чаевых)</div>
 
@@ -574,6 +582,9 @@
 	.row.total .value {
 		font-weight: 700;
 		font-size: 18px;
+	}
+	.row.warnerror {
+		color: $clr-error;
 	}
 
 	.hint {

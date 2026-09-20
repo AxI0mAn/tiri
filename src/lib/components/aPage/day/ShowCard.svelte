@@ -199,6 +199,8 @@
 <style lang="scss">
 	@use '../../../../styles/_variables.scss' as *;
 
+	@use 'sass:color';
+
 	.show-card {
 		display: flex;
 		flex-flow: row nowrap;
@@ -207,24 +209,39 @@
 		width: 100%;
 		max-height: 10vh;
 		min-height: 56px;
-		padding: 8px 12px;
+		padding: 0.5rem 0.75rem 0.85rem 0.75rem;
 		border-radius: 10px;
-		background: $clr-bg-card;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 		transition: all 0.2s;
 		flex-shrink: 0;
-	}
-
-	.show-card.is-note {
-		background: $clr-teal-soft;
+		transition: all 0.35s;
+		&:active {
+			box-shadow: 0 0px 1px rgba(0, 0, 0, 0.3);
+			transform: translateY(2px);
+			transition: all 0.15s;
+		}
 	}
 
 	.show-card.is-reminder {
-		background: $clr-pink;
+		@include gradient_bg-card($clr-pink, rgb(255, 143, 179));
+	}
+	.show-card.is-note {
+		@include gradient_bg-card(
+			$clr-teal-soft,
+			rgb(134, 237, 242)
+		); // $clr-teal-soft and $clr-teal-soft
 	}
 
 	.show-card.is-allMy {
-		background: transparent;
+		@include gradient_bg-card($clr-white, rgb(134, 237, 242)); //  $clr-white and $clr-teal-soft
+	}
+
+	.show-card.is-pay {
+		@include gradient_bg-card($clr-error, rgb(245, 158, 11)); //
+	}
+
+	.show-card.is-profit {
+		@include gradient_bg-card($clr-success, rgb(34, 197, 94)); // $clr-success and $clr-success
 	}
 
 	.cardInfo {

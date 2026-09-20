@@ -13,6 +13,8 @@
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import { toastStore } from '$lib/store/toastStore.svelte.js';
 
+	import { localFormatDate } from '$lib/utils/dateHelpers.js';
+
 	import { createReportsInRange } from '$lib/components/services/reportGenerator';
 	import { CalculationsPeriod } from '$lib/components/services/calculationsPeriod.js';
 	import { getReportsByMonth } from '$lib/utils/db.js';
@@ -311,7 +313,10 @@
 				addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━');
 				addLog('⚠️ ДНИ С НАПОМИНАНИЯМИ (Z-отчёт НЕ создан):', true);
 				for (const dateStr of stats.problemDays) {
-					addLog(`   ❌ ${dateStr} — есть не выполненное напоминание!`, true);
+					addLog(
+						`   ❌  ${localFormatDate(dateStr, appStore.lang)}  — есть не выполненное напоминание!`,
+						true
+					);
 				}
 			}
 

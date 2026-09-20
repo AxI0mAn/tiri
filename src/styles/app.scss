@@ -4,6 +4,7 @@
 @use '_reset.scss';
 @use "_typography.scss";
 @use "_variables.scss";
+@use "_mixins.scss";
 @use '_layout.scss';
 @use '_homePages.scss';
 
@@ -23,13 +24,7 @@ html {
 }
 
 body {
-  /* Путь к вашей картинке */
-  background:
-    linear-gradient(225deg, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.6)),
-    // url('$lib/assets/body_bg3d.webp'),
-    linear-gradient(300deg, #F6FAFC 0%, #7EE7E5 50%, #F6FAFC 100%);
-
-
+  background: $grad-body;
   background-repeat: no-repeat, repeat, no-repeat;
   background-position: center, center, center;
   background-size: auto, 100% auto, cover;

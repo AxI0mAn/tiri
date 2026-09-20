@@ -9,9 +9,9 @@
 	import { page } from '$app/stores';
 	// @ts-ignore
 	import { base } from '$app/paths';
-
-	// =========== для работы плагина SvelteKitPWA
 	import { onMount } from 'svelte';
+
+	// =========== для работы плагина для сборки PWA
 
 	import { pwaInfo } from 'virtual:pwa-info'; // Информация о манифесте
 
@@ -24,6 +24,12 @@
 				.then(() => console.log('PWA: Service Worker зарегистрирован'))
 				.catch((err) => console.error('PWA: Ошибка:', err));
 		}
+	});
+
+	//======================== смена цветовой темы приложения
+	// Руна $effect будет следить за изменением appStore.theme
+	$effect(() => {
+		document.documentElement.setAttribute('data-theme', appStore.theme);
 	});
 
 	//============  без салатового фона на мобильном при прокрутка по якорной ссылке

@@ -2,11 +2,15 @@
 <script>
 	import ModalBackdrop from './ModalBackdrop.svelte';
 	import { appState } from '$lib/store/appState.svelte';
+	import { appStore } from '$lib/store/appStore.svelte';
+
 	import { CalculationsDay } from '$lib/components/services/calculationsOneDay.js';
 	import { getAllThisDayRecords } from '$lib/utils/db.js';
 	import BtnCreateZReport from '$lib/components/Btn/BtnCreateZReport.svelte';
 
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
+
+	import { localFormatDate } from '$lib/utils/dateHelpers.js';
 
 	import logo_job3dWebp from '$lib/assets/iconPic/64/logo_job3d.webp';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
@@ -53,7 +57,7 @@
 		<div class="report-modal">
 			<div class="x-report-modal">
 				<h2>
-					X-отчет за {dateStr}
+					X-отчет за {localFormatDate(dateStr, appStore.lang)}
 				</h2>
 				<BtnImg
 					src={logo_job3dWebp}
