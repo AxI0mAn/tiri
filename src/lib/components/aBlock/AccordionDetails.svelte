@@ -104,7 +104,7 @@
 	details {
 		min-width: 100%;
 		width: 100%;
-		background: $clr-bg-card;
+		background: $clr-bg;
 		border-radius: 1rem;
 		margin-bottom: 1rem;
 		box-shadow: $shadow-inset;
@@ -131,6 +131,7 @@
 				margin: 0;
 				font-size: 1.1rem;
 				font-weight: 600;
+				color: $clr-text-main;
 			}
 
 			/* Создаем красивую анимированную стрелочку / плюсик справа */
@@ -153,11 +154,11 @@
 			border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 			border-radius: 0.5rem;
 			&:hover {
-				color: $clr-pink;
+				color: $clr-text-accent;
 				border-radius: 0.5rem;
 				&::after {
-					border-right: 2px solid $clr-pink;
-					border-bottom: 2px solid $clr-pink;
+					border-right: 2px solid $clr-text-accent;
+					border-bottom: 2px solid $clr-text-accent;
 				}
 			}
 		}

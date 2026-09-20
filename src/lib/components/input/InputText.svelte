@@ -1,5 +1,6 @@
 <script>
 	// src/lib/components/input/InputText.svelte
+
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [value='']
@@ -127,7 +128,7 @@
 			position: relative;
 			width: 100%;
 			border-radius: 12px;
-			border: 2px solid $clr-white;
+			border: 2px solid rgba(255, 255, 255, 0.2);
 			background: $clr-bg-card;
 			transition:
 				border-color 0.2s ease,

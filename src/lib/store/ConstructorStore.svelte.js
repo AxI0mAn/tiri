@@ -211,7 +211,7 @@ const baseSchema = {
     choose: true,
     required: false,
     fieldClass: 'notesField',
-    label: "Заметки",
+    label: "Информация",
     title: "Можно в бланке заказа или напоминания, хранить эту дополнительную информацию.",
     options: {
       name: {
