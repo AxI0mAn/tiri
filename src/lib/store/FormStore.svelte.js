@@ -51,12 +51,25 @@ export class FormDraftManager {
       };
     }
 
-    // 3. Автосохранение черновика при изменении draft
+    // 3. Автосохранение черновика при изменении draft (с debounce)
     if (typeof window !== 'undefined') {
+      let saveTimeout = null;
+
       $effect.root(() => {
         $effect(() => {
+          // Читаем draft, чтобы $effect отслеживал изменения
           const snapshot = $state.snapshot(this.draft);
-          localStorage.setItem(this.storageKey, JSON.stringify(snapshot));
+
+          // Сбрасываем предыдущий таймер
+          if (saveTimeout) {
+            clearTimeout(saveTimeout);
+          }
+
+          // Сохраняем через 500мс после последнего изменения, чтоб 
+          saveTimeout = setTimeout(() => {
+            localStorage.setItem(this.storageKey, JSON.stringify(snapshot));
+            saveTimeout = null;
+          }, 500);
         });
       });
     }
@@ -157,6 +170,18 @@ export class FormDraftManager {
   }
 
   /**
+  * Принудительно сохраняет черновик в localStorage
+  * Используется при blur на полях ввода 
+  * TODO: ещё нужно добавить как onblur={() => manager.saveDraft()} для InputText, InputTel, InputNumber, InputRange, Textarea, InputDate, InputTime
+  */
+  saveDraft() {
+    if (typeof window !== 'undefined') {
+      const snapshot = $state.snapshot(this.draft);
+      localStorage.setItem(this.storageKey, JSON.stringify(snapshot));
+    }
+  }
+
+  /**
    * Сохраняет запись в базу данных
    * Для reminder: timestamp и id формируются на основе данных из поля remind
    * Для note: используется текущее время создания
@@ -250,7 +275,7 @@ export class FormDraftManager {
           errors.push('Проверьте дату и время напоминания.');
         }
       }
-      // Если поле remind существует, но пустое - не добавляем ошибку
+      // Если  поле remind существует, но пустое - не добавляем ошибку
       // (валидация на обязательность заполнения обрабатывается отдельно через field.required)
     }
 

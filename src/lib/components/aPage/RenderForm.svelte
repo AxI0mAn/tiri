@@ -7,6 +7,7 @@
 
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import BtnText from '$lib/components/Btn/BtnText.svelte';
+	import AccordionDetails from '../aBlock/AccordionDetails.svelte';
 
 	import InputNumber from '$lib/components/input/InputNumber.svelte';
 	import InputRange from '$lib/components/input/InputRange.svelte';
@@ -166,219 +167,432 @@
 	<div class="fields-container">
 		{#each Object.entries(constructorStore.schema || {}) as [fieldKey, field]}
 			{#if field.choose !== false && fieldKey !== 'dateTime' && !(type === 'reminder' && fieldKey === 'pay')}
-				<!-- Стилизация блока поля через field.fieldClass -->
-				<section class="field-block {field.fieldClass || ''}">
-					<!-- Отображаем label поля -->
-					{#if field.label}
-						<div class="field-title">
+				{#if fieldKey === 'notes'}
+					<!-- ✅ Поле notes оборачиваем в AccordionDetails -->
+					<AccordionDetails castomClass="field-block {field.fieldClass || ''}">
+						{#snippet summary()}
 							<h3>{field.label}</h3>
+						{/snippet}
+
+						<div class="options-grid">
+							{#each Object.entries(field.options || {}) as [optKey, option]}
+								{#if option.select === true}
+									{@const viewList = option.formView || ['BtnImg']}
+									{@const isSingleView = viewList.length === 1}
+									{@const isSelected = manager.draft.value[fieldKey] === optKey}
+
+									<!-- Стилизация строки опции через option.optionClass -->
+									<div class="option-row" class:multi-view={!isSingleView}>
+										{#each viewList as viewType}
+											<!-- BtnImg -->
+											{#if viewType === 'BtnImg' || viewType === 'btnIcon'}
+												<div class="btn-wrapper">
+													<BtnImg
+														src={option.iconWebp || option.iconPng || ''}
+														alt={option.label || optKey}
+														size={isSingleView ? 88 : 64}
+														customClass="{getBtnClass(
+															fieldKey,
+															optKey,
+															isSingleView,
+															isSelected
+														)} {option.optionClass || ''}"
+														onclick={isSingleView
+															? () => manager.selectOption(fieldKey, optKey)
+															: null}
+													/>
+												</div>
+											{/if}
+
+											<!-- Textarea -->
+											{#if viewType === 'Textarea' || viewType === 'textArea'}
+												<div class="input-wrapper flex-grow">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<Textarea
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey] ??= '') && ''}
+														<Textarea
+															bind:value={manager.draft.value[fieldKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{/if}
+												</div>
+											{/if}
+
+											<!-- InputText -->
+											{#if viewType === 'InputText' || viewType === 'inputText'}
+												<div class="input-wrapper flex-grow">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<InputText
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey] ??= '') && ''}
+														<InputText
+															bind:value={manager.draft.value[fieldKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{/if}
+												</div>
+											{/if}
+
+											<!-- InputTel -->
+											{#if viewType === 'InputTel' || viewType === 'inputTel'}
+												<div class="input-wrapper flex-grow">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<InputTel
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey] ??= '') && ''}
+														<InputTel
+															bind:value={manager.draft.value[fieldKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{/if}
+												</div>
+											{/if}
+
+											<!-- InputNumber -->
+											{#if viewType === 'InputNumber' || viewType === 'inputNumber'}
+												<div class="input-wrapper">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{@const _init = manager.draft.value[fieldKey][optKey] ??= 0}
+														<InputNumber
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															min={option.min ?? 0}
+															max={option.max ?? Infinity}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{@const _init = manager.draft.value[fieldKey] ??= 0}
+														<InputNumber
+															bind:value={manager.draft.value[fieldKey]}
+															min={option.min ?? 0}
+															max={option.max ?? Infinity}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{/if}
+												</div>
+											{/if}
+
+											<!-- InputRange -->
+											{#if viewType === 'InputRange' || viewType === 'inputRange'}
+												<div class="input-wrapper flex-grow">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= 0) && ''}
+														<InputRange
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															min={option.min ?? 0}
+															max={option.max ?? 100}
+															step={option.step ?? 1}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey] ??= 0) && ''}
+														<InputRange
+															bind:value={manager.draft.value[fieldKey]}
+															min={option.min ?? 0}
+															max={option.max ?? 100}
+															step={option.step ?? 1}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{/if}
+												</div>
+											{/if}
+
+											<!-- InputDate -->
+											{#if viewType === 'InputDate' || viewType === 'inputDate'}
+												<div class="input-wrapper">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- Инициализируем ключ, если его ещё нет, чтобы избежать undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<InputDate
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															minDate={option.min || ''}
+															maxDate={option.max || ''}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{:else}
+														<InputDate
+															bind:value={manager.draft.value[fieldKey]}
+															minDate={option.min || ''}
+															maxDate={option.max || ''}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{/if}
+												</div>
+											{/if}
+
+											<!-- InputTime -->
+											{#if viewType === 'InputTime' || viewType === 'inputTime'}
+												<div class="input-wrapper">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- Инициализируем ключ, если его ещё нет, чтобы избежать undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<InputTime
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{:else}
+														<InputTime
+															bind:value={manager.draft.value[fieldKey]}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{/if}
+												</div>
+											{/if}
+										{/each}
+									</div>
+								{/if}
+							{/each}
 						</div>
-					{/if}
+					</AccordionDetails>
+				{:else}
+					<!-- Остальные поля — как были -->
+					<section class="field-block {field.fieldClass || ''}">
+						<!-- Отображаем label поля -->
+						{#if field.label}
+							<div class="field-title">
+								<h3>{field.label}</h3>
+							</div>
+						{/if}
 
-					<div class="options-grid">
-						{#each Object.entries(field.options || {}) as [optKey, option]}
-							{#if option.select === true && !(type === 'reminder' && fieldKey === 'percent' && optKey !== 'sum')}
-								{@const viewList = option.formView || ['BtnImg']}
-								{@const isSingleView = viewList.length === 1}
-								{@const isSelected = manager.draft.value[fieldKey] === optKey}
+						<div class="options-grid">
+							{#each Object.entries(field.options || {}) as [optKey, option]}
+								{#if option.select === true && !(type === 'reminder' && fieldKey === 'percent' && optKey !== 'sum')}
+									{@const viewList = option.formView || ['BtnImg']}
+									{@const isSingleView = viewList.length === 1}
+									{@const isSelected = manager.draft.value[fieldKey] === optKey}
 
-								<!-- Стилизация строки опции через option.optionClass -->
-								<div class="option-row" class:multi-view={!isSingleView}>
-									{#each viewList as viewType}
-										<!-- BtnImg -->
-										{#if viewType === 'BtnImg' || viewType === 'btnIcon'}
-											<div class="btn-wrapper">
-												<BtnImg
-													src={option.iconWebp || option.iconPng || ''}
-													alt={option.label || optKey}
-													size={isSingleView ? 88 : 64}
-													customClass="{getBtnClass(
-														fieldKey,
-														optKey,
-														isSingleView,
-														isSelected
-													)} {option.optionClass || ''}"
-													onclick={isSingleView
-														? () => manager.selectOption(fieldKey, optKey)
-														: null}
-												/>
-											</div>
-										{/if}
+									<!-- Стилизация строки опции через option.optionClass -->
+									<div class="option-row" class:multi-view={!isSingleView}>
+										{#each viewList as viewType}
+											<!-- BtnImg -->
+											{#if viewType === 'BtnImg' || viewType === 'btnIcon'}
+												<div class="btn-wrapper">
+													<BtnImg
+														src={option.iconWebp || option.iconPng || ''}
+														alt={option.label || optKey}
+														size={isSingleView ? 88 : 64}
+														customClass="{getBtnClass(
+															fieldKey,
+															optKey,
+															isSingleView,
+															isSelected
+														)} {option.optionClass || ''}"
+														onclick={isSingleView
+															? () => manager.selectOption(fieldKey, optKey)
+															: null}
+													/>
+												</div>
+											{/if}
 
-										<!-- Textarea -->
-										{#if viewType === 'Textarea' || viewType === 'textArea'}
-											<div class="input-wrapper flex-grow">
-												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
-													<Textarea
-														bind:value={manager.draft.value[fieldKey][optKey]}
-														placeholder={option.placeholder || ''}
-														label={isSingleView ? option.label || '' : ''}
-													/>
-												{:else}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{(manager.draft.value[fieldKey] ??= '') && ''}
-													<Textarea
-														bind:value={manager.draft.value[fieldKey]}
-														placeholder={option.placeholder || ''}
-														label={isSingleView ? option.label || '' : ''}
-													/>
-												{/if}
-											</div>
-										{/if}
+											<!-- Textarea -->
+											{#if viewType === 'Textarea' || viewType === 'textArea'}
+												<div class="input-wrapper flex-grow">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<Textarea
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey] ??= '') && ''}
+														<Textarea
+															bind:value={manager.draft.value[fieldKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{/if}
+												</div>
+											{/if}
 
-										<!-- InputText -->
-										{#if viewType === 'InputText' || viewType === 'inputText'}
-											<div class="input-wrapper flex-grow">
-												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
-													<InputText
-														bind:value={manager.draft.value[fieldKey][optKey]}
-														placeholder={option.placeholder || ''}
-														label={isSingleView ? option.label || '' : ''}
-														customClass={option.customClass || ''}
-													/>
-												{:else}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{(manager.draft.value[fieldKey] ??= '') && ''}
-													<InputText
-														bind:value={manager.draft.value[fieldKey]}
-														placeholder={option.placeholder || ''}
-														label={isSingleView ? option.label || '' : ''}
-														customClass={option.customClass || ''}
-													/>
-												{/if}
-											</div>
-										{/if}
+											<!-- InputText -->
+											{#if viewType === 'InputText' || viewType === 'inputText'}
+												<div class="input-wrapper flex-grow">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<InputText
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey] ??= '') && ''}
+														<InputText
+															bind:value={manager.draft.value[fieldKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{/if}
+												</div>
+											{/if}
 
-										<!-- InputTel -->
-										{#if viewType === 'InputTel' || viewType === 'inputTel'}
-											<div class="input-wrapper flex-grow">
-												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
-													<InputTel
-														bind:value={manager.draft.value[fieldKey][optKey]}
-														placeholder={option.placeholder || ''}
-														label={isSingleView ? option.label || '' : ''}
-														customClass={option.customClass || ''}
-													/>
-												{:else}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{(manager.draft.value[fieldKey] ??= '') && ''}
-													<InputTel
-														bind:value={manager.draft.value[fieldKey]}
-														placeholder={option.placeholder || ''}
-														label={isSingleView ? option.label || '' : ''}
-														customClass={option.customClass || ''}
-													/>
-												{/if}
-											</div>
-										{/if}
+											<!-- InputTel -->
+											{#if viewType === 'InputTel' || viewType === 'inputTel'}
+												<div class="input-wrapper flex-grow">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<InputTel
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey] ??= '') && ''}
+														<InputTel
+															bind:value={manager.draft.value[fieldKey]}
+															placeholder={option.placeholder || ''}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{/if}
+												</div>
+											{/if}
 
-										<!-- InputNumber -->
-										{#if viewType === 'InputNumber' || viewType === 'inputNumber'}
-											<div class="input-wrapper">
-												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{@const _init = manager.draft.value[fieldKey][optKey] ??= 0}
-													<InputNumber
-														bind:value={manager.draft.value[fieldKey][optKey]}
-														min={option.min ?? 0}
-														max={option.max ?? Infinity}
-														label={isSingleView ? option.label || '' : ''}
-														customClass={option.customClass || ''}
-													/>
-												{:else}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{@const _init = manager.draft.value[fieldKey] ??= 0}
-													<InputNumber
-														bind:value={manager.draft.value[fieldKey]}
-														min={option.min ?? 0}
-														max={option.max ?? Infinity}
-														label={isSingleView ? option.label || '' : ''}
-														customClass={option.customClass || ''}
-													/>
-												{/if}
-											</div>
-										{/if}
+											<!-- InputNumber -->
+											{#if viewType === 'InputNumber' || viewType === 'inputNumber'}
+												<div class="input-wrapper">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{@const _init = manager.draft.value[fieldKey][optKey] ??= 0}
+														<InputNumber
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															min={option.min ?? 0}
+															max={option.max ?? Infinity}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{@const _init = manager.draft.value[fieldKey] ??= 0}
+														<InputNumber
+															bind:value={manager.draft.value[fieldKey]}
+															min={option.min ?? 0}
+															max={option.max ?? Infinity}
+															label={isSingleView ? option.label || '' : ''}
+															customClass={option.customClass || ''}
+														/>
+													{/if}
+												</div>
+											{/if}
 
-										<!-- InputRange -->
-										{#if viewType === 'InputRange' || viewType === 'inputRange'}
-											<div class="input-wrapper flex-grow">
-												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{(manager.draft.value[fieldKey][optKey] ??= 0) && ''}
-													<InputRange
-														bind:value={manager.draft.value[fieldKey][optKey]}
-														min={option.min ?? 0}
-														max={option.max ?? 100}
-														step={option.step ?? 1}
-														label={isSingleView ? option.label || '' : ''}
-													/>
-												{:else}
-													<!-- ✅ Инициализируем значение, если undefined -->
-													{(manager.draft.value[fieldKey] ??= 0) && ''}
-													<InputRange
-														bind:value={manager.draft.value[fieldKey]}
-														min={option.min ?? 0}
-														max={option.max ?? 100}
-														step={option.step ?? 1}
-														label={isSingleView ? option.label || '' : ''}
-													/>
-												{/if}
-											</div>
-										{/if}
+											<!-- InputRange -->
+											{#if viewType === 'InputRange' || viewType === 'inputRange'}
+												<div class="input-wrapper flex-grow">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= 0) && ''}
+														<InputRange
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															min={option.min ?? 0}
+															max={option.max ?? 100}
+															step={option.step ?? 1}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{:else}
+														<!-- ✅ Инициализируем значение, если undefined -->
+														{(manager.draft.value[fieldKey] ??= 0) && ''}
+														<InputRange
+															bind:value={manager.draft.value[fieldKey]}
+															min={option.min ?? 0}
+															max={option.max ?? 100}
+															step={option.step ?? 1}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{/if}
+												</div>
+											{/if}
 
-										<!-- InputDate -->
-										{#if viewType === 'InputDate' || viewType === 'inputDate'}
-											<div class="input-wrapper">
-												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
-													<!-- Инициализируем ключ, если его ещё нет, чтобы избежать undefined -->
-													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
-													<InputDate
-														bind:value={manager.draft.value[fieldKey][optKey]}
-														minDate={option.min || ''}
-														maxDate={option.max || ''}
-														label={isSingleView ? option.label || '' : ''}
-													/>
-												{:else}
-													<InputDate
-														bind:value={manager.draft.value[fieldKey]}
-														minDate={option.min || ''}
-														maxDate={option.max || ''}
-														label={isSingleView ? option.label || '' : ''}
-													/>
-												{/if}
-											</div>
-										{/if}
+											<!-- InputDate -->
+											{#if viewType === 'InputDate' || viewType === 'inputDate'}
+												<div class="input-wrapper">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- Инициализируем ключ, если его ещё нет, чтобы избежать undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<InputDate
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															minDate={option.min || ''}
+															maxDate={option.max || ''}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{:else}
+														<InputDate
+															bind:value={manager.draft.value[fieldKey]}
+															minDate={option.min || ''}
+															maxDate={option.max || ''}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{/if}
+												</div>
+											{/if}
 
-										<!-- InputTime -->
-										{#if viewType === 'InputTime' || viewType === 'inputTime'}
-											<div class="input-wrapper">
-												{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
-													<!-- Инициализируем ключ, если его ещё нет, чтобы избежать undefined -->
-													{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
-													<InputTime
-														bind:value={manager.draft.value[fieldKey][optKey]}
-														label={isSingleView ? option.label || '' : ''}
-													/>
-												{:else}
-													<InputTime
-														bind:value={manager.draft.value[fieldKey]}
-														label={isSingleView ? option.label || '' : ''}
-													/>
-												{/if}
-											</div>
-										{/if}
-									{/each}
-								</div>
-							{/if}
-						{/each}
-					</div>
-				</section>
+											<!-- InputTime -->
+											{#if viewType === 'InputTime' || viewType === 'inputTime'}
+												<div class="input-wrapper">
+													{#if typeof manager.draft.value[fieldKey] === 'object' && manager.draft.value[fieldKey] !== null}
+														<!-- Инициализируем ключ, если его ещё нет, чтобы избежать undefined -->
+														{(manager.draft.value[fieldKey][optKey] ??= '') && ''}
+														<InputTime
+															bind:value={manager.draft.value[fieldKey][optKey]}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{:else}
+														<InputTime
+															bind:value={manager.draft.value[fieldKey]}
+															label={isSingleView ? option.label || '' : ''}
+														/>
+													{/if}
+												</div>
+											{/if}
+										{/each}
+									</div>
+								{/if}
+							{/each}
+						</div>
+					</section>
+				{/if}
 			{/if}
 		{/each}
 	</div>
