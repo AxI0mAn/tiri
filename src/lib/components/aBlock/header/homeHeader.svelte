@@ -12,7 +12,6 @@
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
 	import imgCalendar from '$lib/assets/iconPic/128/calendar.webp';
 	import srcLogoText_webp from '$lib/assets/logo_text3d.webp';
-	import srcLogoText_png from '$lib/assets/logo_text3d.png';
 
 	let { showCalendar = false } = $props(); // если страница дня, то ссылка на календарь
 </script>
@@ -24,8 +23,7 @@
 			<a href="{base}/">
 				<Picture
 					src={{
-						webp: srcLogoText_webp,
-						jpeg: srcLogoText_png
+						webp: srcLogoText_webp
 					}}
 					alt="Логотип текст"
 					class="bg-image"

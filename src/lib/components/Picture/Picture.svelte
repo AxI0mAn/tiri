@@ -5,8 +5,7 @@
 
 <Picture 
   src={{ 
-    webp: "/images/calc-bg.webp", 
-    jpeg: "/images/calc-bg.jpg" 
+    webp: "/images/calc-bg.webp" 
   }}  
   alt="Фон инженерного калькулятора"
   class="bg-image" 
@@ -36,30 +35,31 @@
 <script>
 	/**
 	 * src/lib/components/Picture/Picture.svelte
-	 * компонент интеграции картинок.
-	 * или webp или jpeg
-	 * оптимизация в виде ленивой загрузки и
+	 * Компонент интеграции WebP-изображений с ленивой загрузкой и поддержкой тем оформления.
 	 */
 	/**
 	 * @typedef {Object} Props
-	 * @property {{webp?: string, jpeg: string}} src
+	 * @property {string | { webp?: string }} src - Путь к WebP файлу (строка или объект { webp })
 	 * @property {string} [alt]
 	 * @property {import('svelte/elements').HTMLImgAttributes['loading']} [loading]
 	 * @property {import('svelte/elements').HTMLImgAttributes['decoding']} [decoding]
+	 * @property {import('svelte/elements').HTMLImgAttributes['fetchpriority']} [fetchpriority]
 	 * @property {string} [class]
 	 * @property {number} [width]
 	 * @property {number} [height]
 	 */
 
-	import { appStore } from '$lib/store/appStore.svelte.js'; // Импортируем  стор
+	import { appStore } from '$lib/store/appStore.svelte.js';
 
 	let props = $props();
 
 	let isLoaded = $state(false);
 
-	// Вычисляем, активна ли светлая тема прямо сейчас
+	// Извлекаем путь к WebP (поддерживает и строку, и объект { webp })
+	let imgSrc = $derived(typeof props.src === 'string' ? props.src : props.src?.webp || '');
+
+	// Реактивная проверка темы оформления
 	let isLightTheme = $derived(appStore.theme === 'light');
-	// если нужнв инверсия картинок, то в <img добавь строку  	class:inverted={isLightTheme}
 
 	function handleLoad() {
 		isLoaded = true;
@@ -70,24 +70,19 @@
 	class="picture-wrapper {props.class || ''}"
 	style:aspect-ratio={props.width && props.height ? `${props.width}/${props.height}` : 'auto'}
 >
-	<picture class:loaded={isLoaded}>
-		{#if props.src.webp}
-			<source srcset={props.src.webp} type="image/webp" />
-		{/if}
-
-		<img
-			src={props.src.jpeg}
-			alt={props.alt || ''}
-			loading={props.loading}
-			decoding={props.decoding}
-			fetchpriority={props.fetchpriority || 'low'}
-			width={props.width}
-			height={props.height}
-			{...props.rest}
-			onload={handleLoad}
-			class="fade-img"
-		/>
-	</picture>
+	<img
+		src={imgSrc}
+		alt={props.alt || ''}
+		loading={props.loading || 'lazy'}
+		decoding={props.decoding || 'async'}
+		fetchpriority={props.fetchpriority || 'low'}
+		width={props.width}
+		height={props.height}
+		onload={handleLoad}
+		class="fade-img"
+		class:loaded={isLoaded}
+		class:inverted={isLightTheme}
+	/>
 
 	{#if !isLoaded && props.fetchpriority !== 'high'}
 		<div class="loader-placeholder" aria-hidden="true"></div>

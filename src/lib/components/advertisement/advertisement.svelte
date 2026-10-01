@@ -1,18 +1,16 @@
 <script>
 	/**
-	 * Универсальный компонент слайдера баннеров с анимациями
+	 * Универсальный компонент слайдера баннеров с анимациями (100% WebP)
 	 *
 	 * @param {Array} baners - массив объектов баннеров
 	 * @param {string} baners[].link - URL ссылки
-	 * @param {Object} baners[].src - объект с путями к изображениям
-	 * @param {string} baners[].src.webp - путь к WebP версии
-	 * @param {string} baners[].src.jpeg - путь к JPEG версии
+	 * @param {string|Object} baners[].src - путь к WebP изображению (строка "/path/to.webp" или { webp: "..." })
 	 * @param {string} baners[].alt - альтернативный текст
 	 * @param {string} baners[].width - ширина изображения
 	 * @param {string} baners[].height - высота изображения
 	 * @param {string} [width='100%'] - ширина контейнера слайдера
 	 * @param {string} [height='auto'] - высота контейнера слайдера
-	 * @param {string} [interval = "7000"] - интервал смены слайда
+	 * @param {string} [interval = "10000"] - интервал смены слайда
 	 * @param {string} [customClass=''] - gorBaner || vertBaner
 	 * @param {string} [effect=''] - EffectTopDown || EffectLeftRight || EffectOpacity
 	 * @param {boolean} [hasShadow=false] - эффект мерцающей тени
@@ -40,6 +38,12 @@
 	let hasBanners = $derived(baners.length > 0);
 	let isSingleBanner = $derived(baners.length === 1);
 
+	// Хелпер для извлечения URL (поддерживает и строку, и старый формат объекта { webp: '...' })
+	function getImgSrc(banner) {
+		if (!banner?.src) return '';
+		return typeof banner.src === 'string' ? banner.src : banner.src.webp;
+	}
+
 	// Автоматическое переключение
 	onMount(() => {
 		if (!hasBanners || isSingleBanner) return;
@@ -47,7 +51,7 @@
 		const timer = setInterval(() => {
 			currentIndex = (currentIndex + 1) % baners.length;
 			step += 1;
-		}, +interval); // <-- ИСПОЛЬЗУЕТСЯ ЗНАЧЕНИЕ ИЗ ПРОПСОВ
+		}, +interval);
 
 		return () => clearInterval(timer);
 	});
@@ -73,30 +77,28 @@
 	>
 		<div class="img-wrapper">
 			<!-- Выходящий блок (предыдущий баннер) -->
-			<div
-				class="anim-box"
-				out:fly={{
-					y: effect === 'EffectTopDown' ? '100%' : 0,
-					x: effect === 'EffectLeftRight' ? '100%' : 0,
-					duration: 1000
-				}}
-			>
-				<picture>
-					<source
-						srcset={baners[(currentIndex - 1 + baners.length) % baners.length]?.src?.webp}
-						type="image/webp"
-					/>
+			{#key currentIndex}
+				{@const prevIndex = (currentIndex - 1 + baners.length) % baners.length}
+				{@const prevBanner = baners[prevIndex]}
+				<div
+					class="anim-box"
+					out:fly={{
+						y: effect === 'EffectTopDown' ? '100%' : 0,
+						x: effect === 'EffectLeftRight' ? '100%' : 0,
+						duration: 1000
+					}}
+				>
 					<img
-						src={baners[(currentIndex - 1 + baners.length) % baners.length]?.src?.jpeg}
-						alt={baners[(currentIndex - 1 + baners.length) % baners.length]?.alt || 'banner'}
+						src={getImgSrc(prevBanner)}
+						alt={prevBanner?.alt || 'banner'}
 						loading="lazy"
 						decoding="async"
-						width={baners[(currentIndex - 1 + baners.length) % baners.length]?.width}
-						height={baners[(currentIndex - 1 + baners.length) % baners.length]?.height}
+						width={prevBanner?.width}
+						height={prevBanner?.height}
 						onerror={handleImageError}
 					/>
-				</picture>
-			</div>
+				</div>
+			{/key}
 
 			<!-- Входящий блок (текущий баннер) -->
 			{#key step}
@@ -108,18 +110,15 @@
 						duration: 1000
 					}}
 				>
-					<picture>
-						<source srcset={currentBanner?.src?.webp} type="image/webp" />
-						<img
-							src={currentBanner?.src?.jpeg}
-							alt={currentBanner?.alt || 'banner'}
-							loading="lazy"
-							decoding="async"
-							width={currentBanner?.width}
-							height={currentBanner?.height}
-							onerror={handleImageError}
-						/>
-					</picture>
+					<img
+						src={getImgSrc(currentBanner)}
+						alt={currentBanner?.alt || 'banner'}
+						loading="lazy"
+						decoding="async"
+						width={currentBanner?.width}
+						height={currentBanner?.height}
+						onerror={handleImageError}
+					/>
 				</div>
 			{/key}
 		</div>
@@ -172,7 +171,7 @@
 		position: relative;
 	}
 
-	picture,
+	
 	img {
 		width: 100%;
 		height: auto;
