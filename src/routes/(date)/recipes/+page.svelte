@@ -575,7 +575,7 @@
 
 		&:hover {
 			background: $clr-teal;
-			color: white;
+			color: $clr-white;
 		}
 	}
 
@@ -585,7 +585,7 @@
 
 		&:hover {
 			background: $clr-error;
-			color: white;
+			color: $clr-white;
 		}
 	}
 

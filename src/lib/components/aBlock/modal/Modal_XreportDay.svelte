@@ -102,17 +102,17 @@
 		gap: 2rem;
 	}
 	.x-report-modal {
-		background: var(--clr-bg-card, #ffffff);
+		background: $clr-bg-card;
 		border-radius: 16px;
 		padding: 24px;
 		width: 100%;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px rgba($clr-black-rgb, 0.3);
 	}
 
 	.x-report-modal h2 {
 		margin: 0 0 20px 0;
 		font-size: 20px;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 		text-align: center;
 	}
 
@@ -127,18 +127,18 @@
 		display: flex;
 		justify-content: space-between;
 		padding: 8px 12px;
-		background: var(--clr-bg-primary, #f5f5f5);
+		background: $clr-bg;
 		border-radius: 8px;
 	}
 
 	.report-row .label {
 		font-weight: 500;
-		color: var(--clr-text-secondary, #666);
+		color: $clr-text-accent;
 	}
 
 	.report-row .value {
 		font-weight: 600;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 	}
 
 	.close-btn {
@@ -146,6 +146,6 @@
 	}
 
 	.close-btn:hover {
-		background: var(--clr-teal-dark, #0f766e);
+		background: $clr-teal;
 	}
 </style>

@@ -81,12 +81,15 @@ $grad-btn-main: linear-gradient(215deg, $clr-bg-dark 0%, $clr-bg 50%, $clr-bg-da
 		--clr-info: rgb(59, 130, 246); // Синий
 		--clr-info-rgb: 59, 130, 246;
 
+		--clr-black: 0, 0, 0;
+		--clr-white: 255, 255, 255;
+
 		// ===== ТЕНИ И ГЛУБИНА =====
-		--shadow-inset-light: rgba(255, 255, 255, 0.05);
-		--shadow-inset-dark: rgba(0, 0, 0, 0.5);
-		--shadow-soft-val: 0 1px 3px rgba(0, 0, 0, 0.3);
-		--shadow-card-val: 0 4px 12px rgba(0, 0, 0, 0.4);
-		--shadow-deep-val: 0 20px 60px rgba(0, 0, 0, 0.6);
+		--shadow-inset-light: rgba($clr-white-rgb, 0.05);
+		--shadow-inset-dark: rgba($clr-black-rgb, 0.5);
+		--shadow-soft-val: 0 1px 3px rgba($clr-black-rgb, 0.3);
+		--shadow-card-val: 0 4px 12px rgba($clr-black-rgb, 0.4);
+		--shadow-deep-val: 0 20px 60px rgba($clr-black-rgb, 0.6);
 	}
 
 	//     LIGHT THEME (Default) 
@@ -131,20 +134,25 @@ $grad-btn-main: linear-gradient(215deg, $clr-bg-dark 0%, $clr-bg 50%, $clr-bg-da
 		--clr-info: rgb(59, 130, 246);
 		--clr-info-rgb: 59, 130, 246;
 
+		--clr-black: 0, 0, 0;
+		--clr-white: 255, 255, 255;
+
 		// ===== ТЕНИ И ГЛУБИНА (мягче для светлой) =====
-		--shadow-inset-light: rgba(255, 255, 255, 0.8);
-		--shadow-inset-dark: rgba(0, 0, 0, 0.1);
-		--shadow-soft-val: 0 1px 3px rgba(0, 0, 0, 0.06);
-		--shadow-card-val: 0 4px 12px rgba(0, 0, 0, 0.08);
-		--shadow-deep-val: 0 20px 60px rgba(0, 0, 0, 0.3);
+		--shadow-inset-light: rgba($clr-white-rgb, 0.8);
+		--shadow-inset-dark: rgba($clr-black-rgb, 0.1);
+		--shadow-soft-val: 0 1px 3px rgba($clr-black-rgb, 0.06);
+		--shadow-card-val: 0 4px 12px rgba($clr-black-rgb, 0.08);
+		--shadow-deep-val: 0 20px 60px rgba($clr-black-rgb, 0.3);
 	}
 }
 
 // =============================================================================
 // 2. СТАТИЧЕСКИЕ ЦВЕТА (Не меняются никогда)
 // =============================================================================
-$clr-black: #000000; // Резерв (использовать: rgba(0,0,0,...))
-$clr-white: #ffffff; // Резерв (использовать: rgba(255,255,255,...))
+$clr-black: #000000;
+$clr-black-rgb: var(--clr-black); // --clr-black: #000000;
+$clr-white: #ffffff;
+$clr-white-rgb: var(--clr-white); // --clr-white: #ffffff;
 $clr-transparent: transparent;
 
 // =============================================================================

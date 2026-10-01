@@ -77,7 +77,7 @@
 
   .result {
     margin-top: 16px;
-    color: #ffffff;
+    color:  $clr-white;
     font-size: 0.9rem;
   }
 </style>
@@ -119,7 +119,7 @@
 			width: 22px;
 			height: 22px;
 			border-radius: 50%;
-			border: 2px solid rgba(255, 255, 255, 0.2);
+			border: 2px solid rgba($clr-white-rgb, 0.2);
 			background: $clr-bg-card;
 			display: flex;
 			align-items: center;
@@ -127,7 +127,7 @@
 			transition:
 				border-color 0.2s ease,
 				box-shadow 0.2s ease;
-			box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+			box-shadow: inset 1px 1px 3px rgba($clr-black-rgb, 0.4);
 
 			.radio-dot {
 				width: 10px;

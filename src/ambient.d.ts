@@ -1,6 +1,11 @@
 // Объявляем модули для всех статических ассетов, которые мы импортируем.
 // Мы говорим TypeScript, что импорт этих файлов вернет строковое значение (URL).
 
+declare module '*.ico' {
+  const content: string;
+  export default content;
+}
+
 declare module '*.webp' {
   const src: string;
   export default src;

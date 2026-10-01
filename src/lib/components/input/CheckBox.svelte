@@ -90,7 +90,7 @@
 
     .status {
       font-size: 0.85rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba($clr-white-rgb, 0.1);
       padding-top: 12px;
 
       strong {
@@ -151,7 +151,7 @@
 			width: 22px;
 			height: 22px;
 			border-radius: 6px;
-			border: 2px solid rgba(255, 255, 255, 0.2);
+			border: 2px solid rgba($clr-white-rgb, 0.2);
 			background: $clr-bg-card;
 			display: flex;
 			align-items: center;
@@ -160,7 +160,7 @@
 				background 0.2s ease,
 				border-color 0.2s ease,
 				box-shadow 0.2s ease;
-			box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+			box-shadow: inset 1px 1px 3px rgba($clr-black-rgb, 0.4);
 
 			.checkmark {
 				width: 14px;

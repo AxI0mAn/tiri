@@ -79,8 +79,8 @@
 		height: 300px;
 		border-radius: 16px;
 		box-shadow:
-			0 4px 12px rgba(0, 0, 0, 0.1),
-			0 1px 3px rgba(0, 0, 0, 0.06);
+			0 4px 12px rgba($clr-black-rgb, 0.1),
+			0 1px 3px rgba($clr-black-rgb, 0.06);
 		cursor: pointer;
 		transform-style: preserve-3d;
 		transition:
@@ -100,7 +100,7 @@
 	}
 
 	.sticker-wrapper:hover:not(.expanded) {
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 8px 24px rgba($clr-black-rgb, 0.15);
 		transform: translateY(-4px);
 	}
 
@@ -114,7 +114,7 @@
 		max-width: 90vw;
 		max-height: 90vw;
 		z-index: 100;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px rgba($clr-black-rgb, 0.3);
 		position: fixed;
 		top: 50%;
 		left: 50%;
@@ -154,16 +154,16 @@
 
 	/* ✅ Обратная сторона — скрыта, пока не перевернута */
 	.sticker-back {
-		background: rgba(255, 255, 255, 0.95);
+		background: rgba($clr-white-rgb, 0.95);
 		// backdrop-filter: blur(8px);
 		transform: rotateY(180deg);
-		box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
+		box-shadow: inset 0 0 30px rgba($clr-black-rgb, 0.05);
 	}
 
 	.sticker-date {
 		font-size: 14px;
 		font-weight: 500;
-		color: rgba(0, 0, 0, 0.5);
+		color: rgba($clr-black-rgb, 0.5);
 		margin-bottom: 8px;
 	}
 
@@ -177,14 +177,14 @@
 
 	.sticker-phone {
 		font-size: 16px;
-		color: rgba(0, 0, 0, 0.6);
+		color: rgba($clr-black-rgb, 0.6);
 		margin-bottom: 8px;
 		font-family: 'Courier New', monospace;
 	}
 
 	.sticker-type {
 		font-size: 12px;
-		color: rgba(0, 0, 0, 0.4);
+		color: rgba($clr-black-rgb, 0.4);
 		margin-top: auto;
 	}
 
@@ -203,7 +203,7 @@
 		bottom: 8px;
 		right: 12px;
 		font-size: 12px;
-		color: rgba(0, 0, 0, 0.5);
+		color: rgba($clr-black-rgb, 0.5);
 		pointer-events: none;
 		animation: pulse 2s ease-in-out infinite;
 	}

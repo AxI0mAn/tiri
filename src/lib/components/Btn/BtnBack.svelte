@@ -62,7 +62,7 @@
 		z-index: 1000;
 		box-shadow:
 			0 4px 12px rgba(100, 116, 139, 0.4),
-			inset 0 2px 4px rgba(255, 255, 255, 0.3);
+			inset 0 2px 4px rgba($clr-white-rgb, 0.3);
 		svg {
 			fill: $clr-white;
 			stroke: $clr-white;

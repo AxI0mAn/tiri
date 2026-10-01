@@ -342,7 +342,7 @@
 			width: fit-content;
 			border: 1px solid $clr-white;
 			border-radius: 2rem;
-			background-color: rgba(255, 255, 255, 0.4);
+			background-color: rgba($clr-white-rgb, 0.4);
 			padding: 0.5rem 1rem;
 			transition: all 0.5s;
 			span {
@@ -351,7 +351,7 @@
 			:hover {
 				color: $clr-teal;
 				box-shadow: 2px 2px 4px 4px $clr-teal;
-				background-color: rgba(255, 255, 255, 0.8);
+				background-color: rgba($clr-white-rgb, 0.8);
 
 				border-right: 1px double $clr-teal;
 				border-radius: 0.5rem;

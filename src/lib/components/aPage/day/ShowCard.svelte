@@ -211,12 +211,12 @@
 		min-height: 56px;
 		padding: 0.5rem 0.75rem 0.85rem 0.75rem;
 		border-radius: 10px;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+		box-shadow: 0 1px 3px rgba($clr-black-rgb, 0.6);
 		transition: all 0.2s;
 		flex-shrink: 0;
 		transition: all 0.35s;
 		&:active {
-			box-shadow: 0 0px 1px rgba(0, 0, 0, 0.3);
+			box-shadow: 0 0px 1px rgba($clr-black-rgb, 0.3);
 			transform: translateY(2px);
 			transition: all 0.15s;
 		}
@@ -262,7 +262,7 @@
 	.sum {
 		font-size: 16px;
 		font-weight: 600;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 		flex: 1;
 		min-width: 40px;
 	}
@@ -273,8 +273,8 @@
 		height: 32px;
 		border: none;
 		border-radius: 50%;
-		background: rgba(0, 0, 0, 0.05);
-		color: var(--clr-text-secondary, #666);
+		background: rgba($clr-black-rgb, 0.05);
+		color: $clr-text-accent;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -283,8 +283,8 @@
 	}
 
 	.edit-btn:hover {
-		background: rgba(0, 0, 0, 0.1);
-		color: var(--clr-text-primary, #1a1a1a);
+		background: rgba($clr-black-rgb, 0.1);
+		color: $clr-text-main;
 	}
 
 	.edit-btn:active {

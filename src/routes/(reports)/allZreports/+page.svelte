@@ -305,7 +305,7 @@
 		align-items: center;
 		padding: 8px 16px;
 		background: $clr-bg-card;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		border-bottom: 1px solid rgba($clr-black-rgb, 0.08);
 		min-height: 56px;
 	}
 
@@ -363,7 +363,7 @@
 
 	:global(.btn-create) {
 		background: $clr-teal !important;
-		color: white !important;
+		color: $clr-white !important;
 		padding: 12px 32px !important;
 		border-radius: 10px !important;
 		font-weight: 600 !important;
@@ -398,7 +398,7 @@
 
 		&.active {
 			background: $clr-bg-card;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+			box-shadow: 0 2px 8px rgba($clr-black-rgb, 0.1);
 		}
 	}
 

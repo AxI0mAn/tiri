@@ -200,7 +200,7 @@
 		border: none;
 		border-radius: 50%;
 		background: none;
-		color: white;
+		color: $clr-white;
 		font-size: 24px;
 		cursor: pointer;
 		display: flex;
