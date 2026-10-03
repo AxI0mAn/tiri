@@ -54,8 +54,8 @@
 			}
 
 			// === -📝=TODO=📝- ===
-			console.log('[loadEntry] appState.editEntryId:', appState.editEntryId);
-			console.log('[loadEntry] appState.editEntryDate:', appState.editEntryDate);
+			// console.log('[loadEntry] appState.editEntryId:', appState.editEntryId);
+			// console.log('[loadEntry] appState.editEntryDate:', appState.editEntryDate);
 
 			const { getAllThisDayRecords } = await import('$lib/utils/db.js');
 			const records = await getAllThisDayRecords(dateStr);
@@ -493,7 +493,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 		font-size: 14px;
 	}
 

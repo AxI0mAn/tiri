@@ -367,7 +367,10 @@
 			min-width: 100%;
 			width: max-content;
 			max-width: 90vw;
-			max-height: 80vh;
+			max-height: 50vh;
+
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 
 			padding: 6px 0;
 

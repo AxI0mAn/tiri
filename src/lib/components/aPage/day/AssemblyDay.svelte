@@ -284,7 +284,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 		font-size: 14px;
 		text-align: center;
 		padding: 20px;

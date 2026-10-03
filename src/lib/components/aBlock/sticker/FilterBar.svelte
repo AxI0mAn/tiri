@@ -151,7 +151,7 @@
 
 	.search-icon {
 		font-size: 18px;
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 	}
 
 	.search-input {
@@ -180,14 +180,14 @@
 		transform: translateY(-50%);
 		background: none;
 		border: none;
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 		font-size: 16px;
 		cursor: pointer;
 		padding: 4px 8px;
 	}
 
 	.clear-btn:hover {
-		color: var(--clr-text-primary, #333);
+		color: $clr-text-accent;
 	}
 
 	.filter-info {
@@ -203,16 +203,16 @@
 		align-items: center;
 		gap: 4px;
 		padding: 4px 10px;
-		background: var(--clr-teal-soft, #e6f5f0);
+		background: $clr-teal-soft;
 		border-radius: 12px;
 		font-size: 12px;
-		color: var(--clr-teal, #0d9488);
+		color: $clr-teal;
 	}
 
 	.clear-all-btn {
 		background: none;
 		border: none;
-		color: var(--clr-error, #e74c3c);
+		color: $clr-error;
 		font-size: 13px;
 		cursor: pointer;
 		padding: 4px 8px;

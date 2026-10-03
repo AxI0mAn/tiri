@@ -1263,7 +1263,7 @@
 	}
 
 	.log-empty {
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 		font-size: 14px;
 		text-align: center;
 		padding: 20px 0;
@@ -1304,8 +1304,8 @@
 	}
 
 	.badge-active {
-		background: var(--clr-teal-soft, #e6f5f0);
-		color: var(--clr-teal, #0d9488);
+		background: $clr-teal-soft;
+		color: $clr-teal;
 	}
 
 	.badge-inactive {
