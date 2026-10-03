@@ -50,7 +50,7 @@
 			height: fit-content;
 			padding: 0.6rem 0.85rem;
 			border-radius: 12px;
-			border: 2px solid rgba(255, 255, 255, 0.2);
+			border: 2px solid rgba($clr-white-rgb, 0.2);
 			background: $clr-bg-card;
 			color: $clr-text-main;
 			font-family: inherit;
@@ -73,8 +73,8 @@
 			&:focus {
 				border-color: $clr-teal;
 				box-shadow:
-					inset 2px 2px 5px rgba(0, 0, 0, 0.5),
-					inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+					inset 2px 2px 5px rgba($clr-black-rgb, 0.5),
+					inset -2px -2px 5px rgba($clr-white-rgb, 0.05);
 			}
 
 			/* Стилизация скроллбара */
@@ -82,7 +82,7 @@
 				width: 6px;
 			}
 			&::-webkit-scrollbar-thumb {
-				background: rgba(255, 255, 255, 0.2);
+				background: rgba($clr-white-rgb, 0.2);
 				border-radius: 3px;
 			}
 		}

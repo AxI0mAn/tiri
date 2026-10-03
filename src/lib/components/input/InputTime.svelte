@@ -64,7 +64,7 @@
 			height: 44px;
 			padding: 0 14px;
 			border-radius: 12px;
-			border: 2px solid rgba(255, 255, 255, 0.2);
+			border: 2px solid rgba($clr-white-rgb, 0.2);
 			background: $clr-bg-card;
 			color: $clr-text-main;
 			font-family: inherit;

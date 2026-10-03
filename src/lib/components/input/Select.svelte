@@ -318,8 +318,8 @@
 			&:focus-visible {
 				border-color: $clr-teal;
 				box-shadow:
-					inset 2px 2px 5px rgba(0, 0, 0, 0.5),
-					inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+					inset 2px 2px 5px rgba($clr-black-rgb, 0.5),
+					inset -2px -2px 5px rgba($clr-white-rgb, 0.05);
 			}
 
 			&:disabled {
@@ -367,7 +367,10 @@
 			min-width: 100%;
 			width: max-content;
 			max-width: 90vw;
-			max-height: 80vh;
+			max-height: 50vh;
+
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 
 			padding: 6px 0;
 
@@ -417,11 +420,11 @@
 			white-space: nowrap;
 
 			&:hover {
-				background-color: rgba(255, 255, 255, 0.5);
+				background-color: rgba($clr-white-rgb, 0.5);
 			}
 
 			&:active {
-				background-color: rgba(0, 0, 0, 0.1);
+				background-color: rgba($clr-black-rgb, 0.1);
 			}
 
 			&:focus-visible {

@@ -425,7 +425,7 @@
 		flex-direction: column;
 		height: 100vh;
 		max-height: 100vh;
-		background: var(--clr-bg-primary, #f5f5f5);
+		background: $clr-bg;
 		overflow: hidden;
 	}
 
@@ -435,8 +435,8 @@
 		align-items: center;
 		gap: 16px;
 		padding: 12px 16px;
-		background: var(--clr-bg-card, #ffffff);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		background: $clr-bg-card;
+		border-bottom: 1px solid rgba($clr-black-rgb, 0.08);
 	}
 
 	.header h1 {
@@ -444,14 +444,14 @@
 		margin: 0;
 		font-size: 18px;
 		font-weight: 600;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 	}
 
 	.btn-back {
 		padding: 6px 12px;
 		border: none;
 		border-radius: 8px;
-		background: var(--clr-bg-primary, #f0f0f0);
+		background: $clr-bg;
 		cursor: pointer;
 		font-size: 14px;
 	}
@@ -463,15 +463,15 @@
 		align-items: center;
 		gap: 12px;
 		padding: 8px 16px;
-		background: var(--clr-bg-card, #ffffff);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+		background: $clr-bg-card;
+		border-bottom: 1px solid rgba($clr-black-rgb, 0.06);
 		flex-wrap: wrap;
 	}
 
 	.global-date-row label {
 		font-weight: 600;
 		font-size: 14px;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 	}
 
 	.date-fields {
@@ -483,7 +483,7 @@
 	.date-input-small {
 		width: 50px;
 		padding: 6px 6px;
-		border: 1px solid var(--clr-border, #ddd);
+		border: 1px solid $clr-bg;
 		border-radius: 6px;
 		font-size: 14px;
 		text-align: center;
@@ -491,13 +491,13 @@
 
 	.date-input-small:focus {
 		outline: none;
-		border-color: var(--clr-teal, #0d9488);
+		border-color: var(--clr-teal, rgb(13, 148, 136));
 	}
 
 	.date-sep {
 		font-size: 16px;
 		font-weight: 600;
-		color: var(--clr-text-secondary, #666);
+		color: $clr-text-accent;
 		padding: 0 2px;
 	}
 
@@ -509,8 +509,8 @@
 	/* ===== Details ===== */
 	.auto-details {
 		flex-shrink: 0;
-		background: var(--clr-bg-card, #ffffff);
-		border-top: 1px solid rgba(0, 0, 0, 0.06);
+		background: $clr-bg-card;
+		border-top: 1px solid rgba($clr-black-rgb, 0.06);
 		padding: 8px 16px;
 	}
 
@@ -518,7 +518,7 @@
 		font-weight: 600;
 		font-size: 14px;
 		cursor: pointer;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 		padding: 4px 0;
 	}
 
@@ -540,8 +540,8 @@
 		padding: 8px 16px;
 		border: none;
 		border-radius: 8px;
-		background: var(--clr-teal, #0d9488);
-		color: white;
+		background: var(--clr-teal, rgb(13, 148, 136));
+		color: $clr-white;
 		cursor: pointer;
 		font-weight: 600;
 	}
@@ -550,7 +550,7 @@
 		padding: 8px 16px;
 		border: none;
 		border-radius: 8px;
-		background: var(--clr-bg-primary, #f0f0f0);
+		background: $clr-bg;
 		cursor: pointer;
 		font-weight: 600;
 	}
@@ -569,10 +569,10 @@
 	}
 
 	.block {
-		background: var(--clr-bg-card, #ffffff);
+		background: $clr-bg-card;
 		border-radius: 12px;
 		padding: 12px 16px;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+		box-shadow: 0 1px 3px rgba($clr-black-rgb, 0.06);
 		border: 1px solid var(--clr-border, #eee);
 	}
 
@@ -590,7 +590,7 @@
 	.block-number {
 		font-weight: 600;
 		font-size: 14px;
-		color: var(--clr-text-secondary, #666);
+		color: $clr-text-accent;
 	}
 
 	.btn-remove {
@@ -598,8 +598,8 @@
 		height: 28px;
 		border: none;
 		border-radius: 50%;
-		background: var(--clr-error, #e74c3c);
-		color: white;
+		background: var(--clr-error, $clr-error);
+		color: $clr-white;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -622,23 +622,23 @@
 	.field-group label {
 		font-size: 11px;
 		font-weight: 600;
-		color: var(--clr-text-secondary, #666);
+		color: $clr-text-accent;
 		text-transform: uppercase;
 	}
 
 	.field-group input,
 	.field-group select {
 		padding: 6px 8px;
-		border: 1px solid var(--clr-border, #ddd);
+		border: 1px solid $clr-bg;
 		border-radius: 6px;
 		font-size: 14px;
-		background: var(--clr-bg-primary, #fff);
+		background: var(--clr-bg-primary, $clr-white);
 	}
 
 	.field-group input:focus,
 	.field-group select:focus {
 		outline: none;
-		border-color: var(--clr-teal, #0d9488);
+		border-color: var(--clr-teal, rgb(13, 148, 136));
 	}
 
 	/* ===== Автоматический ввод ===== */
@@ -652,7 +652,7 @@
 	.auto-row label {
 		font-size: 14px;
 		font-weight: 500;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 		min-width: 80px;
 	}
 
@@ -660,7 +660,7 @@
 		flex: 1;
 		min-width: 200px;
 		padding: 8px 10px;
-		border: 1px solid var(--clr-border, #ddd);
+		border: 1px solid $clr-bg;
 		border-radius: 8px;
 		font-size: 14px;
 		resize: vertical;
@@ -669,7 +669,7 @@
 
 	.auto-textarea:focus {
 		outline: none;
-		border-color: var(--clr-teal, #0d9488);
+		border-color: var(--clr-teal, rgb(13, 148, 136));
 	}
 
 	.btn-generate {
@@ -677,7 +677,7 @@
 		border: none;
 		border-radius: 8px;
 		background: var(--clr-warning, #f59e0b);
-		color: white;
+		color: $clr-white;
 		cursor: pointer;
 		font-weight: 600;
 		align-self: flex-start;
@@ -697,8 +697,8 @@
 	.footer {
 		flex-shrink: 0;
 		padding: 12px 16px;
-		background: var(--clr-bg-card, #ffffff);
-		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		background: $clr-bg-card;
+		border-top: 1px solid rgba($clr-black-rgb, 0.08);
 		margin-top: auto;
 	}
 
@@ -712,8 +712,8 @@
 		padding: 12px;
 		border: none;
 		border-radius: 10px;
-		background: var(--clr-teal, #0d9488);
-		color: white;
+		background: var(--clr-teal, rgb(13, 148, 136));
+		color: $clr-white;
 		font-size: 16px;
 		font-weight: 600;
 		cursor: pointer;
@@ -721,7 +721,7 @@
 	}
 
 	.btn-save:hover:not(:disabled) {
-		background: var(--clr-teal-dark, #0f766e);
+		background: $clr-teal;
 	}
 
 	.btn-save:disabled {
@@ -734,7 +734,7 @@
 		border: none;
 		border-radius: 10px;
 		background: var(--clr-info, #3b82f6);
-		color: white;
+		color: $clr-white;
 		font-size: 16px;
 		font-weight: 600;
 		cursor: pointer;

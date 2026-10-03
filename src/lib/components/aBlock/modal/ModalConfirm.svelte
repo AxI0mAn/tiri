@@ -41,25 +41,25 @@
 <style lang="scss">
 	@use '../../../../styles/_variables.scss' as *;
 	.modal-confirm {
-		background: var(--clr-bg-card, #ffffff);
+		background: $clr-bg-card;
 		border-radius: 16px;
 		padding: 24px;
 		width: 100%;
 		max-width: 380px;
 		text-align: center;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px rgba($clr-black-rgb, 0.3);
 	}
 
 	.modal-confirm h2 {
 		margin: 0 0 12px 0;
 		font-size: 18px;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 	}
 
 	.modal-confirm p {
 		margin: 0 0 24px 0;
 		font-size: 15px;
-		color: var(--clr-text-secondary, #666);
+		color: $clr-text-accent;
 	}
 
 	.actions {
@@ -79,20 +79,20 @@
 	}
 
 	.btn-cancel {
-		background: var(--clr-bg-primary, #f0f0f0);
-		color: var(--clr-text-primary, #1a1a1a);
+		background: $clr-bg;
+		color: $clr-text-main;
 	}
 
 	.btn-cancel:hover {
-		background: var(--clr-bg-secondary, #e0e0e0);
+		background: $clr-bg-card;
 	}
 
 	.btn-confirm {
-		background: var(--clr-error, #e74c3c);
-		color: white;
+		background: $clr-error;
+		color: $clr-white;
 	}
 
 	.btn-confirm:hover {
-		background: var(--clr-error-dark, #c0392b);
+		background: $clr-warning;
 	}
 </style>

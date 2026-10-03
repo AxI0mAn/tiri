@@ -256,7 +256,7 @@
 		border-radius: 16px;
 		padding: 24px 20px 20px;
 		width: 100%;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px rgba($clr-black-rgb, 0.3);
 	}
 
 	.picker-title {
@@ -291,8 +291,8 @@
 		border-radius: 10px;
 		border: 2px solid $clr-teal;
 		box-shadow:
-			inset 2px 2px 5px rgba(0, 0, 0, 0.5),
-			inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+			inset 2px 2px 5px rgba($clr-black-rgb, 0.5),
+			inset -2px -2px 5px rgba($clr-white-rgb, 0.05);
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -361,8 +361,8 @@
 			border-radius: 50%;
 			border: 2px solid $clr-teal;
 			box-shadow:
-				inset 2px 2px 5px rgba(0, 0, 0, 0.5),
-				inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+				inset 2px 2px 5px rgba($clr-black-rgb, 0.5),
+				inset -2px -2px 5px rgba($clr-white-rgb, 0.05);
 			background: $clr-bg-card;
 		}
 	}
@@ -387,7 +387,7 @@
 		padding: 10px 16px !important;
 		border-radius: 10px !important;
 		background: $clr-teal !important;
-		color: white !important;
+		color: $clr-white !important;
 		font-weight: 600 !important;
 	}
 </style>

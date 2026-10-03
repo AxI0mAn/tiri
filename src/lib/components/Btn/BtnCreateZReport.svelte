@@ -186,17 +186,17 @@
 
 	.iconLink span {
 		font-size: 12px;
-		color: var(--clr-text-secondary, #666);
+		color: $clr-text-accent;
 	}
 
 	.modal-warning {
-		background: var(--clr-bg-card, #ffffff);
+		background: $clr-bg-card;
 		border-radius: 16px;
 		padding: 32px 24px 24px;
 		text-align: center;
 		max-width: 400px;
 		width: 100%;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px rgba($clr-black-rgb, 0.3);
 	}
 
 	.modal-icon {
@@ -207,7 +207,7 @@
 	.modal-warning h2 {
 		margin: 0 0 8px 0;
 		font-size: 20px;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 	}
 
 	.modal-warning .date {
@@ -231,19 +231,19 @@
 	}
 
 	.modal-confirm {
-		background: var(--clr-bg-card, #ffffff);
+		background: $clr-bg-card;
 		border-radius: 16px;
 		padding: 32px 24px 24px;
 		text-align: center;
 		max-width: 400px;
 		width: 100%;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px rgba($clr-black-rgb, 0.3);
 	}
 
 	.modal-confirm h2 {
 		margin: 0 0 12px 0;
 		font-size: 20px;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 	}
 
 	.modal-confirm p {
@@ -261,7 +261,7 @@
 
 	.modal-actions :global(.btn-close-modal) {
 		background: var(--clr-teal, #0d9488) !important;
-		color: white !important;
+		color: $clr-white !important;
 		padding: 10px 32px !important;
 		border-radius: 10px !important;
 	}
@@ -275,7 +275,7 @@
 
 	.modal-actions :global(.btn-confirm-modal) {
 		background: var(--clr-teal, #0d9488) !important;
-		color: white !important;
+		color: $clr-white !important;
 		padding: 10px 32px !important;
 		border-radius: 10px !important;
 	}

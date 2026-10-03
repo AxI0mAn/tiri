@@ -353,10 +353,10 @@
 		&:focus-visible {
 			outline: 2px solid $clr-teal;
 			outline-offset: -2px;
-			background-color: rgba(255, 255, 255, 0.1);
+			background-color: rgba($clr-white-rgb, 0.1);
 		}
 		&:active {
-			background-color: rgba(0, 0, 0, 0.1);
+			background-color: rgba($clr-black-rgb, 0.1);
 		}
 	}
 
@@ -392,7 +392,7 @@
 		}
 
 		&:active {
-			background-color: rgba(0, 0, 0, 0.1);
+			background-color: rgba($clr-black-rgb, 0.1);
 		}
 	}
 
@@ -400,7 +400,7 @@
 	@media (hover: hover) and (pointer: fine) {
 		.menu-button-wrapper:hover,
 		.menu-link:hover {
-			background-color: rgba(255, 255, 255, 0.5);
+			background-color: rgba($clr-white-rgb, 0.5);
 			transition: all 0.5s;
 		}
 	}

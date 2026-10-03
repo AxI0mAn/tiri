@@ -71,7 +71,7 @@
 {/if}
 
 <style lang="scss">
-@use '../../../styles/_variables.scss' as *;
+	@use '../../../styles/_variables.scss' as *;
 	.btn-share {
 		display: inline-flex;
 		align-items: center;
@@ -109,7 +109,7 @@
 		border-radius: 4px;
 		font-size: 0.85rem;
 		white-space: nowrap;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 2px 8px rgba($clr-black-rgb, 0.15);
 		z-index: 10;
 		animation: fadeIn 0.2s ease;
 	}

@@ -91,7 +91,7 @@
 		text-align: center;
 		width: 100%;
 		max-width: 400px;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px rgba($clr-black-rgb, 0.3);
 	}
 
 	/* ===== Лоадер ===== */
@@ -182,7 +182,7 @@
 
 	.modal-actions :global(.btn-abort) {
 		background: $clr-error !important;
-		color: white !important;
+		color: $clr-white !important;
 		padding: 10px 32px !important;
 		border-radius: 10px !important;
 		font-weight: 600 !important;

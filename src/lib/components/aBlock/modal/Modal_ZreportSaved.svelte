@@ -43,13 +43,13 @@
 
 <style lang="scss">
 	.modal-saved {
-		background: var(--clr-bg-card, #ffffff);
+		background: $clr-bg-card;
 		border-radius: 16px;
 		padding: 32px 24px 24px;
 		width: 100%;
 		max-width: 380px;
 		text-align: center;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px rgba($clr-black-rgb, 0.3);
 	}
 
 	.icon {
@@ -60,7 +60,7 @@
 	.modal-saved h2 {
 		margin: 0 0 24px 0;
 		font-size: 18px;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 	}
 
 	.actions {
@@ -80,20 +80,20 @@
 	}
 
 	.btn-close {
-		background: var(--clr-bg-primary, #f0f0f0);
-		color: var(--clr-text-primary, #1a1a1a);
+		background: $clr-bg;
+		color: $clr-text-main;
 	}
 
 	.btn-close:hover {
-		background: var(--clr-bg-secondary, #e0e0e0);
+		background: $clr-bg-card;
 	}
 
 	.btn-send {
-		background: var(--clr-teal, #0d9488);
-		color: white;
+		background: $clr-teal;
+		color: $clr-white;
 	}
 
 	.btn-send:hover {
-		background: var(--clr-teal-dark, #0f766e);
+		background: $clr-teal;
 	}
 </style>

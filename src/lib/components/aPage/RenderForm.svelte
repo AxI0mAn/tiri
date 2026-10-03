@@ -838,7 +838,7 @@
 			display: flex;
 			gap: 12px;
 			justify-content: center;
-			border-top: 1px solid rgba(0, 0, 0, 0.06);
+			border-top: 1px solid rgba($clr-black-rgb, 0.06);
 		}
 	}
 </style>

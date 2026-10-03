@@ -512,9 +512,9 @@
 	.day-cell.today {
 		box-shadow:
 		/* Внутренняя тень — эффект вдавливания по краям */
-			inset 0 0 4px rgba(0, 0, 0, 0.95),
-			/* Внешняя тень снизу — эффект приподнятости */ 0 4px 8px rgba(0, 0, 0, 0.8),
-			/* Внешняя тень сверху — светлый блик */ 0 -2px 4px rgba(255, 255, 255, 0.75);
+			inset 0 0 4px rgba($clr-black-rgb, 0.95),
+			/* Внешняя тень снизу — эффект приподнятости */ 0 4px 8px rgba($clr-black-rgb, 0.8),
+			/* Внешняя тень сверху — светлый блик */ 0 -2px 4px rgba($clr-white-rgb, 0.75);
 		transform: translateY(-2px);
 		z-index: 3;
 		transition:

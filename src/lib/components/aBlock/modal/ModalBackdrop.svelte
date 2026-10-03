@@ -31,7 +31,7 @@
 		width: 100vw;
 		height: 100vh;
 		// Используем чистый черный с прозрачностью для максимального фокуса на окне
-		background-color: rgba(0, 0, 0, 0.85);
+		background-color: rgba($clr-black-rgb, 0.85);
 		backdrop-filter: blur(4px);
 		display: flex;
 		align-items: center;

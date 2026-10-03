@@ -357,7 +357,7 @@
 	}
 
 	.catalog__card:active:not(.isHovered) {
-		box-shadow: -4px 4px 2px 2px rgba(0, 0, 0, 0.3);
+		box-shadow: -4px 4px 2px 2px rgba($clr-black-rgb, 0.3);
 		outline: none;
 		box-shadow: none;
 		text-decoration: none;

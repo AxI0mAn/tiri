@@ -36,8 +36,8 @@
 
    border-right: 2px solid $clr-teal;
    border-bottom: 2px solid $clr-teal;
-   border-left: 1px solid rgba(255, 255, 255, 0.1);
-   border-top: 1px solid rgba(255, 255, 255, 0.1);
+   border-left: 1px solid rgba($clr-white-rgb, 0.1);
+   border-top: 1px solid rgba($clr-white-rgb, 0.1);
    border-radius: 0.5rem;
 
    &:hover {
@@ -50,8 +50,8 @@
 
      box-shadow: $shadow-inset;
      color: $clr-teal;
-     border-right: 1px solid rgba(255, 255, 255, 0.1);
-     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+     border-right: 1px solid rgba($clr-white-rgb, 0.1);
+     border-bottom: 1px solid rgba($clr-white-rgb, 0.1);
      border-left: 2px solid $clr-teal;
      border-top: 2px solid $clr-teal;
      transition: all 0.5s;

@@ -135,13 +135,13 @@
     gap: 12px;
 
     .demo-label {
-      color: #fff;
+      color:$clr-white;
       font-size: 0.9rem;
     }
 
     .result {
       margin-left: 20px;
-      color: #fff;
+      color:$clr-white;
 
       strong {
         color: $clr-teal;
@@ -164,14 +164,14 @@
 			width: 33px;
 			height: 33px;
 			border-radius: 8px;
-			border: 2px solid rgba(255, 255, 255, 0.2);
+			border: 2px solid rgba($clr-white-rgb, 0.2);
 			background: $clr-bg-card;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			cursor: pointer;
 			user-select: none;
-			box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+			box-shadow: inset 1px 1px 3px rgba($clr-black-rgb, 0.4);
 			transition:
 				border-color 0.2s ease,
 				box-shadow 0.2s ease,
@@ -226,7 +226,7 @@
 			background: $clr-bg-dark;
 			border: 2px solid $clr-teal;
 			border-radius: 12px;
-			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+			box-shadow: 0 8px 20px rgba($clr-black-rgb, 0.6);
 			display: flex;
 			flex-direction: column;
 			gap: 4px;
@@ -257,7 +257,7 @@
 			}
 
 			&:hover {
-				background: rgba(255, 255, 255, 0.1);
+				background: rgba($clr-white-rgb, 0.1);
 			}
 
 			&.is-selected {
@@ -274,8 +274,8 @@
 		&.is-open .status-trigger {
 			border-color: $clr-teal;
 			box-shadow:
-				inset 2px 2px 5px rgba(0, 0, 0, 0.5),
-				inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+				inset 2px 2px 5px rgba($clr-black-rgb, 0.5),
+				inset -2px -2px 5px rgba($clr-white-rgb, 0.05);
 		}
 
 		&.is-disabled {

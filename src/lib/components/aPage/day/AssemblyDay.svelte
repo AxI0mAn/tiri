@@ -215,7 +215,7 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		background: var(--clr-bg-primary, #f5f5f5);
+		background: $clr-bg;
 	}
 
 	.header_assemblyDay {
@@ -224,20 +224,20 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 8px 16px;
-		background: var(--clr-bg-card, #ffffff);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		background: $clr-bg-card;
+		border-bottom: 1px solid rgba($clr-black-rgb, 0.08);
 		min-height: 48px;
 	}
 
 	.date {
 		font-weight: 600;
 		font-size: 16px;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 	}
 
 	.weekDay {
 		font-size: 14px;
-		color: var(--clr-text-secondary, #666);
+		color: $clr-text-accent;
 	}
 
 	.report {
@@ -284,7 +284,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 		font-size: 14px;
 		text-align: center;
 		padding: 20px;

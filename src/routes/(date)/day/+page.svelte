@@ -96,7 +96,7 @@
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
-		background: var(--clr-bg-primary, #f5f5f5);
+		background: $clr-bg;
 	}
 
 	.headerWrapper {

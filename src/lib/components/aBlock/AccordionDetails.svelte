@@ -150,8 +150,8 @@
 
 			padding: 0.5rem 2rem;
 
-			border-right: 2px solid rgba(255, 255, 255, 0.1);
-			border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+			border-right: 2px solid rgba($clr-white-rgb, 0.1);
+			border-bottom: 2px solid rgba($clr-white-rgb, 0.1);
 			border-radius: 0.5rem;
 			&:hover {
 				color: $clr-text-accent;

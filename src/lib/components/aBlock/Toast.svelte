@@ -58,14 +58,14 @@
 		z-index: 999999;
 		padding: 16px 24px;
 		border-radius: 12px;
-		background: var(--clr-bg-card, #ffffff);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+		background: $clr-bg-card;
+		box-shadow: 0 8px 32px rgba($clr-black-rgb, 0.2);
 		display: flex;
 		align-items: center;
 		gap: 12px;
 		max-width: 90%;
 		min-width: 280px;
-		border: 1px solid rgba(0, 0, 0, 0.08);
+		border: 1px solid rgba($clr-black-rgb, 0.08);
 	}
 
 	.toast.success {
@@ -92,7 +92,7 @@
 	.message {
 		flex: 1;
 		font-size: 15px;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 		font-weight: 500;
 	}
 
@@ -102,8 +102,8 @@
 		height: 28px;
 		border: none;
 		border-radius: 50%;
-		background: rgba(0, 0, 0, 0.05);
-		color: var(--clr-text-secondary, #666);
+		background: rgba($clr-black-rgb, 0.05);
+		color: $clr-text-accent;
 		font-size: 16px;
 		cursor: pointer;
 		display: flex;
@@ -113,6 +113,6 @@
 	}
 
 	.close:hover {
-		background: rgba(0, 0, 0, 0.1);
+		background: rgba($clr-black-rgb, 0.1);
 	}
 </style>

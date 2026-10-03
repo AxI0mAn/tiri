@@ -340,7 +340,7 @@
 		border-radius: 1rem;
 		padding: 0.75rem;
 		padding-bottom: 1.5rem;
-		box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+		box-shadow: 0 -8px 32px rgba($clr-black-rgb, 0.5);
 		pointer-events: auto;
 	}
 
@@ -388,7 +388,7 @@
 
 		&:active {
 			background: $clr-teal;
-			color: white;
+			color: $clr-white;
 			transform: scale(0.95);
 		}
 
@@ -439,13 +439,13 @@
 		font-weight: 800;
 
 		&:hover {
-			background: rgba(255, 255, 255, 0.85);
-			// color: white;
+			background: rgba($clr-white-rgb, 0.85);
+			// color: $clr-white;
 		}
 
 		&:active {
 			transform: scale(0.95);
-			// color: white;
+			// color: $clr-white;
 		}
 	}
 
@@ -456,13 +456,13 @@
 		font-weight: 800;
 
 		&:hover {
-			background: rgba(255, 255, 255, 0.85);
-			// color: white;
+			background: rgba($clr-white-rgb, 0.85);
+			// color: $clr-white;
 		}
 
 		&:active {
 			transform: scale(0.95);
-			// color: white;
+			// color: $clr-white;
 		}
 	}
 

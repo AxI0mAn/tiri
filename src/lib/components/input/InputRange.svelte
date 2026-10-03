@@ -90,7 +90,7 @@
 				$clr-bg-card var(--progress),
 				$clr-bg-card 100%
 			);
-			box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.6);
+			box-shadow: inset 1px 1px 3px rgba($clr-black-rgb, 0.6);
 
 			/* Webkit Бегунок */
 			&::-webkit-slider-thumb {
@@ -100,7 +100,7 @@
 				border-radius: 50%;
 				background: $clr-white;
 				border: 2px solid $clr-teal;
-				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+				box-shadow: 0 2px 6px rgba($clr-black-rgb, 0.4);
 				transition:
 					transform 0.1s ease,
 					border-color 0.2s ease;

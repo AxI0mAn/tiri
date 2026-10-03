@@ -191,7 +191,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid rgba(255, 255, 255, 0.01);
+				border: 2px solid rgba($clr-white-rgb, 0.01);
 				box-sizing: border-box;
 				overflow: hidden;
 				transition: border-color 0.2s ease;
@@ -217,8 +217,8 @@
 		&.action {
 			transform: scale(0.95);
 			box-shadow:
-				inset 3px 3px 6px rgba(0, 0, 0, 0.45),
-				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
+				inset 3px 3px 6px rgba($clr-black-rgb, 0.45),
+				inset -3px -3px 6px rgba($clr-white-rgb, 0.15);
 			background-color: $clr-pink;
 
 			.oval-inner {
@@ -294,7 +294,7 @@
 		&:hover {
 			box-shadow:
 				inset 3px 3px 6px rgba(250, 250, 250, 0.95),
-				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
+				inset -3px -3px 6px rgba($clr-white-rgb, 0.15);
 			.oval-outer,
 			.oval-inner {
 				border-color: $clr-white;
@@ -310,7 +310,7 @@
 			transform: scale(0.95);
 			box-shadow:
 				inset 3px 3px 6px rgba(250, 250, 250, 0.95),
-				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
+				inset -3px -3px 6px rgba($clr-white-rgb, 0.15);
 
 			.oval-outer,
 			.oval-inner {
@@ -350,7 +350,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid rgba(255, 255, 255, 0.01);
+				border: 2px solid rgba($clr-white-rgb, 0.01);
 				padding: 3px;
 				box-sizing: border-box;
 				transition: border-color 0.2s ease;
@@ -361,7 +361,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
-				border: 2px solid rgba(255, 255, 255, 0.01);
+				border: 2px solid rgba($clr-white-rgb, 0.01);
 				box-sizing: border-box;
 				overflow: hidden;
 				transition: border-color 0.2s ease;
@@ -390,8 +390,8 @@
 		&.action {
 			transform: scale(0.95);
 			box-shadow:
-				inset 3px 3px 6px rgba(0, 0, 0, 0.45),
-				inset -3px -3px 6px rgba(255, 255, 255, 0.15);
+				inset 3px 3px 6px rgba($clr-black-rgb, 0.45),
+				inset -3px -3px 6px rgba($clr-white-rgb, 0.15);
 
 			.oval-outer,
 			.oval-inner {
@@ -445,7 +445,7 @@
 			/* Сбрасываем вложенные hover-эффекты */
 			.oval-inner,
 			.oval-outer {
-				border-color: rgba(255, 255, 255, 0.01) !important;
+				border-color: rgba($clr-white-rgb, 0.01) !important;
 			}
 
 			.bg-hover {
@@ -465,7 +465,7 @@
 
 			.oval-inner,
 			.oval-outer {
-				border-color: rgba(255, 255, 255, 0.01) !important;
+				border-color: rgba($clr-white-rgb, 0.01) !important;
 			}
 
 			.bg-hover,

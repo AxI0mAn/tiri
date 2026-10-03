@@ -105,13 +105,13 @@
 		flex-direction: column;
 		gap: 12px;
 		padding: 16px 20px;
-		background: var(--clr-bg-card, #ffffff);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+		background: $clr-bg-card;
+		border-bottom: 1px solid rgba($clr-black-rgb, 0.06);
 		position: sticky;
 		top: 0;
 		z-index: 10;
 		backdrop-filter: blur(8px);
-		background: rgba(255, 255, 255, 0.95);
+		background: rgba($clr-white-rgb, 0.95);
 	}
 
 	.filter-group {
@@ -126,22 +126,22 @@
 		align-items: center;
 		gap: 4px;
 		font-size: 14px;
-		color: var(--clr-text-secondary, #666);
+		color: $clr-text-accent;
 	}
 
 	.filter-input {
 		padding: 6px 10px;
-		border: 1px solid var(--clr-border, #ddd);
+		border: 1px solid $clr-bg;
 		border-radius: 8px;
 		font-size: 14px;
-		background: var(--clr-bg-primary, #f5f5f5);
+		background: $clr-bg;
 		transition: border-color 0.2s;
 		max-width: 160px;
 	}
 
 	.filter-input:focus {
 		outline: none;
-		border-color: var(--clr-teal, #0d9488);
+		border-color: $clr-teal;
 	}
 
 	.search-group {
@@ -151,17 +151,17 @@
 
 	.search-icon {
 		font-size: 18px;
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 	}
 
 	.search-input {
 		flex: 1;
 		padding: 8px 12px;
 		padding-right: 36px;
-		border: 1px solid var(--clr-border, #ddd);
+		border: 1px solid $clr-bg;
 		border-radius: 8px;
 		font-size: 14px;
-		background: var(--clr-bg-primary, #f5f5f5);
+		background: $clr-bg;
 		transition: border-color 0.2s;
 		min-width: 100px;
 		width: 100%;
@@ -170,7 +170,7 @@
 
 	.search-input:focus {
 		outline: none;
-		border-color: var(--clr-teal, #0d9488);
+		border-color: $clr-teal;
 	}
 
 	.clear-btn {
@@ -180,14 +180,14 @@
 		transform: translateY(-50%);
 		background: none;
 		border: none;
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 		font-size: 16px;
 		cursor: pointer;
 		padding: 4px 8px;
 	}
 
 	.clear-btn:hover {
-		color: var(--clr-text-primary, #333);
+		color: $clr-text-accent;
 	}
 
 	.filter-info {
@@ -203,16 +203,16 @@
 		align-items: center;
 		gap: 4px;
 		padding: 4px 10px;
-		background: var(--clr-teal-soft, #e6f5f0);
+		background: $clr-teal-soft;
 		border-radius: 12px;
 		font-size: 12px;
-		color: var(--clr-teal, #0d9488);
+		color: $clr-teal;
 	}
 
 	.clear-all-btn {
 		background: none;
 		border: none;
-		color: var(--clr-error, #e74c3c);
+		color: $clr-error;
 		font-size: 13px;
 		cursor: pointer;
 		padding: 4px 8px;

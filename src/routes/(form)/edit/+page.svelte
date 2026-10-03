@@ -54,8 +54,8 @@
 			}
 
 			// === -📝=TODO=📝- ===
-			console.log('[loadEntry] appState.editEntryId:', appState.editEntryId);
-			console.log('[loadEntry] appState.editEntryDate:', appState.editEntryDate);
+			// console.log('[loadEntry] appState.editEntryId:', appState.editEntryId);
+			// console.log('[loadEntry] appState.editEntryDate:', appState.editEntryDate);
 
 			const { getAllThisDayRecords } = await import('$lib/utils/db.js');
 			const records = await getAllThisDayRecords(dateStr);
@@ -465,7 +465,7 @@
 		align-items: center;
 		padding: 8px 16px;
 		background: $clr-pink;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		border-bottom: 1px solid rgba($clr-black-rgb, 0.08);
 		min-height: 56px;
 	}
 
@@ -474,7 +474,7 @@
 		text-align: center;
 		font-size: 18px;
 		font-weight: 600;
-		color: var(--clr-text-primary, #1a1a1a);
+		color: $clr-text-main;
 		margin: 0;
 	}
 
@@ -493,7 +493,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		color: var(--clr-text-secondary, #999);
+		color: $clr-text-accent;
 		font-size: 14px;
 	}
 
@@ -513,17 +513,17 @@
 
 	.form-actions :global(.btn-delete) {
 		background: var(--clr-error, #e74c3c) !important;
-		color: white !important;
+		color: $clr-white !important;
 	}
 
 	.form-actions :global(.btn-save) {
 		background: var(--clr-teal, #0d9488) !important;
-		color: white !important;
+		color: $clr-white !important;
 	}
 
 	.form-actions :global(.btn-complete) {
 		background: var(--clr-success, #22c55e) !important;
-		color: white !important;
+		color: $clr-white !important;
 	}
 
 	.btn-save.disabled,
@@ -539,6 +539,6 @@
 
 	.form-actions :global(.btn-reschedule) {
 		background: var(--clr-warning, #f59e0b) !important;
-		color: white !important;
+		color: $clr-white !important;
 	}
 </style>
