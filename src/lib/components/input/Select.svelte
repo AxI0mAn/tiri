@@ -35,6 +35,9 @@
 	let dropdownStyle = $state('');
 	let isPopping = false;
 
+	// ✅ Флаг: позиция зафиксирована после первого расчета
+	let isPositionLocked = $state(false);
+
 	// ✅ Отображаемое значение (label выбранной опции или placeholder)
 	let displayValue = $derived.by(() => {
 		if (value === '' || value === null || value === undefined) {
@@ -61,11 +64,14 @@
 	// ===== ОТКРЫТИЕ =====
 	function openDropdown() {
 		isOpen = true;
+		isPositionLocked = false; // ✅ Сбрасываем при открытии
 
 		setTimeout(() => {
 			updateDropdownPosition();
+			isPositionLocked = true; // ✅ Фиксируем после первого расчета
 		}, 0);
 	}
+
 	// ===== ЗАКРЫТИЕ =====
 	function closeDropdown() {
 		isOpen = false;
@@ -95,43 +101,36 @@
 		const spaceAbove = buttonRect.top;
 
 		const dropdownHeight = dropdownRect.height;
-		const dropdownWidth = dropdownRect.width;
 
 		// ✅ По вертикали
 		let positionV = 'below';
 		if (spaceBelow < dropdownHeight + 8) {
-			// Снизу мало места
 			if (spaceAbove >= dropdownHeight + 8) {
-				// Сверху достаточно — открываем вверх
 				positionV = 'above';
 			} else {
-				// Ни сверху, ни снизу — открываем вниз (как есть)
 				positionV = 'below';
 			}
 		}
 
-		// ✅ По горизонтали
-		let positionH = 'left';
-		const spaceRight = viewportWidth - buttonRect.left;
-		if (spaceRight < dropdownWidth + 8) {
-			// Справа мало места — выравниваем по правому краю
-			positionH = 'right';
-		}
+		// ✅ По горизонтали: ЦЕНТР ЭКРАНА
+		// Вычисляем left так, чтобы центр списка совпал с центром экрана
+		// Используем transform: translateX(-50%) для точного центрирования
+		const styles = ['position: fixed', 'left: 50%', 'transform: translateX(-50%)', 'z-index: 9999'];
 
-		// ✅ Применяем стили
-		const styles = [];
-
+		// ✅ Вертикаль
 		if (positionV === 'above') {
-			styles.push('bottom: 100%', 'margin-bottom: 4px');
+			const maxHeight = Math.max(150, spaceAbove - 16);
+			styles.push(`bottom: ${viewportHeight - buttonRect.top + 4}px`);
+			styles.push(`max-height: ${maxHeight}px`);
 		} else {
-			styles.push('top: 100%', 'margin-top: 4px');
+			const maxHeight = Math.max(150, spaceBelow - 16);
+			styles.push(`top: ${buttonRect.bottom + 4}px`);
+			styles.push(`max-height: ${maxHeight}px`);
 		}
 
-		if (positionH === 'right') {
-			styles.push('right: 0', 'left: auto');
-		} else {
-			styles.push('left: 0', 'right: auto');
-		}
+		// ✅ Гарантируем скролл
+		styles.push('overflow-y: auto');
+		styles.push('-webkit-overflow-scrolling: touch');
 
 		dropdownStyle = styles.join('; ');
 	}
@@ -147,13 +146,21 @@
 	// ===== POPSTATE (Android back) =====
 	$effect(() => {
 		if (isOpen) {
-			const handler = (event) => {
-				if (!event.state?.selectDropdown) {
-					isOpen = false;
-				}
+			const handler = (e) => {
+				// ✅ Игнорируем скролл внутри самого выпадающего списка
+				if (dropdownEl && e.target === dropdownEl) return;
+				if (dropdownEl && dropdownEl.contains(e.target)) return;
+
+				// ✅ Пересчитываем только при resize или скролле страницы
+				updateDropdownPosition();
 			};
-			window.addEventListener('popstate', handler);
-			return () => window.removeEventListener('popstate', handler);
+
+			window.addEventListener('resize', handler);
+			window.addEventListener('scroll', handler, true);
+			return () => {
+				window.removeEventListener('resize', handler);
+				window.removeEventListener('scroll', handler, true);
+			};
 		}
 	});
 
@@ -359,30 +366,35 @@
 			transform: rotate(-90deg);
 		}
 
-		/* ✅ Выпадающий список */
+		/* ✅ Выпадающий список  */
 		.select-dropdown {
-			position: absolute;
+			position: fixed;
 			z-index: 9999;
 
-			min-width: 100%;
-			width: max-content;
-			max-width: 90vw;
-			max-height: 50vh;
+			min-width: max-content;
+			width: 30vw;
+			max-width: 400px;
+			/* ✅ max-height, top, bottom, left, transform задаются в JS */
 
-			overflow-y: auto;
+			overflow-y: scroll;
 			-webkit-overflow-scrolling: touch;
 
-			padding: 6px 0;
+			padding: 0.5rem 3rem;
 
 			background-color: $clr-teal-soft;
 			border: 1px solid $clr-bg-dark;
 			border-radius: 8px;
 			box-shadow: $shadow-deep;
 
-			/* ✅ Анимация fade + scale */
+			/* ✅ Анимация fade + scale (без transform, т.к. transform используется для центрирования) */
 			animation: dropdownFadeIn 0.15s ease;
 
 			-webkit-tap-highlight-color: transparent;
+
+			// @media screen and (max-width: 767px) {
+			// 	position: fixed;
+			// 	top: 1rem;
+			// }
 		}
 
 		@keyframes dropdownFadeIn {
@@ -399,7 +411,7 @@
 		/* ✅ Опция */
 		.select-option {
 			display: block;
-			width: 100%;
+			min-width: 100%;
 
 			padding: 10px 15px;
 

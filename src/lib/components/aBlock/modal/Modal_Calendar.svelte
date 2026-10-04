@@ -87,7 +87,7 @@
 	.calendar-modal {
 		margin: 0 auto;
 		max-width: 640px;
-		overflow: hidden;
+		overflow: visible;
 		background: $clr-bg-card;
 		border-radius: 16px;
 		padding: 0.5rem;
