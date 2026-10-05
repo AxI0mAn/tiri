@@ -170,7 +170,7 @@
 	.sticker-name {
 		font-size: 22px;
 		font-weight: 600;
-		color: #1a1a1a;
+		color: $clr-text-main;
 		margin-bottom: 4px;
 		word-break: break-word;
 	}
@@ -191,7 +191,7 @@
 	.sticker-text {
 		font-size: 18px;
 		line-height: 1.6;
-		color: #1a1a1a;
+		color: $clr-text-main;
 		overflow-y: auto;
 		max-height: 100%;
 		padding: 8px;

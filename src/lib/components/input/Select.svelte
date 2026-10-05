@@ -105,9 +105,12 @@
 		// ✅ По вертикали
 		let positionV = 'below';
 		if (spaceBelow < dropdownHeight + 8) {
+			// Снизу мало места
 			if (spaceAbove >= dropdownHeight + 8) {
+				// Сверху достаточно — открываем вверх
 				positionV = 'above';
 			} else {
+				// Ни сверху, ни снизу — открываем вниз (как есть)
 				positionV = 'below';
 			}
 		}
@@ -116,6 +119,8 @@
 		// Вычисляем left так, чтобы центр списка совпал с центром экрана
 		// Используем transform: translateX(-50%) для точного центрирования
 		const styles = ['position: fixed', 'left: 50%', 'transform: translateX(-50%)', 'z-index: 9999'];
+
+		// ✅ Применяем стили
 
 		// ✅ Вертикаль
 		if (positionV === 'above') {
