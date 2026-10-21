@@ -498,7 +498,7 @@
 	}
 
 	.error {
-		color: var(--clr-error, #e74c3c);
+		color: $clr-error;
 	}
 
 	/* Кнопки действий */
@@ -512,17 +512,17 @@
 	}
 
 	.form-actions :global(.btn-delete) {
-		background: var(--clr-error, #e74c3c) !important;
+		background: $clr-error !important;
 		color: $clr-white !important;
 	}
 
 	.form-actions :global(.btn-save) {
-		background: var(--clr-teal, #0d9488) !important;
+		background: $clr-teal !important;
 		color: $clr-white !important;
 	}
 
 	.form-actions :global(.btn-complete) {
-		background: var(--clr-success, #22c55e) !important;
+		background: $clr-success !important;
 		color: $clr-white !important;
 	}
 
@@ -538,7 +538,7 @@
 	}
 
 	.form-actions :global(.btn-reschedule) {
-		background: var(--clr-warning, #f59e0b) !important;
+		background: $clr-warning !important;
 		color: $clr-white !important;
 	}
 </style>

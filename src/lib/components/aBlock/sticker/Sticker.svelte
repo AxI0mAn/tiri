@@ -148,7 +148,7 @@
 
 	/* ✅ Фронтальная сторона — видима по умолчанию */
 	.sticker-front {
-		background: var(--sticker-color, rgb(246, 250, 252));
+		background: rgb(246, 250, 252);
 		transform: rotateY(0deg);
 	}
 
@@ -179,7 +179,7 @@
 		font-size: 16px;
 		color: rgba($clr-black-rgb, 0.6);
 		margin-bottom: 8px;
-		font-family: 'Courier New', monospace;
+		font-family: 'Inter', sans-serif;
 	}
 
 	.sticker-type {

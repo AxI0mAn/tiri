@@ -76,9 +76,6 @@
 	}
 
 	// Обработчик клика по кнопке отчета
-	// src/lib/components/aPage/day/AssemblyDay.svelte
-
-	// Обработчик клика по кнопке отчета
 	async function handleReportClick() {
 		// 1. Будущие дни — игнорируем
 		if (isFuture) {
@@ -274,7 +271,7 @@
 	}
 
 	.field_day::-webkit-scrollbar-thumb {
-		background: var(--clr-scrollbar, #ccc);
+		background: $clr-grey-rgb;
 		border-radius: 2px;
 	}
 

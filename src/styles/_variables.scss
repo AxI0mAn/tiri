@@ -136,6 +136,7 @@ $grad-btn-main: linear-gradient(215deg, $clr-bg-dark 0%, $clr-bg 50%, $clr-bg-da
 
 		--clr-black: 0, 0, 0;
 		--clr-white: 255, 255, 255;
+		--clr-grey-rgb: rgb(153, 153, 153);
 
 		// ===== ТЕНИ И ГЛУБИНА (мягче для светлой) =====
 		--shadow-inset-light: rgba($clr-white-rgb, 0.8);
@@ -153,6 +154,8 @@ $clr-black: #000000;
 $clr-black-rgb: var(--clr-black); // --clr-black: #000000;
 $clr-white: #ffffff;
 $clr-white-rgb: var(--clr-white); // --clr-white: #ffffff;
+$clr-grey: #999999;
+$clr-grey-rgb: var(--clr-grey-rgb);
 $clr-transparent: transparent;
 
 // =============================================================================

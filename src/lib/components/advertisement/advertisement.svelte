@@ -126,6 +126,7 @@
 {/if}
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	.banner-slider {
 		display: block;
 		position: relative;
@@ -171,7 +172,6 @@
 		position: relative;
 	}
 
-	
 	img {
 		width: 100%;
 		height: auto;
@@ -187,12 +187,12 @@
 	@keyframes shadowPulse {
 		0%,
 		100% {
-			box-shadow: 0 0 10px rgba(0, 255, 128, 0.4);
+			box-shadow: 0 0 10px rgba($clr-success-rgb, 0.4);
 		}
 		50% {
 			box-shadow:
-				0 0 25px rgba(0, 255, 128, 0.8),
-				inset 0 0 10px rgba(0, 255, 128, 0.2);
+				0 0 25px rgba($clr-success-rgb, 0.8),
+				inset 0 0 10px rgba($clr-success-rgb, 0.2);
 		}
 	}
 </style>

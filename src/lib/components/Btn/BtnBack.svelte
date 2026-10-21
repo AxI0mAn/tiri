@@ -45,7 +45,7 @@
 	.btn-back {
 		min-width: 40px;
 		min-height: 40px;
-		background-color: #0284c7;
+		background-color: $clr-info;
 		border: none;
 		border-radius: 50%; // Идеальный крyг
 		cursor: pointer;
@@ -61,7 +61,7 @@
 		opacity: 1;
 		z-index: 1000;
 		box-shadow:
-			0 4px 12px rgba(100, 116, 139, 0.4),
+			0 4px 12px rgba($clr-teal-soft, 0.4),
 			inset 0 2px 4px rgba($clr-white-rgb, 0.3);
 		svg {
 			fill: $clr-white;

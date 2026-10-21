@@ -43,7 +43,7 @@
 		justify-content: center;
 		width: 100%;
 		padding: 60px 20px;
-		color: #999;
+		color: $clr-grey;
 	}
 
 	.empty-icon {
@@ -58,7 +58,7 @@
 
 	.empty-hint {
 		font-size: 14px;
-		color: #bbb;
+		color: $clr-grey;
 	}
 
 	/* Адаптив */

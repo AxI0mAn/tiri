@@ -69,6 +69,10 @@
 				{#if xReportData}
 					<div class="report-content">
 						<div class="report-row">
+							<span class="label">Клиенты (всего):</span>
+							<span class="value">{xReportData.clients}</span>
+						</div>
+						<div class="report-row">
 							<span class="label">Касса (без чаевых):</span>
 							<span class="value">{xReportData.sum}</span>
 						</div>

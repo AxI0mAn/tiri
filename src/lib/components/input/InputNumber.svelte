@@ -8,6 +8,7 @@
 	 * @typedef {Object} Props
 	 * @property {number} [value=0]
 	 * @property {number} [min=0]
+	 * @property {number} [step=1]
 	 * @property {number} [max=Infinity]
 	 * @property {string} [label='']
 	 * @property {string} [customClass='']
@@ -18,6 +19,7 @@
 		value = $bindable(0),
 		min = 0,
 		max = Infinity,
+		step = 1,
 		label = '',
 		customClass = '',
 		disabled = false

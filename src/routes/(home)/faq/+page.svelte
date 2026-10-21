@@ -286,6 +286,7 @@
 </main>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	// src/styles/_homePages.scss
 	.faqPage {
 		color: $clr-teal-soft;

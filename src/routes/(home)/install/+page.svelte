@@ -130,6 +130,8 @@
 </main>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
+
 	// src/styles/_homePages.scss
 	.installPage {
 		color: rgba($clr-text-main-rgb, 0.8);

@@ -1101,6 +1101,7 @@
 
 <style lang="scss">
 	@use '../../../styles/_variables.scss' as *;
+
 	.admin-clear-page {
 		display: flex;
 		flex-direction: column;
@@ -1156,7 +1157,7 @@
 
 	/* Пароль */
 	.password-block {
-		border-left: 4px solid var(--clr-teal, #0d9488);
+		border-left: 4px solid $clr-teal;
 	}
 
 	.password-row {
@@ -1188,13 +1189,13 @@
 	.success {
 		margin: 8px 0 0 0;
 		font-size: 14px;
-		color: var(--clr-teal, #0d9488);
+		color: $clr-teal;
 		font-weight: 500;
 	}
 
 	/* Опасные блоки */
 	.danger-block {
-		border-left: 4px solid var(--clr-error, #e74c3c);
+		border-left: 4px solid $clr-error;
 	}
 
 	.row {
@@ -1225,7 +1226,7 @@
 		max-height: 400px; /* ← ограничиваем, чтобы не занимал всё */
 		display: flex;
 		flex-direction: column;
-		border-left: 4px solid var(--clr-info, #3b82f6);
+		border-left: 4px solid $clr-info;
 		margin-bottom: 16px;
 		overflow: hidden;
 	}
@@ -1258,7 +1259,7 @@
 	}
 
 	.log-container::-webkit-scrollbar-thumb {
-		background: var(--clr-scrollbar, #ccc);
+		background: $clr-grey;
 		border-radius: 2px;
 	}
 
@@ -1280,12 +1281,12 @@
 	}
 
 	.log-item.log-error {
-		background: var(--clr-error-light, #fde8e8);
+		background: $clr-bg-card;
 	}
 
 	.log-time {
 		flex-shrink: 0;
-		color: var(--clr-text-secondary, #888);
+		color: $clr-text-accent;
 		font-size: 12px;
 		font-weight: 500;
 	}
@@ -1310,7 +1311,7 @@
 
 	.badge-inactive {
 		background: $clr-bg;
-		color: var(--clr-text-secondary, #888);
+		color: $clr-text-accent;
 	}
 
 	/* Стили для модалки */
@@ -1338,7 +1339,7 @@
 	.modal-warning {
 		margin: 0 0 12px 0;
 		font-size: 15px;
-		color: var(--clr-text-secondary, #555);
+		color: $clr-text-accent;
 		line-height: 1.5;
 	}
 
@@ -1347,7 +1348,7 @@
 		margin: 12px 0 16px 0;
 		padding-left: 20px;
 		font-size: 14px;
-		color: var(--clr-text-secondary, #555);
+		color: $clr-text-accent;
 		list-style: none;
 	}
 
@@ -1358,10 +1359,10 @@
 	.modal-danger {
 		margin: 0 0 24px 0;
 		font-size: 15px;
-		color: var(--clr-error, #e74c3c);
+		color: $clr-error;
 		line-height: 1.6;
 		padding: 12px;
-		background: var(--clr-error-light, #fde8e8);
+		background: $clr-bg-card;
 		border-radius: 8px;
 	}
 
@@ -1372,21 +1373,22 @@
 	}
 
 	.modal-actions :global(.btn-cancel-modal) {
-		background: var(--clr-bg-primary, #f0f0f0) !important;
-		color: var(--clr-text-primary, #1a1a1a) !important;
+		background: $clr-bg !important;
+		color: $clr-text-accent !important;
 		padding: 10px 32px !important;
 		border-radius: 10px !important;
 	}
 
 	.modal-actions :global(.btn-confirm-reset) {
-		background: var(--clr-error, #e74c3c) !important;
+		background: $clr-error !important;
 		color: $clr-white !important;
 		padding: 10px 32px !important;
 		border-radius: 10px !important;
 	}
 
 	.modal-actions :global(.btn-confirm-reset):hover:not(:disabled) {
-		background: var(--clr-error-dark, #c0392b) !important;
+		background: $clr-error !important;
+		border-color: $clr-warning;
 	}
 
 	/* ===== Период ===== */
@@ -1429,7 +1431,7 @@
 
 	/* ✅ Стиль для кнопки "Обновить" */
 	:global(.btn-warning) {
-		background: var(--clr-warning, #f59e0b) !important;
+		background: $clr-warning !important;
 		color: $clr-white !important;
 		padding: 10px 20px !important;
 		border-radius: 10px !important;
@@ -1437,7 +1439,7 @@
 	}
 
 	:global(.btn-warning:hover:not(:disabled)) {
-		background: var(--clr-warning-dark, #d97706) !important;
+		background: $clr-error !important;
 	}
 
 	:global(.btn-warning:disabled) {
@@ -1463,7 +1465,7 @@
 
 	/* ===== Блок 6: Бэкап ===== */
 	.backup-block {
-		border-left: 4px solid var(--clr-info, #3b82f6);
+		border-left: 4px solid $clr-info;
 	}
 
 	.backup-row {
@@ -1494,16 +1496,16 @@
 
 	/* ===== Блок 0: Оффлайн ===== */
 	.offline-block {
-		border-left: 4px solid var(--clr-border, #ddd);
+		border-left: 4px solid $clr-white;
 		transition: border-color 0.3s ease;
 	}
 
 	.offline-block.offline-ready {
-		border-left-color: var(--clr-success, #22c55e);
+		border-left-color: $clr-success;
 	}
 
 	.offline-block.offline-not-ready {
-		border-left-color: var(--clr-error, #e74c3c);
+		border-left-color: $clr-error;
 	}
 
 	.offline-indicator {
@@ -1523,13 +1525,13 @@
 	}
 
 	.offline-indicator.offline-green {
-		background: rgba(34, 197, 94, 0.1);
-		color: var(--clr-success, #22c55e);
+		background: rgba($clr-success-rgb, 0.1);
+		color: $clr-success;
 	}
 
 	.offline-indicator.offline-red {
-		background: rgba(231, 76, 60, 0.1);
-		color: var(--clr-error, #e74c3c);
+		background: rgba($clr-error-rgb, 0.1);
+		color: $clr-error;
 	}
 
 	.offline-text {
@@ -1544,14 +1546,14 @@
 	}
 
 	.dot-green {
-		background: var(--clr-success, #22c55e);
-		box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+		background: $clr-success;
+		box-shadow: 0 0 12px rgba($clr-success-rgb, 0.6);
 		animation: pulse-green 2s ease-in-out infinite;
 	}
 
 	.dot-red {
 		background: $clr-error;
-		box-shadow: 0 0 12px rgba(231, 76, 60, 0.6);
+		box-shadow: 0 0 12px rgba($clr-error-rgb, 0.6);
 	}
 
 	@keyframes pulse-green {
@@ -1570,7 +1572,7 @@
 		width: 24px;
 		height: 24px;
 		border: 3px solid rgba($clr-black-rgb, 0.1);
-		border-top-color: var(--clr-teal, #0d9488);
+		border-top-color: $clr-teal;
 		border-radius: 50%;
 		animation: spin 0.8s linear infinite;
 		flex-shrink: 0;
@@ -1596,24 +1598,24 @@
 	}
 
 	.offline-details .warn {
-		color: var(--clr-error, #e74c3c);
+		color: $clr-error;
 		font-size: 12px;
 		margin-left: 4px;
 	}
 
 	/* Синее состояние — обновление */
 	.offline-block.offline-updating {
-		border-left-color: var(--clr-info, #3b82f6);
+		border-left-color: $clr-info;
 	}
 
 	.offline-indicator.offline-blue {
 		background: rgba(59, 130, 246, 0.1);
-		color: var(--clr-info, #3b82f6);
+		color: $clr-info;
 	}
 
 	.spinner-blue {
 		border-color: rgba(59, 130, 246, 0.2);
-		border-top-color: var(--clr-info, #3b82f6);
+		border-top-color: $clr-info;
 	}
 
 	.offline-hint {
@@ -1624,7 +1626,7 @@
 	}
 
 	:global(.btn-check) {
-		background: var(--clr-info, #3b82f6) !important;
+		background: $clr-info !important;
 		color: $clr-white !important;
 		padding: 8px 16px !important;
 		border-radius: 10px !important;
@@ -1632,7 +1634,7 @@
 	}
 
 	:global(.btn-backup) {
-		background: var(--clr-info, #3b82f6) !important;
+		background: $clr-info !important;
 		color: $clr-white !important;
 		padding: 10px 20px !important;
 		border-radius: 10px !important;
@@ -1640,7 +1642,7 @@
 	}
 
 	:global(.btn-restore) {
-		background: var(--clr-warning, #f59e0b) !important;
+		background: $clr-warning !important;
 		color: $clr-white !important;
 		padding: 10px 20px !important;
 		border-radius: 10px !important;
@@ -1648,39 +1650,40 @@
 	}
 
 	:global(.btn-warning) {
-		background: var(--clr-warning, #f59e0b) !important;
+		background: $clr-warning !important;
 		color: $clr-white !important;
 	}
 
 	:global(.btn-warning):hover:not(:disabled) {
-		background: var(--clr-warning-dark, #d97706) !important;
+		background: $clr-error !important;
 	}
 
 	/* Кнопки */
 	:global(.btn-primary) {
-		background: var(--clr-teal, #0d9488) !important;
+		background: $clr-teal !important;
 		color: $clr-white !important;
 	}
 
 	:global(.btn-success) {
-		background: var(--clr-teal, #0d9488) !important;
+		background: $clr-teal !important;
 		color: $clr-white !important;
 		opacity: 0.7 !important;
 		cursor: default !important;
 	}
 
 	:global(.btn-danger) {
-		background: var(--clr-error, #e74c3c) !important;
+		background: $clr-error !important;
 		color: $clr-white !important;
 	}
 
 	:global(.btn-danger):hover:not(:disabled) {
-		background: var(--clr-error-dark, #c0392b) !important;
+		background: $clr-error !important;
+		border-color: $clr-warning;
 	}
 
 	:global(.btn-secondary) {
-		background: var(--clr-bg-primary, #f0f0f0) !important;
-		color: var(--clr-text-primary, #1a1a1a) !important;
+		background: $clr-bg !important;
+		color: $clr-text-accent !important;
 	}
 
 	/* Адаптив */

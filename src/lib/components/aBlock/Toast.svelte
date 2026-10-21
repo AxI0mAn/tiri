@@ -50,6 +50,7 @@
 {/if}
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	.toast {
 		position: fixed;
 		top: 20%;
@@ -69,19 +70,19 @@
 	}
 
 	.toast.success {
-		border-left: 4px solid var(--clr-teal, #0d9488);
+		border-left: 4px solid var($clr-teal, #0d9488);
 	}
 
 	.toast.error {
-		border-left: 4px solid var(--clr-error, #e74c3c);
+		border-left: 4px solid var($clr-error, #e74c3c);
 	}
 
 	.toast.warning {
-		border-left: 4px solid var(--clr-warning, #f59e0b);
+		border-left: 4px solid var($clr-warning, #f59e0b);
 	}
 
 	.toast.info {
-		border-left: 4px solid var(--clr-info, #3b82f6);
+		border-left: 4px solid var($clr-info, #3b82f6);
 	}
 
 	.icon {

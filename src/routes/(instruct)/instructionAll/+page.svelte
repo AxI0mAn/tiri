@@ -315,7 +315,7 @@
 
 	em {
 		// аналогично .font-digits
-		color: red;
+		color: $clr-error;
 		font-family: 'Rajdhani', sans-serif;
 		font-variant-numeric: tabular-nums;
 		letter-spacing: 0.02em;

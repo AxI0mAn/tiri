@@ -16,7 +16,7 @@ export class ReportShareService {
 
     // Заголовок
     lines.push(`Z-отчет за ${dateStr}`);
-    lines.push(`мастер: ${master || 'Raccon'}.`);
+    lines.push(`мастер: ${master || 'Tirix'}.`);
     lines.push('=====================');
     lines.push('');
 

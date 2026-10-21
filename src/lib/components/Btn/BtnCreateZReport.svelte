@@ -213,19 +213,19 @@
 	.modal-warning .date {
 		font-size: 16px;
 		font-weight: 600;
-		color: var(--clr-text-secondary, #555);
+		color: $clr-text-accent;
 		margin-bottom: 8px;
 	}
 
 	.modal-warning p {
 		margin: 0 0 4px 0;
 		font-size: 15px;
-		color: var(--clr-text-secondary, #555);
+		color: $clr-text-accent;
 	}
 
 	.modal-warning .hint {
 		font-size: 13px;
-		color: var(--clr-text-secondary, #888);
+		color: $clr-text-accent;
 		margin-bottom: 20px;
 		margin-top: 12px;
 	}
@@ -249,7 +249,7 @@
 	.modal-confirm p {
 		margin: 0 0 20px 0;
 		font-size: 15px;
-		color: var(--clr-text-secondary, #555);
+		color: $clr-text-accent;
 		line-height: 1.5;
 	}
 
@@ -260,21 +260,21 @@
 	}
 
 	.modal-actions :global(.btn-close-modal) {
-		background: var(--clr-teal, #0d9488) !important;
+		background: $clr-teal !important;
 		color: $clr-white !important;
 		padding: 10px 32px !important;
 		border-radius: 10px !important;
 	}
 
 	.modal-actions :global(.btn-cancel-modal) {
-		background: var(--clr-bg-primary, #f0f0f0) !important;
-		color: var(--clr-text-primary, #1a1a1a) !important;
+		background: $clr-bg !important;
+		color: $clr-text-main !important;
 		padding: 10px 32px !important;
 		border-radius: 10px !important;
 	}
 
 	.modal-actions :global(.btn-confirm-modal) {
-		background: var(--clr-teal, #0d9488) !important;
+		background: $clr-teal !important;
 		color: $clr-white !important;
 		padding: 10px 32px !important;
 		border-radius: 10px !important;

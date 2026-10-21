@@ -149,6 +149,8 @@
 </div>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
+	
 	.contact-page {
 		color: $clr-teal;
 		padding: 20px;
@@ -165,7 +167,6 @@
 		gap: 2rem;
 
 		.headerSlogan {
-			// color: $clr-pink;
 			font-size: 3rem;
 			display: inline-block;
 			margin: 0;

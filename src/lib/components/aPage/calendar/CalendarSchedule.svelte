@@ -490,8 +490,8 @@
 				justify-content: center;
 				border-radius: 50%;
 				background: none;
-				border: 4px double rgba(215, 183, 0, 0.85);
-				outline: 2px double rgba(215, 183, 0, 0.85);
+				border: 4px double rgba($clr-warning-rgb, 0.85);
+				outline: 2px double rgba($clr-warning-rgb, 0.85);
 			}
 		}
 
