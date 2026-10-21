@@ -4,7 +4,7 @@
 	// @ts-ignore
 	import { base } from '$app/paths';
 	// @ts-ignore
-	import { goto } from '$app/navigation'; // Импортируем нормально наверх
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
@@ -198,7 +198,6 @@
 
 <style lang="scss">
 	@use '../../../../styles/_variables.scss' as *;
-
 	@use 'sass:color';
 
 	.show-card {
@@ -254,7 +253,7 @@
 	.time {
 		font-size: 14px;
 		font-weight: 500;
-		color: var(--clr-text-secondary, #555);
+		color: $clr-text-accent;
 		min-width: 50px;
 		flex-shrink: 0;
 	}
@@ -302,8 +301,8 @@
 		height: 32px;
 		border: none;
 		border-radius: 50%;
-		background: rgba(231, 76, 60, 0.1);
-		color: var(--clr-error, #e74c3c);
+		background: rgba($clr-error-rgb, 0.1);
+		color: $clr-error;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -313,7 +312,7 @@
 	}
 
 	.delete-btn:hover {
-		background: rgba(231, 76, 60, 0.2);
+		background: rgba($clr-error-rgb, 0.2);
 		transform: scale(1.1);
 	}
 </style>

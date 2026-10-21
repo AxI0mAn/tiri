@@ -275,6 +275,8 @@ Your secrets are yours alone!"
 />
 
 <style lang="scss">
+	@use '../styles/_variables.scss' as *;
+
 	.page-wrapper {
 		width: 100%;
 	}

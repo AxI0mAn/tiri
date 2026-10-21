@@ -155,6 +155,7 @@
 </div>
 
 <style lang="scss">
+	@use '../../../../styles/_variables.scss' as *;
 	.swipe-day {
 		margin: 0 auto;
 		position: relative;

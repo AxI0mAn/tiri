@@ -202,6 +202,7 @@
 
 <style lang="scss">
 	@use '../styles/variables';
+
 	.testComponents {
 		width: 100%;
 		display: flex;

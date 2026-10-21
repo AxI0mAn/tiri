@@ -293,7 +293,7 @@
 
 		&:hover {
 			box-shadow:
-				inset 3px 3px 6px rgba(250, 250, 250, 0.95),
+				inset 3px 3px 6px rgba($clr-white-rgb, 0.95),
 				inset -3px -3px 6px rgba($clr-white-rgb, 0.15);
 			.oval-outer,
 			.oval-inner {
@@ -309,7 +309,7 @@
 		&.action {
 			transform: scale(0.95);
 			box-shadow:
-				inset 3px 3px 6px rgba(250, 250, 250, 0.95),
+				inset 3px 3px 6px rgba($clr-white-rgb, 0.95),
 				inset -3px -3px 6px rgba($clr-white-rgb, 0.15);
 
 			.oval-outer,

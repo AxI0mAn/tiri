@@ -356,6 +356,7 @@
 
 <style lang="scss">
 	@use '../../../styles/_variables.scss' as *;
+
 	.z-report-page {
 		display: flex;
 		flex-direction: column;
@@ -445,7 +446,7 @@
 	}
 
 	.error {
-		color: var(--clr-error, #e74c3c);
+		color: $clr-error;
 	}
 
 	/* Вкладки */
@@ -463,7 +464,7 @@
 	}
 
 	.tabs::-webkit-scrollbar-thumb {
-		background: var(--clr-scrollbar, #ccc);
+		background: $clr-grey;
 		border-radius: 2px;
 	}
 
@@ -562,7 +563,7 @@
 		align-items: center;
 		padding: 4px 0;
 		font-size: 16px;
-		color: var(--clr-text-main, #1a1a1a);
+		color: $clr-text-main;
 		border-bottom: 1px dotted $clr-white;
 	}
 
@@ -589,7 +590,7 @@
 
 	.hint {
 		font-size: 12px;
-		color: var(--clr-text-secondary, #888);
+		color: $clr-text-accent;
 		margin-bottom: 8px;
 		padding-left: 4px;
 	}
@@ -600,18 +601,18 @@
 
 	/* font-digits */
 	:global(.font-digits) {
-		font-family: 'Courier New', monospace;
+		font-family:'Inter', sans-serif;
 		letter-spacing: 0.5px;
 	}
 
 	/* Кнопки */
 	.btn-save {
-		background: var(--clr-teal-soft, #e6f5f0) !important;
-		color: var(--clr-teal, #0d9488) !important;
+		background: $clr-teal-soft !important;
+		color: $clr-teal !important;
 	}
 
 	.btn-send {
-		background: var(--clr-teal, #0d9488) !important;
+		background: $clr-teal !important;
 		color: $clr-white !important;
 	}
 </style>

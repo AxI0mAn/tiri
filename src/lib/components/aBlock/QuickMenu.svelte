@@ -47,6 +47,7 @@
 </div>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	.now_mode_container {
 		z-index: 9999; // Поверх анимации страниц
 	}

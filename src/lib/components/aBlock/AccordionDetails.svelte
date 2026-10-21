@@ -69,6 +69,7 @@
 </details>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
 	details {
 		overflow: hidden;
 		summary {
@@ -87,8 +88,8 @@
 				content: '';
 				width: 8px;
 				height: 8px;
-				border-right: 2px solid currentColor;
-				border-bottom: 2px solid currentColor;
+				border-right: 2px solid $clr-teal-soft;
+				border-bottom: 2px solid $clr-teal-soft;
 				transform: rotate(45deg);
 				transition: transform 0.3s ease;
 			}

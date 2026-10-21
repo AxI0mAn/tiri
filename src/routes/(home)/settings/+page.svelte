@@ -62,8 +62,9 @@
 </div>
 
 <style lang="scss">
+	@use '../../../styles/_variables.scss' as *;
+
 	.settings-page {
-		// color: $clr-teal; // #00d1ff
 		padding: 20px;
 		font-family: sans-serif;
 		min-height: 100vh;

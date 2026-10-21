@@ -46,7 +46,7 @@ export class CalculationsDay {
       }
     }
 
-    // Все заметки имеют myPercent: 100
+    // Все заметки имеют myPercent: 100 
     return true;
   }
 
@@ -350,6 +350,7 @@ export class CalculationsDay {
    */
   report_X() {
     try {
+      let clients = 0;
       let sum = 0;
       let my = 0;
       let give = 0;
@@ -359,12 +360,13 @@ export class CalculationsDay {
         const entryPercent = this.cardMyPart(entry);  // cardMyPart(entry) - Вычисляет мою долю от того, что заплатил клиент (без чаевых)
         const tips = this.cardTips(entry);  // cardTips(entry) - Получает чаевые из заметки
 
-
+        clients = this.allThisDayNotes_dateStr.length; // Сколько клиентов на сейчас
         sum += entrySum; // Сколько заплатили клиенты без чаевых
         my += (tips + entryPercent); // Моя сумма = чаевые + моя часть
         give += (entrySum - entryPercent);  // сколько нужно оплатить за аренду    
       }
       return {
+        clients: Math.round(clients),
         sum: Math.round(sum),
         my: Math.round(my),
         give: Math.round(give)

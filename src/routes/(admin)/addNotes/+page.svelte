@@ -420,6 +420,7 @@
 
 <style lang="scss">
 	@use '../../../styles/_variables.scss' as *;
+
 	.import-page {
 		display: flex;
 		flex-direction: column;
@@ -491,7 +492,7 @@
 
 	.date-input-small:focus {
 		outline: none;
-		border-color: var(--clr-teal, rgb(13, 148, 136));
+		border-color: $clr-teal;
 	}
 
 	.date-sep {
@@ -503,7 +504,7 @@
 
 	.global-date-row .hint {
 		font-size: 13px;
-		color: var(--clr-text-secondary, #888);
+		color: $clr-text-accent;
 	}
 
 	/* ===== Details ===== */
@@ -540,7 +541,7 @@
 		padding: 8px 16px;
 		border: none;
 		border-radius: 8px;
-		background: var(--clr-teal, rgb(13, 148, 136));
+		background: $clr-teal;
 		color: $clr-white;
 		cursor: pointer;
 		font-weight: 600;
@@ -573,11 +574,11 @@
 		border-radius: 12px;
 		padding: 12px 16px;
 		box-shadow: 0 1px 3px rgba($clr-black-rgb, 0.06);
-		border: 1px solid var(--clr-border, #eee);
+		border: 1px solid $clr-bg;
 	}
 
 	.block.even {
-		background: var(--clr-bg-secondary, #fafafa);
+		background: $clr-bg-card;
 	}
 
 	.block-header {
@@ -598,7 +599,7 @@
 		height: 28px;
 		border: none;
 		border-radius: 50%;
-		background: var(--clr-error, $clr-error);
+		background: $clr-error;
 		color: $clr-white;
 		cursor: pointer;
 		display: flex;
@@ -632,13 +633,13 @@
 		border: 1px solid $clr-bg;
 		border-radius: 6px;
 		font-size: 14px;
-		background: var(--clr-bg-primary, $clr-white);
+		background: $clr-white;
 	}
 
 	.field-group input:focus,
 	.field-group select:focus {
 		outline: none;
-		border-color: var(--clr-teal, rgb(13, 148, 136));
+		border-color: $clr-teal;
 	}
 
 	/* ===== Автоматический ввод ===== */
@@ -669,14 +670,14 @@
 
 	.auto-textarea:focus {
 		outline: none;
-		border-color: var(--clr-teal, rgb(13, 148, 136));
+		border-color: $clr-teal;
 	}
 
 	.btn-generate {
 		padding: 8px 20px;
 		border: none;
 		border-radius: 8px;
-		background: var(--clr-warning, #f59e0b);
+		background: $clr-warning;
 		color: $clr-white;
 		cursor: pointer;
 		font-weight: 600;
@@ -684,12 +685,12 @@
 	}
 
 	.btn-generate:hover {
-		background: var(--clr-warning-dark, #d97706);
+		background: $clr-error;
 	}
 
 	.auto-hint {
 		font-size: 12px;
-		color: var(--clr-text-secondary, #888);
+		color: $clr-text-accent;
 		margin: 0;
 	}
 
@@ -712,7 +713,7 @@
 		padding: 12px;
 		border: none;
 		border-radius: 10px;
-		background: var(--clr-teal, rgb(13, 148, 136));
+		background: $clr-teal;
 		color: $clr-white;
 		font-size: 16px;
 		font-weight: 600;
@@ -733,7 +734,7 @@
 		padding: 12px 20px;
 		border: none;
 		border-radius: 10px;
-		background: var(--clr-info, #3b82f6);
+		background: $clr-info;
 		color: $clr-white;
 		font-size: 16px;
 		font-weight: 600;
@@ -743,7 +744,7 @@
 	}
 
 	.btn-view-day:hover:not(:disabled) {
-		background: var(--clr-info-dark, #2563eb);
+		background: $clr-success;
 	}
 
 	.btn-view-day:disabled {
