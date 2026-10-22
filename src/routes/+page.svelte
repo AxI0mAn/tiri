@@ -229,12 +229,14 @@
 		align-items: center;
 		gap: 0.5rem;
 		span {
+			color: $clr-text-main;
 			font-size: calc(0.4rem + 0.6vw);
 			text-transform: uppercase;
 			font-weight: 777;
 		}
 	}
 	.testText {
+		color: $clr-text-main;
 		display: flex;
 		flex-flow: column nowrap;
 		justify-content: center;

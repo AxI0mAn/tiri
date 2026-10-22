@@ -255,7 +255,7 @@
 			position: absolute;
 			left: 0;
 			/* Динамический расчет сдвига овала в зависимости от --btn-size */
-			bottom: -0.5rem;
+			bottom: -0.35rem;
 			z-index: 2;
 
 			.oval-outer {

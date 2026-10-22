@@ -5,7 +5,7 @@
   background: linear-gradient(0deg,
       color.adjust($rgb_color, $lightness: -50%) 0%,
       color.adjust($rgb_color, $lightness: -10%) 5%,
-      $color 50%,
+      $color 15%,
       color.adjust($rgb_color, $lightness: 10%) 95%,
       color.adjust($rgb_color, $lightness: 75%) 100%)
 }
