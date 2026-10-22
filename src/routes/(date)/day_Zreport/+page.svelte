@@ -259,13 +259,13 @@
 								<span class="label">Валовый</span>
 								<span class="value font-digits">{reportData.payments.gross}</span>
 							</div>
-							<div class="hint">Всё что получено от клиентов (оплата и чаевые).</div>
+							<div class="hint">Всё что получено от клиентов (работа и чаевые).</div>
 
 							<div class="row">
 								<span class="label">Работа</span>
-								<span class="value font-digits">{reportData.payments.myPartsAll}</span>
+								<span class="value font-digits">{reportData.payments.summary}</span>
 							</div>
-							<div class="hint">Заработано после оплаты аренды. (без чаевых)</div>
+							<div class="hint">Заработано до оплаты аренды. (без чаевых)</div>
 
 							<div class="row">
 								<span class="label">Чаевые</span>
@@ -279,7 +279,7 @@
 									>{reportData.payments.allMy}</span
 								>
 							</div>
-							<div class="hint">Заработано за день (с чаевыми).</div>
+							<div class="hint">Заработано за день (с чаевыми) после оплаты аренды.</div>
 						</div>
 					</div>
 				{/if}
@@ -601,7 +601,7 @@
 
 	/* font-digits */
 	:global(.font-digits) {
-		font-family:'Inter', sans-serif;
+		font-family: 'Inter', sans-serif;
 		letter-spacing: 0.5px;
 	}
 

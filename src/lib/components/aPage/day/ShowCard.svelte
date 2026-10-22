@@ -232,7 +232,7 @@
 	}
 
 	.show-card.is-allMy {
-		@include gradient_bg-card($clr-white, rgb(134, 237, 242)); //  $clr-white and $clr-teal-soft
+		@include gradient_bg-card($clr-info, rgb(134, 237, 242)); //  $clr-info and $clr-teal-soft
 	}
 
 	.show-card.is-pay {
@@ -240,28 +240,28 @@
 	}
 
 	.show-card.is-profit {
-		@include gradient_bg-card($clr-success, rgb(34, 197, 94)); // $clr-success and $clr-success
+		@include gradient_bg-card($clr-info, rgb(34, 197, 94)); // $clr-info and $clr-success
 	}
 
 	.cardInfo {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 1vw;
+		gap: calc(1vw + 0.25rem);
+	}
+
+	.show-card.is-profit .cardInfo span {
+		color: rgb(61, 30, 8); // Тёмно-коричневый clr-text-main:
+		font-size: 1.35rem;
+		font-weight: 707;
 	}
 
 	.time {
-		font-size: 14px;
-		font-weight: 500;
-		color: $clr-text-accent;
 		min-width: 50px;
 		flex-shrink: 0;
 	}
 
 	.sum {
-		font-size: 16px;
-		font-weight: 600;
-		color: $clr-text-main;
 		flex: 1;
 		min-width: 40px;
 	}
@@ -273,7 +273,7 @@
 		border: none;
 		border-radius: 50%;
 		background: rgba($clr-black-rgb, 0.05);
-		color: $clr-text-accent;
+		color: rgb(61, 30, 8); // Тёмно-коричневый clr-text-main:
 		cursor: pointer;
 		display: flex;
 		align-items: center;

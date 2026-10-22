@@ -395,7 +395,7 @@ export class CalculationsDay {
       const tips = this.calcul_tips();           // Чаевые за день
       const myPartsAll = this.calcul_myParts();   // Мой доход без чаевых
       // const my = this.calcul_my(summary, allGive, changeGive); // Доход за весь день (summary - allGive + changeGive)
-      const allMy = this.calcul_allMy(tips, myPartsAll); // Доход с чаевыми ( tips + (summary - allGive + changeGive) )
+      const allMy = this.calcul_allMy(tips, myPartsAll); // Доход с чаевыми ( tips + myPartsAll)
 
       // ===== КЛИЕНТСКАЯ СТАТИСТИКА =====
       const heads = this.allThisDayNotes_dateStr.length; // Всего клиентов (заметок)
