@@ -1,12 +1,7 @@
 <script>
 	// src/routes/(home)/install/+page.svelte
 	import BtnBack from '$lib/components/Btn/BtnBack.svelte';
-	import BtnText from '$lib/components/Btn/BtnText.svelte';
 
-	import { appStore } from '$lib/store/appStore.svelte';
-	import { installPwaAction } from '$lib/utils/initPwaLogic';
-
-	import InstIcon from '$lib/assets/svgIcon/install_desktop.svg?raw';
 	// кнопка ВВЕРХ
 	import { createScrollTopButton } from '$lib/utils/createScrollTopButton';
 

@@ -2,7 +2,7 @@ import { browser, STORAGE_KEY_NOTES, STORAGE_KEY_REMINDS, REMIND_FIELD, construc
 
 
 /**
- * Пересобирает схему reminder на основе актуальной схемы note
+ * Пересобирает  схему reminder на основе актуальной схемы note
  * Вызывать только когда пользователь изменил настройки и уходит со страницы настроек!
  */
 

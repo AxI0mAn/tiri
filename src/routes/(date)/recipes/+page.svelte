@@ -4,6 +4,8 @@
 	// @ts-ignore
 	import { base } from '$app/paths';
 
+	import { convertFormatDate } from '$lib/utils/dateHelpers';
+
 	import HomeHeader from '$lib/components/aBlock/header/homeHeader.svelte';
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
@@ -168,13 +170,6 @@
 		toastStore.show(result.message, result.success ? 'success' : 'error');
 	}
 
-	// ===== ФОРМАТИРОВАНИЕ ДАТЫ =====
-	function formatDate(dateStr) {
-		if (!dateStr) return '';
-		const [year, month, day] = dateStr.split('-');
-		return `${day}.${month}.${year}`;
-	}
-
 	onMount(() => {
 		loadRecipes();
 	});
@@ -249,9 +244,9 @@
 									<p class="recipe-message">{recipe.value?.message || 'Нет текста'}</p>
 
 									<div class="recipe-meta">
-										Создан: {formatDate(recipe.dateCreate)}
+										Создан: {convertFormatDate(recipe.dateCreate)}
 										{#if recipe.dateStr !== recipe.dateCreate}
-											· Изменён: {formatDate(recipe.dateStr)}
+											· Изменён: {convertFormatDate(recipe.dateStr)}
 										{/if}
 									</div>
 

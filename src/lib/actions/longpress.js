@@ -1,7 +1,8 @@
 // src/lib/actions/longpress.js
-// обрабатывает длительное нажатие на элемент
+
 /**
  * Svelte Action для определения долгого нажатия.
+ * обрабатывает длительное нажатие на элемент.
  * Генерирует событие 'longpress' при удержании элемента. 
  * @param {HTMLElement} node - Элемент, к которому привязывается действие
  * @param {number} [threshold=500] - Время удержания в мс (по умолчанию 500)
@@ -11,8 +12,7 @@
  * }}
  */
 
-
-export function longpress(node, threshold = 1000) {
+export function longpress(node, threshold = 700) {
   let timer;
 
   const handleStart = () => {

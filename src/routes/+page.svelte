@@ -8,14 +8,15 @@
 	// @ts-ignore
 	import { base } from '$app/paths';
 
-	// может быть открыт только один <details>
+	// может быть открыт только один  <details>
 	import { onMount } from 'svelte';
+	import AccordionDetails from '$lib/components/aBlock/AccordionDetails.svelte';
 	import { initAccordion } from '$lib/utils/initAccordion';
 
-	onMount(() => {
-		// Код внутри onMount никогда не запустится на сервере
-		initAccordion(); // аккордеон из нескольких <details> для домашнего каталога
-	});
+	// Svelte автоматически вызовет возвращённую функцию при размонтировании
+	// onMount ожидает, что колбэк может вернуть cleanup-функцию.
+	// Svelte вызовет её при размонтировании компонента — все слушатели будут сняты автоматически.
+	onMount(() => initAccordion());
 
 	// Double Tap Issue - перехватывает первый клик на мобильном устройстве
 	import { initTouchHover } from '$lib/utils/initTouchHover';
