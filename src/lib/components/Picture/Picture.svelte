@@ -38,7 +38,7 @@
 	 * src/lib/components/Picture/Picture.svelte
 	 * компонент интеграции картинок.
 	 * или webp или jpeg
-	 * оптимизация в виде ленивой загрузки и
+	 * оптимизация в виде ленивой загрузки
 	 */
 	/**
 	 * @typedef {Object} Props

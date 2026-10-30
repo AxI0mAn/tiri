@@ -144,12 +144,4 @@
 		font-weight: 600;
 		color: $clr-text-main;
 	}
-
-	.close-btn {
-		margin: 0 auto;
-	}
-
-	.close-btn:hover {
-		background: $clr-teal;
-	}
 </style>

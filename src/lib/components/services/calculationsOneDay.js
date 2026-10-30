@@ -463,13 +463,11 @@ export class CalculationsDay {
     }
   }
 
-  // src/lib/components/services/calculationsOneDay.js
-
   /**
-   * Сохраняет Z-отчет в IndexedDB (хранилище report_day)
-   * @param {string} dateStr - дата в формате "YYYY-MM-DD"
-   * @returns {Promise<void>}
-   */
+  * Сохраняет Z-отчет в IndexedDB (хранилище report_day)
+  * @param {string} dateStr - дата в формате "YYYY-MM-DD"
+  * @returns {Promise<void>}
+  */
   async saveReport_Z(dateStr) {
     try {
       //  Рассчитываем отчет

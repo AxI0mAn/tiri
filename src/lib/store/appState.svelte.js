@@ -5,7 +5,7 @@ import { openModalWithBack } from "$lib/utils/modalHelpers";
 
 class AppState {
   /** @type {string} */
-  now_mode = $state('tirix');        // Текущий режим приложения: 'tiri' | 'z_report' | 'edit' | 'calendar'. Определяет, какая страница/режим сейчас активны: 'tiri' (главный), 'z_report' (страница Z-отчета), 'edit' (форма редактирования), 'calendar' (календарь). Используется для навигации и условного рендеринга.
+  now_mode = $state('tiri');        // Текущий режим приложения: 'tiri' | 'z_report' | 'edit' | 'calendar'. Определяет, какая страница/режим сейчас активны: 'tiri' (главный), 'z_report' (страница Z-отчета), 'edit' (форма редактирования), 'calendar' (календарь). Используется для навигации и условного рендеринга.
 
   /** @type {boolean} */
   showSchedule = $state(false);     // Кнопка РЕДАКТИРОВАТЬ расписание (рабочие дни) в календаре

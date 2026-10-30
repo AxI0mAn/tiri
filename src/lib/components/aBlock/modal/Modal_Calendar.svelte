@@ -4,8 +4,7 @@
 	import { pushState } from '$app/navigation';
 
 	import ModalBackdrop from './ModalBackdrop.svelte';
-	import CalendarSchedule from '$lib/components/aPage/calendar/CalendarSchedule.svelte';
-	import { openModalWithBack } from '$lib/utils/modalHelpers.js';
+	import CalendarSchedule from '$lib/components/aPage/calendar/CalendarSchedule.svelte'; 
 
 	/**
 	 * @typedef {Object} Props
@@ -41,10 +40,7 @@
 	// ✅ Поддержка кнопки "Назад" браузера
 	$effect(() => {
 		if (isOpen) {
-			// Добавляем состояние в историю при открытии
-			// if (typeof window !== 'undefined' && window.history) {
-			// 	window.history.pushState({ calendarModal: true }, '');
-			// }
+			// Добавляем состояние в историю при открытии 
 			if (typeof window !== 'undefined') {
 				pushState({ calendarModal: true }, '');
 			}

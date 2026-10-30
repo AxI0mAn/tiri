@@ -29,6 +29,17 @@ export function formatDate(date) {
 }
 
 /**
+ * Форматирует строку "YYYY-MM-DD" в строку "DD.MM.YYYY" (локальное время)
+ * @param {string} dateStr - строка даты "YYYY-MM-DD"
+ * @returns {string} - дата в формате "DD.MM.YYYY"
+ */
+export function convertFormatDate(dateStr) {
+  if (!dateStr) return '';
+  const [year, month, day] = dateStr.split('-');
+  return `${day}.${month}.${year}`;
+}
+
+/**
  * Форматирует timestamp в время ЧЧ:ММ (локальное время)
  * @param {number} timestamp - метка времени в миллисекундах
  * @returns {string} - время в формате "ЧЧ:ММ"

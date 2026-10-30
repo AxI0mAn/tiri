@@ -150,7 +150,7 @@
 
 <style lang="scss">
 	@use '../../../styles/_variables.scss' as *;
-	
+
 	.contact-page {
 		color: $clr-teal;
 		padding: 20px;

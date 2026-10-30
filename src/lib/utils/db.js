@@ -1,14 +1,44 @@
-// src/lib/utils/db.js
+/**
+ * @file src/lib/utils/db.js 
+ *
+ * Открывает (или создаёт при первом запуске) базу данных IndexedDB и
+ * применяет необходимые миграции схемы.
+ *
+ * Схема версионируется через `DB_VERSION`: при увеличении версии браузер
+ * вызывает `onupgradeneeded`, где создаются недостающие объектные хранилища
+ * и индексы. Существующие данные при этом не удаляются.
+ *
+ * Важно: изменения в этом файле, затрагивающие структуру хранилищ или
+ * индексов, **обязательно** должны сопровождаться инкрементом `DB_VERSION`
+ * в константах модуля, иначе миграция не запустится.
+ */
 
 import { formatDateISOLocal } from '$lib/utils/dateHelpers.js';
 
 const DB_NAME = 'LiveTiriDB';
 const DB_VERSION = 4;
 
+/**
+ * Промис, открывающий базу данных и применяющий миграции схемы.
+ *
+ * При первом запуске (или при повышении `DB_VERSION`) создаются хранилища
+ * `entries`, `report_day`, `report_month`, `services`, `owner_booker`,
+ * `owner_worker`, `other` и связанные с ними индексы.
+ *
+ * Для уже существующих хранилищ выполняется «мягкая» миграция: недостающие
+ * индексы добавляются без потери данных (например, `by_type` в `entries`
+ * появился в версии 4).
+ */
 export function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
-
+    /**
+        * Вызывается браузером при создании БД или повышении версии.
+        * Внутри транзакции `versionchange` создаёт недостающие хранилища
+        * и индексы. Существующие данные не трогает.
+        *
+        * @returns {void}
+        */
     request.onupgradeneeded = () => {
       const db = request.result;
       const tx = request.transaction;
@@ -20,7 +50,8 @@ export function openDB() {
         store.createIndex('by_month', 'yearMonth', { unique: false });
         store.createIndex('by_type', 'type', { unique: false });
       } else {
-        // ✅ ДОБАВИТЬ by_type, если нет (для миграции с версии 3)
+        // ✅ Миграция с версии 3: добавляем by_type, если его ещё нет.
+        // Данные не пересоздаются — индекс строится поверх существующих записей.
         const store = tx.objectStore('entries');
         if (!store.indexNames.contains('by_type')) {
           store.createIndex('by_type', 'type', { unique: false });
@@ -124,6 +155,39 @@ export async function saveEntry(entry) {
   });
 }
 
+/**
+ *  getEntriesByDate 
+ *
+ * Получение записей из хранилища `entries` по конкретной дате,
+ * с фильтрацией по типу.
+ *
+ * Использует составной подход: сначала IndexedDB-индекс `by_date` отбирает
+ * все записи за указанную дату (быстро, на уровне движка), затем результат
+ * фильтруется по `type` в JS. Такой вариант предпочтён отдельному индексу
+ * `by_date+type`, чтобы не плодить схемы ради одного запроса — фильтрация
+ * по типу на уже отобранной выборке стоит копейки.
+ *
+ * 
+ * Возвращает все записи за указанную дату, отфильтрованные по типу.
+ *
+ * Записи ищутся через индекс `by_date` (поле `dateStr`), затем в памяти
+ * оставляются только элементы с `type === type`.
+ *
+ * @param {string} dateStr - дата в формате `YYYY-MM-DD` (совпадает с полем `dateStr` записи)
+ * @param {string} [type='note'] - тип записи для фильтрации (например, `'note'`, `'task'`, `'income'`)
+ * @returns {Promise<Array<Object>>} массив записей; пустой массив, если за дату ничего нет
+ * @throws {DOMException} если транзакция или запрос к IndexedDB завершились ошибкой
+ *
+ * @example
+ * // Все заметки за 15 марта 2025
+ * const notes = await getEntriesByDate('2025-03-15');
+ *
+ * @example
+ * // Только задачи за ту же дату
+ * const tasks = await getEntriesByDate('2025-03-15', 'task');
+ *
+ * @see {@link openDB}
+ */
 export async function getEntriesByDate(dateStr, type = 'note') {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -140,6 +204,40 @@ export async function getEntriesByDate(dateStr, type = 'note') {
   });
 }
 
+/**
+ *  getEntriesByMonth 
+ *
+ * Получение записей из хранилища `entries` за конкретный месяц,
+ * с фильтрацией по типу.
+ *
+ * Аналогично `getEntriesByDate`, но работает через индекс `by_month`
+ * (поле `yearMonth`). Отбор по месяцу выполняется движком IndexedDB,
+ * фильтрация по типу — в памяти на уже отобранной выборке. Такой вариант
+ * предпочтён отдельному индексу `by_month+type`: за один месяц записей
+ * заведомо немного, и стоимость in-memory фильтра ниже стоимости
+ * дополнительной схемы и миграции ради одного запроса.
+ * 
+ * Возвращает все записи за указанный месяц, отфильтрованные по типу.
+ *
+ * Записи ищутся через индекс `by_month` (поле `yearMonth`), затем в памяти
+ * оставляются только элементы с `type === type`.
+ *
+ * @param {string} yearMonth - месяц в формате `YYYY-MM` (совпадает с полем `yearMonth` записи)
+ * @param {string} [type='note'] - тип записи для фильтрации (например, `'note'`, `'task'`, `'income'`)
+ * @returns {Promise<Array<Object>>} массив записей; пустой массив, если за месяц ничего нет
+ * @throws {DOMException} если транзакция или запрос к IndexedDB завершились ошибкой
+ *
+ * @example
+ * // Все заметки за март 2025
+ * const notes = await getEntriesByMonth('2025-03');
+ *
+ * @example
+ * // Только задачи за март 2025
+ * const tasks = await getEntriesByMonth('2025-03', 'task');
+ *
+ * @see {@link getEntriesByDate} — аналог для одной даты
+ * @see {@link openDB}
+ */
 export async function getEntriesByMonth(yearMonth, type = 'note') {
   const db = await openDB();
   return new Promise((resolve, reject) => {

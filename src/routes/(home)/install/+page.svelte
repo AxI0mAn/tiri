@@ -6,7 +6,6 @@
 	import { appStore } from '$lib/store/appStore.svelte';
 	import { installPwaAction } from '$lib/utils/initPwaLogic';
 
-	import InstIcon from '$lib/assets/svgIcon/install_desktop.svg?raw';
 	// кнопка ВВЕРХ
 	import { createScrollTopButton } from '$lib/utils/createScrollTopButton';
 
@@ -116,7 +115,7 @@
 			<h2>Windows & macOS (Chrome or Edge)</h2>
 			<ul>
 				<li>Open the Application.</li>
-				<li>Look for the Install icon {@html InstIcon} in the browser address bar.</li>
+				<li>Look for the Install icon in the browser address bar.</li>
 			</ul>
 			<p>If you don't see it:</p>
 			<ul>

@@ -44,7 +44,6 @@
 	</main>
 
 	<footer>
-		<!-- <QuickMenu /> -->
 		<a href="{base}/newReminder" class="iconLink">
 			<!-- <span>Запись</span> -->
 			<BtnImg src={imgAdd} alt="test btn img" size={64} onclick="null" customClass="actionBtnImg" />

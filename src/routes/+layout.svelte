@@ -102,10 +102,6 @@
 
 	// =================================
 
-	// ============ плавные переходы для работы QuickMenu.svelte
-	// import { menuMaps } from '$lib/config/mathMenuMaps';
-	// АВТОМАТИЧЕСКАЯ ЛОГИКА: подробности применения в 	$lib/config/mathMenuMaps';
-
 	// ===========  установка приложения
 	import { appStore } from '$lib/store/appStore.svelte';
 	import { initPwaLogic } from '$lib/utils/initPwaLogic.js';
@@ -189,7 +185,7 @@ onMount → reg.update() → нет нового sw.js
 	<meta name="robots" content="index,follow,max-image-preview:large" />
 
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Tirix" />
+	<meta property="og:title" content="tiri" />
 	<meta
 		property="og:description"
 		content="Everything is stored ONLY on your device. Nothing goes online!
@@ -197,7 +193,7 @@ Your secrets are yours alone!"
 	/>
 
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Tirix" />
+	<meta name="twitter:title" content="tiri" />
 	<meta
 		name="twitter:description"
 		content="Everything is stored ONLY on your device. Nothing goes online!
@@ -218,27 +214,8 @@ Your secrets are yours alone!"
 	<title>tiri</title>
 </svelte:head>
 
+<!--  Риск XSS здесь отсутствует, поскольку содержимое pwaInfo.webManifest.linkTag не является пользовательским вводом. -->
 {@html pwaInfo?.webManifest.linkTag}
-
-<!-- для работы быстрого меню src/lib/config/quickMenuMaps.js
-
-{#key $page.url.pathname}
-	<div
-		class="page-wrapper"
-		class:animating={isGroupPage}
-		in:blurFade={{
-			duration: isGroupPage ? 200 : 0,
-			delay: isGroupPage ? 100 : 0,
-			amount: 6
-		}}
-		out:blurFade={{
-			duration: isGroupPage ? 50 : 0,
-			amount: 12
-		}}
-	>
-		{@render children()} если используешь эт0, то убери дублирующую запись ниже
-	</div>
-{/key} -->
 
 {@render children()}
 

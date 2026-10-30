@@ -24,13 +24,13 @@
 {/if}
 
 <style lang="scss">
+	@use '../../../../styles/_variables.scss' as *;
 	.modal-backdrop {
 		position: fixed;
 		top: 0;
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		// Используем чистый черный с прозрачностью для максимального фокуса на окне
 		background-color: rgba($clr-black-rgb, 0.85);
 		backdrop-filter: blur(4px);
 		display: flex;
@@ -41,24 +41,20 @@
 	}
 
 	.modal-content {
-		// Вместо #1a1a1a используем наш глубокий синий фон
 		background-color: $clr-bg-card;
 
-		// Добавляем мятную рамку для связи с дизайном калькулятора
 		border: 1px solid rgba($clr-teal-rgb, 0.3);
 		border-radius: 1rem;
 		padding: 1.5rem;
 		max-width: 50vh;
 		width: fit-content;
 
-		// Используем готовую глубокую тень
 		box-shadow: $shadow-deep;
 		text-align: center;
 
 		h3 {
 			margin-bottom: 1.25rem;
 			font-size: 1.1rem;
-			// Используем чистый белый для заголовков
 			color: $clr-text-main;
 			font-weight: 400;
 		}
@@ -78,7 +74,6 @@
 			gap: 0.75rem;
 
 			.btn__clear-all {
-				// Опасное действие — используем коралловый акцент
 				background-color: $clr-pink;
 				color: $clr-text-main;
 				border: none;
@@ -87,7 +82,6 @@
 				transition: all 0.2s;
 
 				&:hover {
-					// Инверсия при наведении
 					background-color: $clr-text-main;
 					color: $clr-pink;
 					box-shadow: $shadow-neon-coral;
@@ -96,7 +90,6 @@
 
 			.btn__cancel {
 				background: transparent;
-				// Вместо #444 используем синий оттенок из палитры
 				border: 1px solid $clr-bg-dark;
 				color: $clr-white;
 				margin-top: 0.25rem;

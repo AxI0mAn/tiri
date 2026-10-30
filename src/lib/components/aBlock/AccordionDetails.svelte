@@ -1,40 +1,36 @@
 <!-- 
-ПРИМЕНЕНИЕ 
+ПРИМЕНЕНИЕ      
 
- <script>
- // плавное открытие  и мгновенное закрытие <details>
-  import AccordionDetails from '$lib/components/AccordionDetails.svelte';
+ * // В Svelte-компоненте
+ * <script>
+ *   import { onMount } from 'svelte';
+ *   import { initAccordion } from '$lib/utils/initAccordion';
+ *   import AccordionDetails from '$lib/components/aBlock/AccordionDetails.svelte';
 
-  // может быть открыт только один <details>
-	import { onMount } from 'svelte';
-	import { initAccordion } from '$lib/utils/initAccordion';
-
-	onMount(() => {
-		// Код внутри onMount никогда не запустится на сервере
-		initAccordion(); // аккордеон из нескольких <details> для домашнего каталога
-	});
-</script>
-
-  Пример с h2  
-<AccordionDetails castomClass="optionCalc" name="my-accordion">
-  {#snippet summary()}
-    <h2>Arithmetic</h2>
-  {/snippet}
-
-  <ul>
-    <li>Addition</li>
-    <li>Subtraction</li>
-  </ul>
-</AccordionDetails>
-
-  Пример с h4 
-<AccordionDetails castomClass="optionCalc" name="my-accordion">
-  {#snippet summary()}
-    <h4>Advanced Fractions</h4>
-  {/snippet}
-
-  <p>Какой-то другой контент...</p>
-</AccordionDetails>
+*   // Svelte автоматически вызовет возвращённую функцию при размонтировании
+ *   // onMount ожидает, что колбэк может вернуть cleanup-функцию.
+ *  // Svelte вызовет её при размонтировании компонента — все слушатели будут сняты автоматически.
+ * onMount(() => initAccordion());
+ * </script>
+ *
+ * <AccordionDetails castomClass="optionCalc" name="my-accordion">
+ *   {#snippet summary()}
+ *     <h2>Пример с h2</h2>
+ *   {/snippet}
+ * 
+ *   <ul>
+ *     <li>Addition</li>
+ *     <li>Subtraction</li>
+ *   </ul>
+ * </AccordionDetails> 
+ *
+ * <AccordionDetails castomClass="optionCalc" name="my-accordion">
+ *   {#snippet summary()}
+ *     <h4>Пример с h4 </h4>
+ *   {/snippet}
+ * 
+ *   <p>Какой-то другой контент...</p>
+ * </AccordionDetails>
 
 
 

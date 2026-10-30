@@ -12,7 +12,7 @@
 	const banersGor1 = [
 		{
 			link: '#',
-			alt: 'Tiri banner',
+			alt: 'tiri banner',
 			src: {
 				webp: srcTiriWebp
 			}

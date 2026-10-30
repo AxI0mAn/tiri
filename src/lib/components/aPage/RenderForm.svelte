@@ -1,6 +1,6 @@
 <!-- src/lib/components/RenderForm.svelte -->
 <script>
-	import { untrack } from 'svelte';
+	import { onDestroy, untrack } from 'svelte';
 
 	import { FormDraftManager } from '$lib/store/FormStore.svelte.js';
 	import { formatTime, formatDateFromTimestamp } from '$lib/utils/dateHelpers.js';
@@ -49,7 +49,6 @@
 	// Создаем менеджер формы
 	const manager = untrack(() => {
 		const m = new FormDraftManager(type, constructorStore);
-
 		if (entry) {
 			m.draft = {
 				id: entry.id,
@@ -58,9 +57,10 @@
 				value: JSON.parse(JSON.stringify(entry.value))
 			};
 		}
-
 		return m;
 	});
+
+	onDestroy(() => manager.destroy());
 
 	// Единственный $effect — синхронизация формы → entry
 	$effect(() => {
@@ -74,6 +74,7 @@
 			};
 
 			// Обновляем entry только если данные изменились
+			// двусторонняя синхронизация через $effect + JSON.stringify; менять структуру entry осторожно
 			if (JSON.stringify(entry) !== JSON.stringify(newEntry)) {
 				entry = newEntry;
 			}
@@ -124,22 +125,6 @@
 		if (!hasSelection) return '';
 
 		return isSelected ? 'action' : 'notAction';
-	}
-
-	/**
-	 * Возвращает текущее состояние черновика из формы
-	 * @returns {Object} - копия draft
-	 */
-	function getDraft() {
-		return $state.snapshot(manager.draft);
-	}
-
-	/**
-	 * Возвращает текущее значение value из формы
-	 * @returns {Object} - копия value
-	 */
-	function getValue() {
-		return JSON.parse(JSON.stringify(manager.draft.value));
 	}
 </script>
 

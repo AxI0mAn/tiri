@@ -6,7 +6,6 @@
 
 	import NavBurger from '$lib/components/NavBurger/NavBurger.svelte';
 	import BtnShare from '$lib/components/Btn/BtnShare.svelte';
-	import { appStore } from '$lib/store/appStore.svelte';
 
 	import Picture from '$lib/components/Picture/Picture.svelte';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
