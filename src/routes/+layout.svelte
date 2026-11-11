@@ -199,13 +199,13 @@ Your secrets are yours alone!"
 		content="Everything is stored ONLY on your device. Nothing goes online!
 Your secrets are yours alone!"
 	/>
-	<meta name="twitter:image" content="https://axi0man.github.io/tiri/ogImage/og_home.jpeg" />
+	<meta name="twitter:image" content="https://axi0man.github.io/tiri_dev/ogImage/og_home.jpeg" />
 
-	<link rel="apple-touch-icon" href="https://axi0man.github.io/tiri/apple-touch-icon.png" />
-	<link rel="canonical" href="https://axi0man.github.io/tiri/" />
-	<meta property="og:url" content="https://axi0man.github.io/tiri/" />
+	<link rel="apple-touch-icon" href="https://axi0man.github.io/tiri_dev/apple-touch-icon.png" />
+	<link rel="canonical" href="https://axi0man.github.io/tiri_dev/" />
+	<meta property="og:url" content="https://axi0man.github.io/tiri_dev/" />
 
-	<meta property="og:image" content="https://axi0man.github.io/tiri/ogImage/og_home.jpeg" />
+	<meta property="og:image" content="https://axi0man.github.io/tiri_dev/ogImage/og_home.jpeg" />
 
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />

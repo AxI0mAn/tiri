@@ -149,9 +149,9 @@
 						details.indexCached = bestCacheKeys.some((req) => {
 							const url = req.url;
 							return (
-								url.endsWith('/tiri/index.html') ||
-								url === location.origin + '/tiri/' ||
-								url.endsWith('/tiri/') ||
+								url.endsWith('/tiri_dev/index.html') ||
+								url === location.origin + '/tiri_dev/' ||
+								url.endsWith('/tiri_dev/') ||
 								url.includes('index.html')
 							);
 						});
