@@ -19,23 +19,21 @@
 <header class="home__header">
 	<div><NavBurger /></div>
 	<div class="logoText">
-		<div class="logoText">
-			<a href="{base}/">
-				<Picture
-					src={{
-						webp: srcLogoText_webp,
-						jpeg: srcLogoText_png
-					}}
-					alt="Логотип текст"
-					class="bg-image"
-					loading="eager"
-					decoding="sync"
-					fetchpriority="high"
-					// width={128}
-					// height={64}
-				/></a
-			>
-		</div>
+		<a href="{base}/">
+			<Picture
+				src={{
+					webp: srcLogoText_webp,
+					jpeg: srcLogoText_png
+				}}
+				alt="Логотип текст"
+				class="bg-image"
+				loading="eager"
+				decoding="sync"
+				fetchpriority="high"
+				// width={128}
+				// height={64}
+			/></a
+		>
 	</div>
 	<div class="shareNow">
 		{#if showCalendar}
@@ -64,6 +62,22 @@
 		.logoText {
 			width: 100px;
 			aspect-ratio: 2/1;
+			position: relative;
+			&::after {
+				content: '';
+				position: absolute;
+				bottom: -4px;
+				left: 0;
+				width: 0%;
+				height: 4px;
+				background: $grad-btn-main-inv;
+				transition: width 0.5s ease-in-out;
+			}
+			&:hover {
+				&::after {
+					width: 80%;
+				}
+			}
 		}
 
 		.shareNow {

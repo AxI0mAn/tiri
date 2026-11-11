@@ -1,36 +1,36 @@
 <!-- 
 ПРИМЕНЕНИЕ      
 
- * // В Svelte-компоненте
- * <script>
- *   import { onMount } from 'svelte';
- *   import { initAccordion } from '$lib/utils/initAccordion';
- *   import AccordionDetails from '$lib/components/aBlock/AccordionDetails.svelte';
+  // В Svelte-компоненте
+  <script>
+    import { onMount } from 'svelte';
+    import { initAccordion } from '$lib/utils/initAccordion';
+    import AccordionDetails from '$lib/components/aBlock/AccordionDetails.svelte';
 
-*   // Svelte автоматически вызовет возвращённую функцию при размонтировании
- *   // onMount ожидает, что колбэк может вернуть cleanup-функцию.
- *  // Svelte вызовет её при размонтировании компонента — все слушатели будут сняты автоматически.
- * onMount(() => initAccordion());
- * </script>
- *
- * <AccordionDetails castomClass="optionCalc" name="my-accordion">
- *   {#snippet summary()}
- *     <h2>Пример с h2</h2>
- *   {/snippet}
- * 
- *   <ul>
- *     <li>Addition</li>
- *     <li>Subtraction</li>
- *   </ul>
- * </AccordionDetails> 
- *
- * <AccordionDetails castomClass="optionCalc" name="my-accordion">
- *   {#snippet summary()}
- *     <h4>Пример с h4 </h4>
- *   {/snippet}
- * 
- *   <p>Какой-то другой контент...</p>
- * </AccordionDetails>
+   // Svelte автоматически вызовет возвращённую функцию при размонтировании
+    // onMount ожидает, что колбэк может вернуть cleanup-функцию.
+   // Svelte вызовет её при размонтировании компонента — все слушатели будут сняты автоматически.
+  onMount(() => initAccordion());
+  </script>
+ 
+  <AccordionDetails castomClass="optionCalc" name="my-accordion">
+    {#snippet summary()}
+      <h2>Пример с h2</h2>
+    {/snippet}
+  
+    <ul>
+      <li>Addition</li>
+      <li>Subtraction</li>
+    </ul>
+  </AccordionDetails> 
+ 
+  <AccordionDetails castomClass="optionCalc" name="my-accordion">
+    {#snippet summary()}
+      <h4>Пример с h4 </h4>
+    {/snippet}
+  
+    <p>Какой-то другой контент...</p>
+  </AccordionDetails>
 
 
 
@@ -118,6 +118,7 @@
 			position: relative;
 			background-color: transparent;
 			transition: background-color 0.2s ease;
+			color: $clr-text-main;
 
 			/* Убираем дефолтный треугольник для старых версий Safari */
 			&::-webkit-details-marker {
@@ -128,7 +129,6 @@
 				margin: 0;
 				font-size: 1.1rem;
 				font-weight: 600;
-				color: $clr-text-main;
 			}
 
 			/* Создаем красивую анимированную стрелочку / плюсик справа */
@@ -136,8 +136,8 @@
 				content: '';
 				width: 0.5rem;
 				height: 0.5rem;
-				border-right: 2px solid $clr-teal;
-				border-bottom: 2px solid $clr-teal;
+				border-right: 2px solid $clr-text-main;
+				border-bottom: 2px solid $clr-text-main;
 				transform: rotate(45deg);
 				transition: transform 0.3s ease;
 				margin-left: 1rem;
@@ -164,7 +164,6 @@
 		&[open] {
 			summary {
 				background-color: $grad-btn-main; /* Легкая подсветка активного раздела */
-
 				&::after {
 					transform: rotate(-135deg); /* Стрелочка смотрит вверх */
 				}

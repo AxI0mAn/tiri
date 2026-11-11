@@ -37,8 +37,8 @@ class AppStore {
     { value: 'RU', label: 'русский' },
     { value: 'EN', label: 'english' },
     { value: 'UA', label: 'українська' },
-    { value: 'PT', label: 'português' },
-    { value: 'ES', label: 'español' }
+    // { value: 'PT', label: 'português' },
+    // { value: 'ES', label: 'español' }
   ];
 
   //  Статусная переменная с авто-выбором начального значения
@@ -46,6 +46,33 @@ class AppStore {
     (typeof window !== 'undefined' && localStorage.getItem('user_lang')) ||
     getBrowserLanguage(this.langOptions, 'EN')
   );
+
+  /** выбор роли пользователя
+   * @type {Array< { value:'masterWorker' | 'masterPRO' | 'owner' | 'ownerMaster' | 'administrator', label: string }>} 
+   */
+  /** доступные роли: */
+  roleOptions = [
+    { value: 'masterWorker', label: 'сотрудник на проценте' },
+    // { value: 'masterPRO', label: 'мастер на аренде' },
+    // { value: 'owner', label: 'собственник' },
+    // { value: 'ownerMaster', label: 'работающий собственник' },
+    // { value: 'administrator', label: 'администратор' }
+  ];
+
+  /** 
+   * Доступные профессии: 
+   * @type {Array<{ value: 'hair' | 'nail' | 'lash' | 'fur' | 'makeup' | 'tatt' | 'tattRem' | 'mass', label: string }>} 
+   */
+  profOptions = [
+    { value: 'hair', label: 'парикмахер' },
+    // { value: 'nail', label: 'ногтевой сервис' },
+    // { value: 'lash', label: 'сервис для ресниц' },
+    // { value: 'fur', label: 'разные виды эпиляции' },
+    // { value: 'makeup', label: 'перманентный макияж' },
+    // { value: 'tatt', label: 'татуировки' },
+    // { value: 'tattRem', label: 'удаление татуировок' },
+    // { value: 'mass', label: 'массаж' }
+  ];
 
   /** использовать свайп на странице дней или только кнопки
  * @type {boolean} */
