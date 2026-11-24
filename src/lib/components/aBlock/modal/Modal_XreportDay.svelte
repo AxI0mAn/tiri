@@ -10,7 +10,7 @@
 
 	import AdvertisementGor from '$lib/components/advertisement/advertisementGor.svelte';
 
-	import { localFormatDate } from '$lib/utils/dateHelpers.js';
+	import { formatTime, localFormatDate } from '$lib/utils/dateHelpers.js';
 
 	import logo_job3dWebp from '$lib/assets/iconPic/64/logo_job3d.webp';
 	import BtnImg from '$lib/components/Btn/BtnImg.svelte';
@@ -19,6 +19,9 @@
 	// Состояние для данных отчета
 	let xReportData = $state(null);
 	let dateStr = $state('');
+
+	// получить время в этот момент
+	const timestamp = Date.now();
 
 	// Функция закрытия (вызывается из кнопки)
 	function closeModal() {
@@ -56,8 +59,9 @@
 	{#snippet children()}
 		<div class="report-modal">
 			<div class="x-report-modal">
+				<h2>X-отчет {localFormatDate(dateStr, appStore.lang)}</h2>
 				<h2>
-					X-отчет за {localFormatDate(dateStr, appStore.lang)}
+					время {formatTime(timestamp)}
 				</h2>
 				<BtnImg
 					src={logo_job3dWebp}
@@ -106,6 +110,11 @@
 		gap: 2rem;
 	}
 	.x-report-modal {
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
 		background: $clr-bg-card;
 		border-radius: 16px;
 		padding: 24px;

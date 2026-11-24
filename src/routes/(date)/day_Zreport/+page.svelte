@@ -88,6 +88,10 @@
 			}
 
 			reportData = report;
+
+			// === -📝=TODO=📝- ===
+			console.log(reportData);
+			// === -📝=TODO=📝- ===
 		} catch (err) {
 			console.error('[Z-report] Ошибка:', err);
 			error = 'Не удалось загрузить отчет';
@@ -220,6 +224,20 @@
 						<h2>Аренда или %:</h2>
 						<div class="block-content">
 							<div class="row">
+								<span class="label">Касса до оплаты аренды.</span>
+								<span class="value font-digits" style="color: var(--clr-white);"
+									>{reportData.payments.allParts}</span
+								>
+							</div>
+							<div class="hint">Доход с которого платится аренда или процент.</div>
+							<div class="row total">
+								<span class="label">Всего к оплате</span>
+								<span class="value font-digits" style="color: var(--clr-white);"
+									>{reportData.payments.allGive}</span
+								>
+							</div>
+							<div class="hint">Сколько необходимо оплатить за аренду.</div>
+							<div class="row">
 								<span class="label">Уже оплачено</span>
 								<span class="value font-digits">{reportData.payments.nowGive}</span>
 							</div>
@@ -227,25 +245,17 @@
 
 							{#if reportData.payments.moreGive < 0}
 								<div class="row warnerror">
-									<span class="label">Переплата</span>
+									<span class="label">Вернуть переплату</span>
 									<span class="value font-digits">{Math.abs(reportData.payments.moreGive)}</span>
 								</div>
 								<div class="hint">Излишек оплаты в счёт аренды, который необходимо вернуть.</div>
 							{:else}
 								<div class="row">
-									<span class="label">Доплатить</span>
+									<span class="label">Ещё доплатить</span>
 									<span class="value font-digits">{reportData.payments.moreGive}</span>
 								</div>
 								<div class="hint">Остаток, которые необходимо оплатить в счёт аренды.</div>
 							{/if}
-
-							<div class="row total">
-								<span class="label">Всего</span>
-								<span class="value font-digits" style="color: var(--clr-white);"
-									>{reportData.payments.allGive}</span
-								>
-							</div>
-							<div class="hint">Сколько необходимо оплатить за аренду.</div>
 						</div>
 					</div>
 				{/if}

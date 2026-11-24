@@ -74,6 +74,32 @@ export class CalculationsDay {
     }
   }
 
+  /** sumPart - это sum, где myPercent !== 100
+   *  sumPart(entry) - Возвращает сумму (percent.sum) из заметки если myPercent !== 100
+   * @param {Object} entry - запись заметки
+   * @returns {number} - значение суммы или 0
+   */
+  sumPart(entry) {
+    try {
+      if (!entry || typeof entry !== 'object') {
+        return 0;
+      }
+
+      const sum = entry.value?.percent?.sum;
+      const myPercent = entry?.value?.percent?.myPercent;
+
+      // если myPercent !== 100 тогда вернуть sum 
+      if (typeof sum === 'number' && !isNaN(sum) && isFinite(sum)) {
+        if (myPercent !== 100) {
+          return sum;
+        } else { return 0; }
+      }
+    } catch (error) {
+      console.warn('[sumPart] Ошибка при получении суммы:', error.message);
+      return 0;
+    }
+  }
+
   /** myPart - моя доля от того что заплатил клиент (без чаевых)
    *  cardMyPart(entry) - Вычисляет значение не комиссии, а моего зароботка для заметки (округленно до целого)
    * sum - то что заплатил клиент (без чаевых)
@@ -217,6 +243,17 @@ export class CalculationsDay {
     return Math.round(myParts);
   }
 
+  /**
+   * calcul_allParts() - рассчитывает кассу за весь день с которой необходимо оплатить процент 
+   * (сумма всех sum для которых myPercent !== 100)
+   */
+  calcul_allParts() {
+    let allParts = 0;
+    for (const entry of this.allThisDayNotes_dateStr) {
+      allParts += this.sumPart(entry);
+    }
+    return Math.round(allParts);
+  }
 
   /**
    * calcul_allGive() - Рассчитывает общую аренду (allGive) = сумма всех give (= sum - my) для каждого note
@@ -388,6 +425,7 @@ export class CalculationsDay {
       // ===== ПЕРЕМЕННЫЕ ДЛЯ РАСЧЕТОВ =====
       const gross = this.calcul_gross();         // Валовый оборот  (sum + tips)
       const summary = this.calcul_summary();     // Валовый доход (сумма всех sum без tips)
+      const allParts = this.calcul_allParts(); //  (сумма всех sum для которых myPercent !== 100)
       const allGive = this.calcul_allGive();     // Общая аренда (сумма всех give)
       const nowGive = this.calcul_nowGive();     // Оплаченная аренда (card2 + crypto)
       const moreGive = this.calcul_moreGive(allGive, nowGive, dateStr); // Остаток аренды
@@ -428,6 +466,7 @@ export class CalculationsDay {
         payments: {
           gross,      // Валовый оборот (sum + tips)
           summary,    // Валовый доход (сумма всех sum)
+          allParts,   // Касса с которой платится процент (сумма всех sum, для которых myPercent !== 100)
           allGive,    // Общая аренда (сумма всех give)
           nowGive,    // Оплаченная аренда (card2 + crypto)
           moreGive,   // Остаток аренды (allGive - nowGive)
@@ -452,7 +491,7 @@ export class CalculationsDay {
       // Возвращаем пустой отчет при ошибке
       return {
         payments: {
-          gross: 0, summary: 0, allGive: 0, nowGive: 0,
+          gross: 0, summary: 0, allParts: 0, allGive: 0, nowGive: 0,
           moreGive: 0, changeGive: 0, tips: 0, my: 0, allMy: 0
         },
         clients: {
