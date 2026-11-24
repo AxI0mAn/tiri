@@ -1625,6 +1625,11 @@
 		text-align: center;
 	}
 
+	input {
+		color: $clr-text-main;
+		min-width: max-content;
+	}
+
 	:global(.btn-check) {
 		background: $clr-info !important;
 		color: $clr-white !important;
